@@ -1,18 +1,29 @@
 import React, {Component} from 'react';
-import Bar from '../components/Bar'
+import {Navbar, Nav} from 'react-bootstrap';
+import Sprint from './sprint/Sprint'
 
 class Main extends Component {
 
   render() {
 
 
-    return (
-      <div>
+  return (
+    <div>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href="#home">TracKing</Navbar.Brand>
+        <Nav.Link href="#sprint">Sprint</Nav.Link>
+        <Nav.Link href="#sprint">Backlog</Nav.Link>
+        <Nav.Link href="#sprint">Administration</Nav.Link>
+        <Nav.Link href="#sprint">Chat</Nav.Link>
+      </Navbar>
 
-        <p>Rendered Main</p>
-        <Bar />
+
+
+      <div>
+        <Sprint />
       </div>
-    )
+    </div>
+  )
   }
 }
 
