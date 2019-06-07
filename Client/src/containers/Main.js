@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Bar from '../components/Bar'
 
 class Main extends Component {
 
@@ -7,7 +8,9 @@ class Main extends Component {
 
     return (
       <div>
+
         <p>Rendered Main</p>
+        <Bar />
       </div>
     )
   }

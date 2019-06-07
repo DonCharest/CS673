@@ -3,16 +3,16 @@ const webpack = require('webpack');
 
 
 module.exports = {
-  context: path.resolve(__dirname, './src'),
+  context: path.resolve(__dirname, 'src'),
   entry: {
     app: [
       '@babel/polyfill',
-      './index.js',
+      './index.js'
     ]
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, './build/js'),
+    path: path.join(__dirname, './build/js'),
   },
   module: {
     rules: [
