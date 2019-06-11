@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import { createStore } from 'redux'
-
+import { HashRouter} from 'react-router-dom';
 import reducer from './reducers/reducer'
 import Main from './containers/Main';
 
@@ -15,9 +15,9 @@ function App() {
   
   return (
     <Provider store={store}>
-      <div> 
+       <HashRouter>
         <Main />  
-      </div>
+      </HashRouter>
     </Provider>
   );
 }

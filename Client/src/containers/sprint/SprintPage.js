@@ -1,17 +1,16 @@
 import React, {Component} from 'react';
 import Column from '../../components/Column'
 
-class Sprint extends Component {
+class SprintPage extends Component {
 
   render() {
     return (
       <div>
-        <Column />
-        <Column />
+        <h1>Sprint</h1>
       </div>
     )
   }
 
 }
 
-export default Sprint
+export default SprintPage

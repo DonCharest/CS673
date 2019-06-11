@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
-import {Navbar, Nav} from 'react-bootstrap';
-import Sprint from './sprint/Sprint'
+import {Navbar, Nav, Container} from 'react-bootstrap';
+import { Route, Link, Redirect }from 'react-router-dom';
+import SprintPage from './sprint/SprintPage'
+import BacklogPage from './backlog/BacklogPage'
+import AdminPage from './admin/AdminPage'
+import ChatPage from './chat/ChatPage'
 
 class Main extends Component {
 
@@ -9,19 +13,26 @@ class Main extends Component {
 
   return (
     <div>
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">TracKing</Navbar.Brand>
-        <Nav.Link href="#sprint">Sprint</Nav.Link>
-        <Nav.Link href="#sprint">Backlog</Nav.Link>
-        <Nav.Link href="#sprint">Administration</Nav.Link>
-        <Nav.Link href="#sprint">Chat</Nav.Link>
-      </Navbar>
+      <Container>
+        <Navbar bg="light" expand="lg">
+          <Navbar.Brand><Link to="/">TracKing</Link></Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Item><Link to="/sprint">Sprint</Link></Nav.Item>
+            <Nav.Item><Link to="/backlog">Backlog</Link></Nav.Item>
+            <Nav.Item><Link to="/admin">Administration</Link></Nav.Item>
+            <Nav.Item><Link to="/chat">Chat</Link></Nav.Item>
+          </Nav>
+        </Navbar>
 
+        <div>
+          <Route path="/sprint" exact component={SprintPage} />
+          <Route path="/backlog" exact component={BacklogPage} />
+          <Route path="/admin" exact component={AdminPage} />
+          <Route path="/chat" exact component={ChatPage} />
+          <Redirect to="/sprint" />
+        </div>
+      </Container>
 
-
-      <div>
-        <Sprint />
-      </div>
     </div>
   )
   }
