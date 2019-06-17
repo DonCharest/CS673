@@ -63,11 +63,11 @@ const session_config = {
 app.use(expressSession(session_config));
 
 // Initialize routes with static files
+//  https://flaviocopes.com/react-server-side-rendering/
 router.use(
     express.static(path.resolve(__dirname, '..', 'Client/build'))
 );
-//app.use(express.static(path.join(__dirname + '/Client/build/index.html')));
-//app.get('*', function(req, res) {res.sendFile(__dirname + '/Client/build/index.html');});
+
 app.use(router);
 
 /* Initialize the Socket IO functionality:
