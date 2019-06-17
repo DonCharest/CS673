@@ -26,3 +26,6 @@
   Connected to tracKing_DB
  
 We are using nodemon for DEV development.  Nodemon will watch your folders for changes in code files and automatically restart the Express server when changes are detected.  This is much easier than manually stopping (CTRL-C) and restarting the server for EVERY change.
+
+4. In your browser, navigate to ```http://localhost:3000``` and enjoy.
+
