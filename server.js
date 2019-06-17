@@ -4,7 +4,7 @@
     - Establish database connection.
     - Establish application routes.
     - Configure and activate main server.
-    - HTTP communication server.
+    - Configure and activate HTTP communication server.
 
     REFERENCE: https://vegibit.com/node-js-express-rest-api-tutorial/
     REFERENCE: https://socket.io/get-started/chat/#Introduction
