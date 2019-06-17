@@ -18,13 +18,15 @@ const cors = require('cors');
 const express = require('express');
 const expressSession = require('express-session');
 const mongoose = require('mongoose');
+const path = require('path');
 
 // Initialize local files
 const authConfig = require('./config/auth_config.js');
-const dbConfig = require('./config/db_config');
+const dbConfig = require('./config/db_config.js');
 
 // Configure application middleware: Express application server
 const app = express();
+const router = express.Router();
 
 // Configure application middleware: HTTP communication server and Socket.io
 const http = require('http').createServer(app);
@@ -60,8 +62,13 @@ const session_config = {
 }
 app.use(expressSession(session_config));
 
-// Initialize routes
-app.get('/', function(req, res) {res.sendFile(__dirname + '/Client/build/index.html');});
+// Initialize routes with static files
+router.use(
+    express.static(path.resolve(__dirname, '..', 'Client/build'))
+);
+//app.use(express.static(path.join(__dirname + '/Client/build/index.html')));
+//app.get('*', function(req, res) {res.sendFile(__dirname + '/Client/build/index.html');});
+app.use(router);
 
 /* Initialize the Socket IO functionality:
     On connect
