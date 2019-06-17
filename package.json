@@ -16,5 +16,19 @@
   "bugs": {
     "url": "https://github.com/jkeelingbu/team1/issues"
   },
-  "homepage": "https://github.com/jkeelingbu/team1#readme"
+  "homepage": "https://github.com/jkeelingbu/team1#readme",
+  "devDependencies": {
+    "nodemon": "1.19.1"
+  },
+  "dependencies": {
+    "body-parser": "1.19.0",
+    "connect-mongo": "2.0.3",
+    "cookie": "0.3.1",
+    "cookie-parser": "1.4.4",
+    "cors": "2.8.5",
+    "express": "4.16.4",
+    "express-session": "1.16.1",
+    "mongoose": "5.5.4",
+    "socket.io": "2.2.0"
+  }
 }
