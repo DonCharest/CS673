@@ -1,8 +1,14 @@
 1. Install / update node libraries.
   - open a new terminal window
+  - navigate to ```/Client```
   - type at the prompt> ```npm install```
   
   Lots of stuff will happen.
+  
+  - navigate to ```/Server```
+    - type at the prompt> ```npm install```
+  
+  More stuff will happen.
 
 2. Start the Mongo database (you must install MongoDB locally).
   - open a terminal window (same or new)
@@ -12,6 +18,7 @@
   
  3. Start the application server
   - open a new terminal window (yes, a second one)
+  - Navigate to ```/Server```
   - DEV: type at the prompt> ```nodemon server.js```
   
   The message should have two lines:
