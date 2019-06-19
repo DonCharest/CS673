@@ -25,7 +25,7 @@
   HTTP Socket Server listening on *:3000
   Connected to tracKing_DB
  
-We are using nodemon for DEV development.  Nodemon will watch your folders for changes in code files and automatically restart the Express server when changes are detected.  This is much easier than manually stopping (CTRL-C) and restarting the server for EVERY change.
+We are using nodemon for DEV development.  Nodemon will watch your folders for changes in code files and automatically restart the Express server when changes are detected.  This is much easier than manually stopping (CTRL-C) and restarting the server for EVERY change. If you get ```'nodemon' is not recognized as an internal or external command``` in step 3 type ```npm install -g nodemon``` to install nodemon.
 
 4. In your browser, navigate to ```http://localhost:3000``` and enjoy.
 
