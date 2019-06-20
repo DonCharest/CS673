@@ -29,3 +29,4 @@ We are using nodemon for DEV development.  Nodemon will watch your folders for c
 
 4. In your browser, navigate to ```http://localhost:3000``` and enjoy.
 
+Oh, and read the OTHER Readme.md in /Client too.
