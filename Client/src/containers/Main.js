@@ -5,6 +5,7 @@ import SprintPage from './sprint/SprintPage'
 import BacklogPage from './backlog/BacklogPage'
 import AdminPage from './admin/AdminPage'
 import ChatPage from './chat/ChatPage'
+import LoginPage from './login/LoginPage'
 
 class Main extends Component {
 
@@ -29,6 +30,7 @@ class Main extends Component {
           <Route path="/backlog" exact component={BacklogPage} />
           <Route path="/admin" exact component={AdminPage} />
           <Route path="/chat" exact component={ChatPage} />
+          <Route path="/login" exact component={LoginPage} />
           <Redirect to="/sprint" />
         </div>
       </Container>
