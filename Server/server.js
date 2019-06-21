@@ -67,8 +67,7 @@ app.use(expressSession(session_config));
 router.use(
     express.static(path.resolve(__dirname, '..', 'Client/build'))
 );
-
-app.use(router);
+app.use(require("./routes"));
 
 /* Initialize the Socket IO functionality:
     On connect
