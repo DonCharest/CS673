@@ -62,11 +62,13 @@ const session_config = {
 }
 app.use(expressSession(session_config));
 
-// Initialize routes with static files
+// Initialize routes to the client with static files.
 //  https://flaviocopes.com/react-server-side-rendering/
 router.use(
     express.static(path.resolve(__dirname, '..', 'Client/build'))
 );
+
+// Server routes are dynamic.
 app.use(require("./routes"));
 
 /* Initialize the Socket IO functionality:
