@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
+import PropTypes from "prop-types";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Button, Modal, Form} from 'react-bootstrap';
 import * as actions from '../../reducers/actions';
 import * as classes from '../../app.css';
+
+
 
 class SprintPage extends Component {
   constructor(props) {
@@ -78,10 +81,10 @@ class SprintPage extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
+};
 
-}
 
 const mapStateToProps = (state) => {
   return {
@@ -97,3 +100,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SprintPage)
+

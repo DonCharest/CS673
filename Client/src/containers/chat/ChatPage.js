@@ -1,11 +1,16 @@
-import React, {Component} from 'react';
-import socketIOClient from 'socket.io-client';
-import './chatPage.css';
+import React, { Component } from "react";
+import { Container } from "reactstrap";
+import socketIOClient from "socket.io-client";
+import PropTypes from "prop-types";
+import "./chatPage.css";
 
-class ChatPage extends Component {
+Container.propTypes = {
+  fluid: PropTypes.bool
+};
 
-  constructor() {
-    super();
+class chatPage extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
       response: false,
       endpoint: "http://127.0.0.1:4001"
@@ -18,51 +23,50 @@ class ChatPage extends Component {
     socket.on("FromAPI", data => this.setState({ response: data }));
   }
 
-    // $(function(){
-    //         var socket = io();
-    //         $('form').submit(function(e){
-    //             /* Block page reload.
-    //                 Emit the message text as a 'chat message' event.
-    //                 Reset the value of the message box.
-    //             */
-    //             e.preventDefault();
-    //             socket.emit('chat message', $('#m').val());
-    //             $('#m').val('');
-    //             return false;
-    //         });
+  // $(function(){
+  //         var socket = io();
+  //         $('form').submit(function(e){
+  //             /* Block page reload.
+  //                 Emit the message text as a 'chat message' event.
+  //                 Reset the value of the message box.
+  //             */
+  //             e.preventDefault();
+  //             socket.emit('chat message', $('#m').val());
+  //             $('#m').val('');
+  //             return false;
+  //         });
 
-    //         // When a message is received, append it to the text message list.
-    //         socket.on('chat message', function(msg){
-    //             $('#messages').append($('<li>').text(msg));
-    //         });
-    //     });
+  //         // When a message is received, append it to the text message list.
+  //         socket.on('chat message', function(msg){
+  //             $('#messages').append($('<li>').text(msg));
+  //         });
+  //     });
 
-    // <ul id="messages"></ul>
-    //     <form action="">
-    //         <input type="text" id="m" autocomplete="off" /><button>SEND</button>
-    //     </form>
+  // <ul id="messages"></ul>
+  //     <form action="">
+  //         <input type="text" id="m" autocomplete="off" /><button>SEND</button>
+  //     </form>
 
   render() {
     const { response } = this.state;
- 
+
     return (
-      <div className="chat-page">
-        <h1>Chat</h1>
-        
-        <div style={{ textAlign: "center" }}>
-          {response
-              ? <p>
-                The temperature in Florence is: {response} °F
-              </p>
-              : <p>Loading...</p>}
+      <Container>
+        <div className="chat-page">
+          <h1>Chat</h1>
+          <hr />
+
+          <div style={{ textAlign: "center" }}>
+            {response ? (
+              <p>The temperature in Florence is: {response} °F</p>
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
         </div>
-
-      </div>
-
-
-    )
+      </Container>
+    );
   }
-
 }
 
-export default ChatPage
+export default chatPage;
