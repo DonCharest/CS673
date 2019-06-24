@@ -1,40 +1,104 @@
+/* Initialize and onfigure application middleware: 
+    
+    - Configure session with storage.
+    - Establish database connection.
+    - Establish application routes.
+    - Configure and activate main server.
+    - Configure and activate HTTP communication server.
+    REFERENCE: https://vegibit.com/node-js-express-rest-api-tutorial/
+    REFERENCE: https://socket.io/get-started/chat/#Introduction
+    REFERENCE: https://www.tutorialspoint.com/socket.io/index.htm
+*/
+// Initialize application middleware.
+const bodyParser = require("body-parser");
+const mongoConnect = require("connect-mongo");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const express = require("express");
+const expressSession = require("express-session");
 const mongoose = require("mongoose");
 const path = require("path");
-const config = require("config");
 
+// Initialize local files
+const authConfig = require("./config/auth_config.js");
+const dbConfig = require("./config/db_config.js");
+
+// Configure application middleware: Express application server
 const app = express();
+const router = express.Router();
 
-// Bodyparser Middleware
-app.use(express.json());
+// Configure application middleware: HTTP communication server and Socket.io
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 
-// DB Congfig
-const db = config.get("mongoURI");
+// Configure application middleware: Header parser
+app.use(cookieParser());
+app.use(cors());
 
-// Connect to mongo
+// Configure application middleware: Request parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Configure application middleware: MongoDB connection
 mongoose
-  .connect(db, {
-    useNewUrlParser: true,
-    useCreateIndex: true
-  }) // Adding new url parser
-  .then(() => console.log("MongdDB Connected..."))
-  .catch(err => console.log(err));
+  .connect(dbConfig.url, { useNewUrlParser: true })
+  .then(() => console.log("Connected to tracKing_DB"))
+  .catch(err => console.error("Connection to Mongo:tracKing_DB Failed", err));
+mongoose.set("useCreateIndex", true); // REFERENCE: https://mongoosejs.com/docs/deprecation.html
+mongoose.set("useFindAndModify", false); // REFERENCE: https://mongoosejs.com/docs/deprecations.html#-findandmodify-
+mongoose.Promise = global.Promise;
 
-// Use Routes
-app.use("/api/items", require("./routes/api/items"));
-app.use("/api/users", require("./routes/api/users"));
-app.use("/api/auth", require("./routes/api/auth"));
+// Configure application middleware: User session and authentication
+const MongoStore = mongoConnect(expressSession);
+const session_config = {
+  secret: authConfig.PrivateKey,
+  resave: false, // don't save unmodified sessions
+  saveUninitialized: false, // create the session when something is stored
+  store: new MongoStore({
+    // store sessions in MongoDB
+    mongooseConnection: mongoose.connection,
+    autoRemove: "native",
+    autoRemoveInterval: 60 * 24 // Automatically remove expired sessions once daily
+  })
+};
+app.use(expressSession(session_config));
 
-// Serve static assets if in production
-if (process.env.NODE_ENV === "production") {
-  // Set static folder
-  app.use(express.static("client/build"));
+// Initialize routes to the client with static files.
+//  https://flaviocopes.com/react-server-side-rendering/
+router.use(express.static(path.resolve(__dirname, "..", "Client/build")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+// Server routes are dynamic.
+app.use(require("./routes"));
+
+/* Initialize the Socket IO functionality:
+    On connect
+    On message
+    On disconnect
+*/
+io.on("connection", function(socket) {
+  // Read previous messages from DB
+  // Load to UI page list
+  console.log("A user has connected.");
+
+  socket.on("chat message", function(msg) {
+    //  console.log('message: ' + msg);
+    // Push msg to DB
+    io.emit("chat message", msg);
   });
-}
 
-const port = process.env.PORT || 5000;
+  socket.on("disconnect", function() {
+    console.log("A user disconnected");
+  });
+});
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+/* We can create project specific "namespaces" using the io.of() function and providing
+    a name for the desired namespace target.
+    Similarly, we can join "rooms" with the socket.join("room"+roomnumber) function within
+    a namespace.
+        see documentation on socket.join and socket.leave
+*/
+
+// Activate the communication server.
+http.listen(3000, function() {
+  console.log("HTTP Socket Server listening on *:3000");
+});

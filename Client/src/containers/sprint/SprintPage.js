@@ -1,16 +1,20 @@
-import React, {Component} from 'react';
-import Column from '../../components/Column'
+import React from "react";
+import { Container } from "reactstrap";
+import PropTypes from "prop-types";
 
-class SprintPage extends Component {
+Container.propTypes = {
+  fluid: PropTypes.bool
+};
 
-  render() {
-    return (
+const SprintPage = props => {
+  return (
+    <Container>
       <div>
         <h1>Sprint</h1>
+        <hr />
       </div>
-    )
-  }
+    </Container>
+  );
+};
 
-}
-
-export default SprintPage
+export default SprintPage;
