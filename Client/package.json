@@ -8,7 +8,7 @@
     "dev-watch": "npm run dev-build -- --watch",
     "prod": "webpack --mode production --config webpack.prod.config.js"
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "http://localhost:3000",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jkeelingbu/team1.git"
