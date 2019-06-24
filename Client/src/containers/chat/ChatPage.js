@@ -46,7 +46,7 @@ class ChatPage extends Component {
     const { response } = this.state;
  
     return (
-      <div>
+      <div className="chat-page">
         <h1>Chat</h1>
         
         <div style={{ textAlign: "center" }}>

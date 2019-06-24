@@ -1,14 +1,11 @@
-* {
+.chat-page {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-body {
   font: 13px Helvetica, Arial; 
 }
 
-form {
+.chat-page form {
   background: #000;
   padding: 3px;
   position: fixed;
@@ -16,14 +13,14 @@ form {
   width: 100%;
 }
 
-form input {
+.chat-page form input {
   border: 0;
   padding: 10px;
   width: 90%;
   margin-right: .5%;
 }
 
-form button {
+.chat-page form button {
   width: 9%;
   background: rgb(130, 224, 255);
   border: none;
