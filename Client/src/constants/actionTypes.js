@@ -1,0 +1,1 @@
+export const ADD_NEW_STORY = "ADD_NEW_STORY"

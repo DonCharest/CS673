@@ -52,7 +52,7 @@ class chatPage extends Component {
 
     return (
       <Container>
-        <div>
+        <div className="chat-page">
           <h1>Chat</h1>
           <hr />
 

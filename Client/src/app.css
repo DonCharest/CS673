@@ -50,3 +50,22 @@ hr {
   opacity: 0.01;
   transition: opacity 1000ms ease-in;
 }
+
+.allSprintColumns {
+  display: flex;
+}
+
+.columnContainer {
+  flex: 1;
+}
+
+.columnHeader {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.sprintStory {
+  border: solid gray 2px;
+  border-radius: 5px;
+}
+
