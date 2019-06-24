@@ -1,19 +1,12 @@
 import { combineReducers } from 'redux'
-import {
-  UPDATE_IMAGE,
-  UPDATE_LINE
-} from '../constants/actionTypes'
-
-const main = (state={}, action) => {
-  switch (action.type) {
-    default:
-      return state
-  }
-}
-
+import admin from './adminReducer'
+import backlog from './backlogReducer'
+import sprint from './sprintReducer'
 
 const reducer = combineReducers({
-  main,
+  admin,
+  backlog,
+  sprint,
 })
 
 export default reducer
