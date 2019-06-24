@@ -5,7 +5,8 @@ import { loadUser } from "./actions/authActions";
 import { HashRouter } from "react-router-dom";
 import Main from "./containers/Main";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./app.css";
+//import "./app.css";
+//import * as classes from "./app.css";
 
 class App extends Component {
   componentDidMount() {
