@@ -86,8 +86,6 @@ class SprintPage extends Component {
 };
 
 
-}
-
 const mapStateToProps = (state) => {
   return {
     sprint: state.sprint,
