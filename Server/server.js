@@ -79,3 +79,7 @@ io.on("connection", function(socket) {
 http.listen(3000, function() {
   console.log("HTTP Socket Server listening on *:3000");
 });
+
+app.get('/', (req, res) => {
+  res.sendfile(path.resolve('../Client/build/index.html'));
+});
