@@ -40,7 +40,7 @@ mongoose.Promise = global.Promise;
 
 // Initialize routes to the client with static files.
 //  https://flaviocopes.com/react-server-side-rendering/
-router.use(express.static(path.resolve(__dirname, "..", "Client/build")));
+app.use(express.static(path.resolve(__dirname, "..", "Client/build")));
 app.use(require("./routes"));
 
 // Configure application middleware: HTTP communication server and Socket.io
@@ -78,8 +78,4 @@ io.on("connection", function(socket) {
 // Activate the communication server.
 http.listen(3000, function() {
   console.log("HTTP Socket Server listening on *:3000");
-});
-app.use(express.static('../Client/build/'))
-app.get('/', (req, res) => {
-  res.sendfile(path.resolve('../Client/build/index.html'));
 });
