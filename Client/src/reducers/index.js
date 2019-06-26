@@ -7,7 +7,8 @@ import backlog from './backlogReducer'
 import sprint from './sprintReducer'
 
 
-export default combineReducers({
+
+const rootReducer =  combineReducers({
   item: itemReducer,
   error: errorReducer,
   auth: authReducer,
@@ -15,3 +16,5 @@ export default combineReducers({
   backlog,
   sprint,
 });
+
+export default rootReducer;

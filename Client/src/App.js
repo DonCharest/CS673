@@ -14,6 +14,7 @@ class App extends Component {
   }
 
   render() {
+    // const reducerStore = store();
     return (
       <Provider store={store}>
         <div className="App">
