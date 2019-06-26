@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const UserSchema = new Schema({
+  displayName: {
+    type: String,
+    required: true
+    },
   name: {
     type: String,
     required: true
@@ -19,7 +23,11 @@ const UserSchema = new Schema({
   register_date: {
     type: Date,
     default: Date.now
-  }
+    },
+  isAdmin: {
+    type: Boolean,
+    default: false
+    }
 });
 
 module.exports = User = mongoose.model("user", UserSchema);

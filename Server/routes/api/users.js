@@ -7,14 +7,21 @@ const jwt = require("jsonwebtoken");
 // User Model
 const User = require("../../models/User");
 
+// @route GET  api/users Log a user out
 // @route POST api/users
 // @desc Register new user
 // @access Public
+
+router.get("/logout", (req, res) => {
+    req.logout()
+    res.redirect("/")
+});
+
 router.post("/", (req, res) => {
-  const { name, email, password } = req.body;
+  const { displayName, name, email, password } = req.body;
 
   // Simple validation
-  if (!name || !email || !password) {
+  if (!displayName || !name || !email || !password) {
     return res.status(400).json({ msg: "Please enter all fields " });
   }
 
@@ -23,9 +30,15 @@ router.post("/", (req, res) => {
     if (user) return res.status(400).json({ msg: "User already exists " });
 
     const newUser = new User({
+      displayName,
       name,
       email,
       password
+    });
+
+   //Delete a user
+  User.findOneAndRemove({ email }).then(err => {
+    if (err) return res.status(400).json({ msg: "Error deleting User " });
     });
 
     // Create salt & hash
