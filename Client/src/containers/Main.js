@@ -11,7 +11,7 @@ import {
 // import { Navbar, Nav, Container } from "react-bootstrap";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-//import RegisterModal from "./auth/RegisterModal";
+import RegisterModal from "./auth/RegisterModal";
 import LoginModal from "./auth/LoginModal";
 import Logout from "./auth/Logout";
 import SprintPage from "./sprint/SprintPage";
@@ -67,9 +67,9 @@ class Main extends Component {
 
     const guestLinks = (
       <Fragment>
-        {/* <NavItem> */}
-        {/* <RegisterModal /> */}
-        {/* </NavItem> */}
+        <NavItem>
+          <RegisterModal />
+        </NavItem>
         <NavItem>
           <LoginModal />
         </NavItem>
@@ -86,9 +86,9 @@ class Main extends Component {
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>
-                {/* { isAuthenticated ? authLinks : guestLinks } */}
+                {isAuthenticated ? authLinks : guestLinks}
                 {/****** Force auth links to be visible until back-end connected ******/}
-                {isAuthenticated ? guestLinks : authLinks}
+                {/* {isAuthenticated ? guestLinks : authLinks} */}
               </Nav>
             </Collapse>
           </Navbar>

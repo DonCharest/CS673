@@ -26,10 +26,12 @@ app.use(bodyParser.json());
 
 // Configure application middleware: MongoDB connection
 // REFERENCE: https://mongoosejs.com/docs/deprecation.html
-//const db = config.get("mongoURI");
-const db = "mongodb://localhost:27017/tracKing_DB";
+
+const db = config.get("mongoURI");
+////const db = "mongodb://localhost:27017/tracKing_DB";
+
 mongoose
-  .connect(db, { 
+  .connect(db, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false
@@ -41,7 +43,13 @@ mongoose.Promise = global.Promise;
 // Initialize routes to the client with static files.
 //  https://flaviocopes.com/react-server-side-rendering/
 app.use(express.static(path.resolve(__dirname, "..", "Client/build")));
+
 app.use(require("./routes"));
+
+// Use Routes ******* We need to modify the server setup to make these routes work ******
+app.use("/api/items", require("./routes/api/items"));
+app.use("/api/users", require("./routes/api/users"));
+app.use("/api/auth", require("./routes/api/auth"));
 
 // Configure application middleware: HTTP communication server and Socket.io
 const http = require("http").createServer(app);

@@ -9,9 +9,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //import * as classes from "./app.css";
 
 class App extends Component {
-  // componentDidMount() {
-    // store.dispatch(loadUser());
-  // }
+  componentDidMount() {
+    store.dispatch(loadUser());
+  }
 
   render() {
     // const reducerStore = store();
