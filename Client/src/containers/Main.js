@@ -98,30 +98,30 @@ class Main extends Component {
             <Route
               path="/sprint"
               exact
-              component={SprintPage ? SprintPage : LoginPage}
+              component={isAuthenticated ? SprintPage : LoginPage}
             />
             <Route
               path="/backlog"
               exact
-              component={BacklogPage ? BacklogPage : LoginPage}
+              component={isAuthenticated ? BacklogPage : LoginPage}
             />
             <Route
               path="/admin"
               exact
-              component={AdminPage ? AdminPage : LoginPage}
+              component={isAuthenticated ? AdminPage : LoginPage}
             />
             <Route
               path="/chat"
               exact
-              component={ChatPage ? ChatPage : LoginPage}
+              component={isAuthenticated ? ChatPage : LoginPage}
             />
             <Route
               path="/login"
               exact
-              component={LoginPage ? LoginPage : LoginPage}
+              component={isAuthenticated ? SprintPage : LoginPage}
             />
             <Route path="/" exact component={LoginPage} />
-            <Redirect to="/sprint" />
+            {/* <Redirect to="/sprint" /> */}
           </div>
         </div>
       </Container>
