@@ -35,7 +35,7 @@ class AdminPage extends Component {
           </div>
           <div>
             <p>View/Edit Users:</p>
-            <RegisterModal />
+            {/* <RegisterModal /> */}
           </div>
           <div>
             <p>View/Edit Spints:</p>
