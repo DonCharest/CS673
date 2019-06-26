@@ -17,7 +17,7 @@ router.route('/stories')
     
     let story = await Story.find({"_id": req.body.id});
     res.status(200).send({stories:story});
-})
+}) // NOTE - NO SEMICOLON!!!
 
 // CREATE a new TracKing Story (Requirement or Issue/Bug).
 // The value of index is set to the count of records in the collection + 1.
