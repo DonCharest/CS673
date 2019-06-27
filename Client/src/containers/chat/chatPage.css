@@ -2,8 +2,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font: 13px Helvetica, Arial; 
 }
+
+
+/**********This CSS is breaking the modals!!!
+***********It is too generic and alters global forms in the app
+*/
 
 .chat-page form {
   background: #000;
@@ -14,10 +18,11 @@
 }
 
 .chat-page form input {
+
   border: 0;
   padding: 10px;
   width: 90%;
-  margin-right: .5%;
+  margin-right: 0.5%;
 }
 
 .chat-page form button {

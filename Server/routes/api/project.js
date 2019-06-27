@@ -6,7 +6,7 @@
     Use async/await to give functions synchronous behavior. 
 */
 const router = require('express').Router();
-const {Project} = require('./../../models/Project_DB');
+const {Project} = require('./../../models/Project');
 
 // All routes go to ./api/projects/
 router.route('/projects')

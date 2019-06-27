@@ -2,6 +2,55 @@ body {
   font-size: 16px;
 }
 
+.main {
+  background-color: silver;
+  min-height: 140vh;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  /* Set the hr color */
+  color: #333; /* old IE */
+  background-color: #333; /* Modern Browsers */
+}
+
+.navbar-brand {
+  color: crimson !important;
+  font-size: 20px !important;
+}
+
+.crownImage > img {
+  width: 1280px;
+  max-width: 100%;
+}
+
+.remove-btn {
+  margin-right: 0.5rem;
+}
+
+.fade-enter {
+  opacity: 0.01;
+}
+
+.fade-enter-acive {
+  opacity: 1;
+  transition: opacity 1000ms ease-in;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-acive {
+  opacity: 0.01;
+  transition: opacity 1000ms ease-in;
+}
+
 .allSprintColumns {
   display: flex;
 }
@@ -19,3 +68,4 @@ body {
   border: solid gray 2px;
   border-radius: 5px;
 }
+

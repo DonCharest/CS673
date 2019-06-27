@@ -1,4 +1,4 @@
-/*  Project_DB.js: Database schema for storing Project.Project data.
+/*  Project.js: Database schema for storing Project.Project data.
     - Store projects in MongoDB.
     - Projects include ProjectMembers.
     - ProjectMembers include Users

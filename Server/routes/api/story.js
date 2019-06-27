@@ -6,14 +6,18 @@
     Use async/await to give functions synchronous behavior.
 */
 const router = require('express').Router();
-const {Story} = require('./../../models/Story_DB');
+const {Story} = require('../../models/Story');
 
 // All routes go to ./api/stories/
 router.route('/stories')
 
-.get(function (req,res){
-    res.status(200).send('test ping success');
-})
+// GET one Story by id.
+// We must iterate over the request body to get target id's.
+.get(async function (req,res){
+    
+    let story = await Story.find({"_id": req.body.id});
+    res.status(200).send({stories:story});
+}) // NOTE - NO SEMICOLON!!!
 
 // CREATE a new TracKing Story (Requirement or Issue/Bug).
 // The value of index is set to the count of records in the collection + 1.

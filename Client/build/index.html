@@ -1,19 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>Team 1</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TracKing Agile App</title>
     <!-- <link href=".build/css/style.css" rel="stylesheet">  -->
+    <style>
+      .main {
+        background-color: silver;
+        min-height: 140vh;
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+      .navbar-brand {
+        color: crimson !important;
+        font-size: 20px !important;
+      }
+      .crownImage > img {
+        width: 1280px;
+        max-width: 100%;
+      }
+      .remove-btn {
+        margin-right: 0.5rem;
+      }
+      .fade-enter {
+        opacity: 0.01;
+      }
+      .fade-enter-acive {
+        opacity: 1;
+        transition: opacity 1000ms ease-in;
+      }
+      .fade-exit {
+        opacity: 1;
+      }
+      .fade-exit-acive {
+        opacity: 0.01;
+        transition: opacity 1000ms ease-in;
+      }
+    </style>
+
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-
   </head>
   <body>
     <div id="content"></div>
+    <p>Homepage</p>
     <script src="./js/app.bundle.js"></script>
   </body>
 </html>

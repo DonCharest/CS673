@@ -2,6 +2,8 @@
     which contain their routes and functions.
 */
 const router = require('express').Router();
-router.use(require('./story_route'));
-router.use(require('./project_route'));
+router.use(require('./auth'));
+router.use(require('./items'));
+router.use(require('./story'));
+router.use(require('./project'));
 module.exports = router;
