@@ -3,4 +3,5 @@
 */
 const router = require('express').Router();
 router.use(require('./story_route'));
+router.use(require('./project_route'));
 module.exports = router;
