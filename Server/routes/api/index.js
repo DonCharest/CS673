@@ -5,4 +5,5 @@ const router = require('express').Router();
 router.use(require('./auth'));
 router.use(require('./items'));
 router.use(require('./story'));
+router.use(require('./project'));
 module.exports = router;
