@@ -27,6 +27,7 @@ class ChatMessage extends Component {
           {/* <strong>{isAuthenticated ? "Yes" : "No"}</strong> */}
           <p>
             <strong>{user ? `Welcome ${user.name}` : ""}</strong>
+            {/* <strong>{user ? `Welcome ${user.email}` : ""}</strong> */}
           </p>
           <button className="chat-button" onClick={this.changeView}>
             Send a message

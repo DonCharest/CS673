@@ -124,7 +124,7 @@ class Main extends Component {
               component={isAuthenticated ? SprintPage : LoginPage}
             />
             <Route path="/" exact component={LoginPage} />
-            {/* <Redirect to="/sprint" /> */}
+            <Redirect to="/sprint" />
           </div>
         </div>
       </Container>
