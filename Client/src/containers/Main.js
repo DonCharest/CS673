@@ -17,7 +17,10 @@ import Logout from "./auth/Logout";
 import SprintPage from "./sprint/SprintPage";
 import BacklogPage from "./backlog/BacklogPage";
 import AdminPage from "./admin/AdminPage";
-import ChatPage from "./chat/ChatPage";
+/* *************************************** */
+//import ChatPage from "./chat/ChatPage";
+import ChatMessage from "./chat/ChatMessage";
+/* *************************************** */
 import LoginPage from "./login/LoginPage";
 //import * as classes from "../app.css";
 
@@ -113,7 +116,7 @@ class Main extends Component {
             <Route
               path="/chat"
               exact
-              component={isAuthenticated ? ChatPage : LoginPage}
+              component={isAuthenticated ? ChatMessage : LoginPage}
             />
             <Route
               path="/login"
