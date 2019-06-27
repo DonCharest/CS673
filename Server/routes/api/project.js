@@ -62,6 +62,26 @@ router.route('/projects')
     }
 });
 
+// Target URL: */api/projectuser PUT
+// Add a user to a project
+router.put('/projectuser', async function (req,res){
+    let project = await Project.findOne({'_id':req.body.projectID});
 
+    for(let newUserIDX in req.body.userID){
+
+        await project.projectMembers.push({
+            userID:req.body.userID[newUserIDX]
+        });
+    }
+
+    await project.save((err) => {
+        if(err){
+            res.status(500).send(`Project user could not be added: ${err.message}`);
+        }
+        else{
+            res.status(200).send('Project user added');
+        }
+    })
+});
 
 module.exports = router;
