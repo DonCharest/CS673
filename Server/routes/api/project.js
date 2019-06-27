@@ -68,10 +68,20 @@ router.put('/projectuser', async function (req,res){
     let project = await Project.findOne({'_id':req.body.projectID});
 
     for(let newUserIDX in req.body.userID){
+        
+        let dupeFound = false;
+        for(let dupeCheck in project.projectMembers){
+            if(project.projectMembers[dupeCheck].userID === req.body.userID[newUserIDX]){
+                dupeFound = true;
+                break;
+            }
+        }
 
-        await project.projectMembers.push({
-            userID:req.body.userID[newUserIDX]
-        });
+        if (dupeFound === false){
+            await project.projectMembers.push({
+                userID:req.body.userID[newUserIDX]
+            });
+        }
     }
 
     await project.save((err) => {
