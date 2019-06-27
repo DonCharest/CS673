@@ -24,14 +24,6 @@ var projMemberSchema = new mongoose.Schema({
     userID:{type: String, required: true}
 });
 
-// // User schema 
-// var userSchema = new mongoose.Schema({
-//     name:{type: String, required: true},
-//     email:{type: String, required: true},
-//     password:{type: String, required: true},
-//     isAdmin:{type: Boolean, required: true, default:false}
-// });
-
 
 //  The Project model holds all components of a project and its subdocuments.
 
@@ -46,13 +38,6 @@ module.exports.Project = mongoose.model('Project', new mongoose.Schema({
     epics:[Epic],
     requirements:[String]
 }));
-
-
-// {
-//     "name":"testproject",
-//     "shortCode":"MIKE",
-//     "effortUnit":"at least 5"
-// }
 
 
 
