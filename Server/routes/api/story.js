@@ -25,35 +25,48 @@ router.route('/stories')
 // REFERENCE: https://stackoverflow.com/questions/29532742/how-to-get-number-of-document-mongoose/29532923
 .post(async function(req, res){
 
-    // Get the count of documents in the Story collection.
+    /* Get the count of documents in the Story collection.
+        Count + 1 is used as the initial story index AND the displayId Sequence.
+
+        The displayId is a human readable string combinging the Project.shortcode,
+        some number of leading zeros and the Story.index value.
+
+        https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
+    */
     let storyCount = 0;
+    let shortcode = "PRJ";
+    if(req.body.shortcode){
+        shortcode = req.body.shortcode;
+    }
     await Story.countDocuments({}, function(err, count){
         storyCount = count;
-    })
 
-    let newStory = new Story({
-        project: req.body.project,
-        index: storyCount + 1,
-        description:req.body.description,
-        createdBy:req.body.createdBy,
-        assignedTo:req.body.assignedTo,
-        epic:req.body.epic,
-        priority:req.body.priority,
-        isIssue:req.body.isIssue,
-        load:req.body.load,
-        storyStage:{
-            stageName: "BACKLOG",
-            startDate: Date.now(),
-            endDate: null
-        }
-    });
-    await newStory.save((err) => {
-        if(err){
-            res.status(500).send(`Story save failed: ${err.message}`);
-        }
-        else{
-            res.status(200).send('Story saved');
-        }
+        let newStory = new Story({
+            project: req.body.project,
+            index: storyCount + 1,
+            displayId: String(shortcode).concat("-", String(storyCount + 1).padStart(6,"0")),
+            description:req.body.description,
+            createdBy:req.body.createdBy,
+            assignedTo:req.body.assignedTo,
+            epic:req.body.epic,
+            priority:req.body.priority,
+            isIssue:req.body.isIssue,
+            load:req.body.load,
+            storyStage:{
+                stageName: "BACKLOG",
+                startDate: Date.now(),
+                endDate: null
+            }
+        });
+        
+        newStory.save((err) => {
+            if(err){
+                res.status(500).send(`Story save failed: ${err.message}`);
+            }
+            else{
+                res.status(200).send('Story saved');
+            }
+        })
     })
 }) // NOTE - NO SEMICOLON!!!
 

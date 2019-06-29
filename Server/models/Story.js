@@ -21,6 +21,7 @@ var stageSchema = new mongoose.Schema({
 module.exports.Story = mongoose.model('Story', new mongoose.Schema({
     project: {type: String, required: true},
     index:{type: Number, required: false},
+    displayId: {type: String, required: true},
     description:{type: String, required: true},
     createdBy:{type: String, required: true},
     assignedTo:{type: String, required: false},
@@ -31,4 +32,3 @@ module.exports.Story = mongoose.model('Story', new mongoose.Schema({
     storyStage:[stageSchema],
     comments:[String]
 }));
-
