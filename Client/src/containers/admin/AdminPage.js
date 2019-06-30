@@ -1,57 +1,78 @@
 import React, { Component } from "react";
-
-import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
+import {
+  Container,
+  ListGroup,
+  ListGroupItem,
+  Button,
+  Badge,
+  pill
+} from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
-import RegisterModal from "../auth/RegisterModal";
-//import ItemModel from "../item/itemModal";
-import { getItems, deleteItem } from "../../actions/itemActions";
+import { getUsers, deleteUser } from "../../actions/userActions";
 import PropTypes from "prop-types";
+import UserModel from "../admin/UserModal";
 
 class AdminPage extends Component {
   static propTypes = {
-    getItems: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired,
+    getUsers: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
     isAuthenticated: PropTypes.bool
   };
 
   componentDidMount() {
-    this.props.getItems();
+    this.props.getUsers();
   }
 
   onDeleteClick = id => {
-    this.props.deleteItem(id);
+    this.props.deleteUser(id);
   };
 
   render() {
-    const { items } = this.props.item;
+    const { users } = this.props.user;
     return (
       <Container>
         <div>
-          <h1>Admin Page</h1>
+          <h1>Admin</h1>
           <hr />
-          <div>
-            <p>View/Edit Projects:</p>
-          </div>
-          <div>
-            <p>View/Edit Users:</p>
-            {/* <RegisterModal /> */}
-          </div>
-          <div>
-            <p>View/Edit Spints:</p>
-          </div>
         </div>
+        <UserModel />
+        <ListGroup>
+          <h6>
+            <b>&nbsp;&nbsp;&nbsp;User Management</b>
+          </h6>
+          <TransitionGroup className="userList">
+            {users.map(({ _id, email, role }) => (
+              <CSSTransition key={_id} timeout={500} classNames="fade">
+                <ListGroupItem className="justify-content-between" width="25px">
+                  {this.props.isAuthenticated ? (
+                    <Button
+                      className="remove-btn"
+                      color="warning"
+                      size="sm"
+                      onClick={this.onDeleteClick.bind(this, _id)}
+                    >
+                      Details
+                    </Button>
+                  ) : null}
+                  {email + "\u00A0\u00A0\u00A0\u00A0"}
+                  <Badge pill>{role}</Badge>
+                </ListGroupItem>
+              </CSSTransition>
+            ))}
+          </TransitionGroup>
+        </ListGroup>
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  item: state.item,
+  user: state.user,
   isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(
   mapStateToProps,
-  { getItems, deleteItem }
+  { getUsers, deleteUser }
 )(AdminPage);

@@ -10,6 +10,8 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL
+  // GET_USERS,
+  // USERS_LOADING
 } from "./types";
 
 // Check token & load user
@@ -33,8 +35,31 @@ export const loadUser = () => (dispatch, getState) => {
     });
 };
 
+// // Get all Users
+// export const getUsers = () => dispatch => {
+//   dispatch(setUsersLoading());
+//   axios
+//     .get("/api/users")
+//     .then(res =>
+//       dispatch({
+//         type: GET_USERS,
+//         payLoad: res.data
+//       })
+//     )
+//     .catch(err =>
+//       dispatch(returnErrors(err.response.data, err.response.status))
+//     );
+// };
+
+// // Load all users
+// export const setUsersLoading = () => {
+//   return {
+//     type: USERS_LOADING
+//   };
+// };
+
 // Register user
-export const register = ({ name, email, password }) => dispatch => {
+export const register = ({ name, email, password, isAdmin }) => dispatch => {
   // Headers
   const config = {
     headers: {
@@ -43,7 +68,7 @@ export const register = ({ name, email, password }) => dispatch => {
   };
 
   // Request body
-  const body = JSON.stringify({ name, email, password });
+  const body = JSON.stringify({ name, email, password, isAdmin });
 
   axios
     .post("api/users", body, config)

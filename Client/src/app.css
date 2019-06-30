@@ -19,9 +19,13 @@ hr {
   background-color: #333; /* Modern Browsers */
 }
 
-.navbar-brand {
+.navbarBrand {
   color: crimson !important;
   font-size: 20px !important;
+}
+
+.adminPageColumns {
+  display: flex;
 }
 
 .crownImage > img {
@@ -68,4 +72,3 @@ hr {
   border: solid gray 2px;
   border-radius: 5px;
 }
-

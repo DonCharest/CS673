@@ -7,24 +7,21 @@ import {
   Form,
   FormGroup,
   Label,
-  Input,
-  NavLink,
-  Alert
+  Input
 } from "reactstrap";
 import { connect } from "react-redux";
+//import { updateUser } from "../../actions/itemActions";
 import Proptypes from "prop-types";
 import { register } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
-import * as classes from "../../app.css";
 
-class RegisterModal extends Component {
+class UserModal extends Component {
   state = {
     modal: false,
     name: "",
     email: "",
     password: "",
-    role: "",
-    projects: "",
+    isAdmin: "",
     msg: null
   };
 
@@ -48,7 +45,7 @@ class RegisterModal extends Component {
 
     // If authenticated, close modal
     if (this.state.modal) {
-      if (isAuthenticated) {
+      if (!isAuthenticated) {
         this.toggle();
       }
     }
@@ -69,15 +66,14 @@ class RegisterModal extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password, role, projects } = this.state;
+    const { name, email, password, isAdmin } = this.state;
 
     // Create user object
     const newUser = {
       name,
       email,
       password,
-      role,
-      projects
+      isAdmin
     };
 
     // Attempt to register
@@ -87,17 +83,21 @@ class RegisterModal extends Component {
   render() {
     return (
       <div>
-        <NavLink onClick={this.toggle} href="#">
-          Register
-        </NavLink>
+        {this.props.isAuthenticated ? (
+          <Button
+            color="dark"
+            style={{ marginBottom: "2rem" }}
+            onClick={this.toggle}
+          >
+            Create User
+          </Button>
+        ) : (
+          <h4 className="mb-3 ml-4">Please log in to manage issues </h4>
+        )}
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Register</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Create new user</ModalHeader>
           <ModalBody>
-            {this.state.msg ? (
-              <Alert color="danger">{this.state.msg}</Alert>
-            ) : null}
-
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="name">Name</Label>
@@ -129,9 +129,34 @@ class RegisterModal extends Component {
                   className="mb-3"
                   onChange={this.onChange}
                 />
+                <div>
+                  <div>
+                    <Label>
+                      <input
+                        type="radio"
+                        name="isAdmin"
+                        value="true"
+                        onChange={this.onChange}
+                      />
+                      Admin
+                    </Label>
+                  </div>
+                  <div>
+                    <Label>
+                      <input
+                        type="radio"
+                        name="isAdmin"
+                        value="false"
+                        checked
+                        onChange={this.onChange}
+                      />
+                      User
+                    </Label>
+                  </div>
+                </div>
 
                 <Button color="dark" style={{ marginTop: "2rem" }} block>
-                  Register
+                  Add User
                 </Button>
               </FormGroup>
             </Form>
@@ -150,4 +175,5 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { register, clearErrors }
-)(RegisterModal);
+  // { updateUser }
+)(UserModal);
