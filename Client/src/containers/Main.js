@@ -18,7 +18,6 @@ import BacklogPage from "./backlog/BacklogPage";
 import AdminPage from "./admin/AdminPage";
 import ChatPage from "./chat/ChatPage";
 import LoginPage from "./login/LoginPage";
-
 import * as classes from "../app.css";
 
 class Main extends Component {

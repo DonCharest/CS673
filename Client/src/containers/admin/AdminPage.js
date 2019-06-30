@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { getUsers, deleteUser } from "../../actions/userActions";
 import PropTypes from "prop-types";
 import UserModel from "../admin/UserModal";
+import * as classes from "../../app.css";
 
 class AdminPage extends Component {
   static propTypes = {
@@ -41,13 +42,13 @@ class AdminPage extends Component {
           <h6>
             <b>&nbsp;&nbsp;&nbsp;User Management</b>
           </h6>
-          <TransitionGroup className="userList">
+          <TransitionGroup className={classes.userList}>
             {users.map(({ _id, email, role }) => (
-              <CSSTransition key={_id} timeout={500} classNames="fade">
+              <CSSTransition key={_id} timeout={500} classNames={classes.fade}>
                 <ListGroupItem className="justify-content-between" width="25px">
                   {this.props.isAuthenticated ? (
                     <Button
-                      className="remove-btn"
+                      className={classes.removeBtn}
                       color="warning"
                       size="sm"
                       onClick={this.onDeleteClick.bind(this, _id)}
