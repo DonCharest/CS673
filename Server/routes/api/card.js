@@ -66,14 +66,14 @@ router.route('/cards')
     })
 }) // NOTE - NO SEMICOLON!!!
 
-// Delete a card by _id: ADMIN ONLY!!!
+// Delete a card by id: ADMIN ONLY!!!
 .delete(async function(req, res){
-    let deletedStory = await Card.findOneAndDelete({'_id': req.body._id});
+    let deletedStory = await Card.findOneAndDelete({'_id': req.body.id});
     if(deletedStory){
         res.status(200).send(`Card delete success: ${deletedStory._id}`);
     }
     else {
-        res.status(500).send(`Card delete failed: ${req.body._id}`)
+        res.status(500).send(`Card delete failed: ${req.body.id}`)
     }
 }) // NOTE - NO SEMICOLON!!!
 
@@ -91,12 +91,12 @@ router.route('/cards')
 
     // Report what was updated.
     let updatedStory = false;
-    updatedStory = await Card.findOneAndUpdate({"_id":req.body._id}, params);
+    updatedStory = await Card.findOneAndUpdate({"_id":req.body.id}, params);
     if(updatedStory){
         res.status(200).send(`Card update success: ${updatedStory._id}`);
     }
     else {
-        res.status(500).send(`Card update failed: ${req.body._id}`)
+        res.status(500).send(`Card update failed: ${req.body.id}`)
     }
 });
 // END OF router.route('/cards').
@@ -104,7 +104,7 @@ router.route('/cards')
 // Target URL: */api/addrelated PUT
 // Add a RELATED CARD ID to a card by pushing the text String.
 router.put('/addrelated', async function (req,res){
-    let card = await Card.findOne({"_id":req.body._id});
+    let card = await Card.findOne({"_id":req.body.id});
     await card.related.push(req.body.related);
     
     // Save the changes
@@ -122,7 +122,7 @@ router.put('/addrelated', async function (req,res){
 // Target URL: */api/cardcomment PUT
 // Add a comment to a card
 router.put('/cardcomment', async function (req,res){
-    let card = await Card.findOne({"_id":req.body._id});
+    let card = await Card.findOne({"_id":req.body.id});
 
     // Create the next comment
     await card.comments.push({
@@ -160,7 +160,7 @@ router.put('/stagechange', async function (req,res){
     let today = Date.now();
     let card = null;
     await Card.findOneAndUpdate(
-        {"_id": req.body._id, "stage.endDate":null},
+        {"_id": req.body.id, "stage.endDate":null},
         {
             "$set":{
                 "stage.$.endDate": today

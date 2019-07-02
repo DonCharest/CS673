@@ -94,7 +94,7 @@ var cardSchema = new mongoose.Schema({
     },
     load:{
         type: Number, 
-        required: false, 
+        required: true, 
         default: 1
     },
     stage:[stageSchema],
