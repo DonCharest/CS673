@@ -177,7 +177,7 @@ router.put('/cardindex', async function (req, res){
         await Card.updateMany(
             {
                 "project": card.project,
-                "index": {$gte: card.index, $lt: indexJ}
+                "index": {$gt: card.index, $lte: indexJ}
             },
             {$inc:{index: -1}}
         );
