@@ -73,18 +73,22 @@ router.route('/cards')
         res.status(200).send(`Card delete success: ${deletedStory._id}`);
     }
     else {
-        res.status(500).send(`Card delete failed: ${req.body.id}`)
+        res.status(500).send(`Card delete failed: ${req.body.id}`);
     }
 }) // NOTE - NO SEMICOLON!!!
 
 // Update a card by ID to change information included in the request.body.
+//  NOTE - Do not use this route for updating INDEX.
 // REFERENCE: https://stackoverflow.com/questions/47877333/when-using-findoneandupdate-how-to-leave-fields-as-is-if-no-value-provided-i
 .put(async function(req, res){
 
     // What values are being updated in the request body?
     let params = {};
     for(let prop in req.body){
-        if(req.body[prop]){
+        if(req.body[prop] = "index"){
+            res.status(200).send("WARNING: Use /api/cardindex to UPDATE Card.index");
+        }
+        else if(req.body[prop]){
             params[prop] = req.body[prop];
         }
     };
@@ -96,7 +100,7 @@ router.route('/cards')
         res.status(200).send(`Card update success: ${updatedStory._id}`);
     }
     else {
-        res.status(500).send(`Card update failed: ${req.body.id}`)
+        res.status(500).send(`Card update failed: ${req.body.id}`);
     }
 });
 // END OF router.route('/cards').
@@ -142,16 +146,61 @@ router.put('/cardcomment', async function (req,res){
     })
 });
 
+// Target URL: */api/cardindex PUT
+/* Change the card index from index = i to index = j:
+    - The Card.index parameter is meant to be a sorting value for the Project Backlog.
+    - The Index of a card is initially the order of its creation in the Project, such
+        that the Nth card has Index = N.
+    - If the Index of a card is changed, the index of other cards needs to be adjusted
+        to maintain the sort order.
+*/
+router.put('/cardindex', async function (req, res){
+
+    // Find the original card we are moving:
+    //  Project
+    //  Starting index (i),
+    //  Target index (j) is in the request body
+    let card = await Card.findOne({"_id":req.body.id});
+    let indexJ = Number(req.body.index);
+
+    // Increment all Cards.index where (index < j && index >= i).
+    // REFERENCE: https://stackoverflow.com/questions/5241344/multiple-inc-updates-in-mongodb
+    await Card.updateMany(
+        {
+            "project": card.project,
+            "index": {$lt: card.index, $gte: indexJ}
+        },
+        {$inc:{index: 1}}
+    );
+
+    // Update the target card, make sure to not set everything else to null (see PUT above).
+    let params = {};
+    for(let prop in req.body){
+        if(req.body[prop]){
+            params[prop] = req.body[prop];
+        }
+    };
+
+    let updatedStory = false;
+    updatedStory = await Card.findOneAndUpdate({"_id":req.body.id}, params);
+    if(updatedStory){
+        res.status(200).send(`Card index update success: ${updatedStory._id}`);
+    }
+    else {
+        res.status(500).send(`Card index update failed: ${req.body.id}`);
+    }
+});
+
 //  Target URL: */api/stagechange PUT
 /*  Change the card stage:
-        - The card stages are stored as a collection of documents, with each document being 
-            the history of a card in one stage.
-        - When a card is created, it is added to BACKLOG by default with a start date of 
-            Date.now and no end date. 
-        - When a card changes stage:
-            1. It's current stage is given an end date,
-            2. Create the new stage with a start date of now.
-    // REFERENCE: https://stackoverflow.com/questions/26156687/mongoose-find-update-subdocument
+    - The card stages are stored as a collection of documents, with each document being 
+        the history of a card in one stage.
+    - When a card is created, it is added to BACKLOG by default with a start date of 
+        Date.now and no end date. 
+    - When a card changes stage:
+        1. It's current stage is given an end date,
+        2. Create the new stage with a start date of now.
+// REFERENCE: https://stackoverflow.com/questions/26156687/mongoose-find-update-subdocument
 */
 router.put('/stagechange', async function (req,res){
     
