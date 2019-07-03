@@ -33,7 +33,7 @@ hr {
   max-width: 100%;
 }
 
-.removeBtn {
+.viewBtn {
   margin-right: 0.5rem;
 }
 
@@ -53,6 +53,11 @@ hr {
 .fadeExitAcive {
   opacity: 0.01;
   transition: opacity 1000ms ease-in;
+}
+
+.listGroupItem {
+  border-width: thick;
+  color: black;
 }
 
 .allSprintColumns {

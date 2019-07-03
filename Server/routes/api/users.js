@@ -10,11 +10,20 @@ const User = require("../../models/User");
 
 // @route GET api/users
 // @desc GET All Users
-// @access Public
-router.get("/", (req, res) => {
+// @access Private
+router.get("/", auth, (req, res) => {
   User.find()
     .sort({ date: -1 })
     .then(users => res.json(users));
+});
+
+// @route GET api/user
+// @desc GET User by ID
+// @access Private
+router.get("/:id", auth, (req, res) => {
+  User.findById(req.params.id)
+    .then(user => res.json(user))
+    .catch(err => res.status(404).json({ success: false }));
 });
 
 // @route DELETE api/users/:id
@@ -26,10 +35,21 @@ router.delete("/:id", auth, (req, res) => {
     .catch(err => res.status(404).json({ success: false }));
 });
 
-// @route PUT api/users
+// @route PUT api/users/:id
 // @desc Update a User
 // @access Private
-// Need to write method to update user infor .... role, projects, ect.
+router.put("/:id", auth, (req, res) => {
+  var conditions = { _id: req.params.id };
+
+  User.updateOne(conditions, req.body)
+    .then(doc => {
+      if (!doc) {
+        return res.status(404).end();
+      }
+      return res.status(200).json(doc);
+    })
+    .catch(err => next(err));
+});
 
 // @route POST api/users
 // @desc Register new user
@@ -72,7 +92,7 @@ router.post("/", (req, res) => {
                   id: user.id,
                   name: user.name,
                   email: user.email,
-                  isAdmin: user.role,
+                  role: user.role,
                   projects: user.projects
                 }
               });
