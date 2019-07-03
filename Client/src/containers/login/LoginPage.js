@@ -1,7 +1,9 @@
 import React from "react";
-//import crown from "../../images/crown.png";
 import { Container } from "reactstrap";
 import PropTypes from "prop-types";
+// import crown from "../../images/crown.png";
+// import * as im from "../../images/crown.png";
+import * as classes from "../../app.css";
 
 Container.propTypes = {
   fluid: PropTypes.bool
@@ -24,9 +26,9 @@ const LoginPage = props => {
         <p>
           <i style={logininInfo}>&nbsp;&nbsp;&nbsp;password: admin</i>
         </p>
-        {/* <div className="crownImage"> */}
-        {/* <img src={crown} alt="crown" /> */}
-        {/* </div> */}
+        <div className="crownImage">
+          {/* <img src={crown} alt="crown" /> */}
+        </div>
       </Container>
     </div>
   );

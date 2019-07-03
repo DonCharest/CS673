@@ -8,7 +8,6 @@ import {
   Nav,
   NavItem
 } from "reactstrap";
-// import { Navbar, Nav, Container } from "react-bootstrap";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import RegisterModal from "./auth/RegisterModal";
@@ -19,7 +18,7 @@ import BacklogPage from "./backlog/BacklogPage";
 import AdminPage from "./admin/AdminPage";
 import ChatPage from "./chat/ChatPage";
 import LoginPage from "./login/LoginPage";
-//import * as classes from "../app.css";
+import * as classes from "../app.css";
 
 class Main extends Component {
   state = {
@@ -80,21 +79,18 @@ class Main extends Component {
       <Container>
         <div>
           <Navbar color="dark" dark expand="sm" className="mb-0">
-            <Link id="navbar-brand" className="navbar-brand" to="/">
+            <Link id="navbar-brand" className={classes.navbarBrand} to="/">
               TracKing
             </Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>
                 {isAuthenticated ? authLinks : guestLinks}
-                {/****** Force auth links to be visible until back-end connected ******/}
-                {/* {isAuthenticated ? guestLinks : authLinks} */}
               </Nav>
             </Collapse>
           </Navbar>
 
-          {/* <div className="{styles.main}"> */}
-          <div id="main" className="main">
+          <div id="main" className={classes.main}>
             <Route
               path="/sprint"
               exact
@@ -121,7 +117,7 @@ class Main extends Component {
               component={isAuthenticated ? SprintPage : LoginPage}
             />
             <Route path="/" exact component={LoginPage} />
-            {/* <Redirect to="/sprint" /> */}
+            <Redirect to="/sprint" />
           </div>
         </div>
       </Container>
@@ -137,46 +133,3 @@ export default connect(
   mapStateToProps,
   null
 )(Main);
-
-/*
-class Main extends Component {
-  render() {
-    return (
-      <div>
-        <Container>
-          <Navbar bg="dark" expand="lg">
-            <Navbar.Brand>
-              <Link to="/">TracKing</Link>
-            </Navbar.Brand>
-            <Nav className="mr-auto">
-              <Nav.Item>
-                <Link to="/sprint">Sprint</Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Link to="/backlog">Backlog</Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Link to="/admin">Administration</Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Link to="/chat">Chat</Link>
-              </Nav.Item>
-            </Nav>
-          </Navbar>
-
-          <div>
-            <Route path="/sprint" exact component={SprintPage} />
-            <Route path="/backlog" exact component={BacklogPage} />
-            <Route path="/admin" exact component={AdminPage} />
-            <Route path="/chat" exact component={ChatPage} />
-            <Route path="/login" exact component={LoginPage} />
-            <Redirect to="/sprint" />
-          </div>
-        </Container>
-      </div>
-    );
-  }
-}
-
-export default Main;
-*/

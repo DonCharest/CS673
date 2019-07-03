@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import Proptypes from "prop-types";
 import { register } from "../../actions/authActions";
 import { clearErrors } from "../../actions/errorActions";
+import * as classes from "../../app.css";
 
 class RegisterModal extends Component {
   state = {
@@ -22,6 +23,8 @@ class RegisterModal extends Component {
     name: "",
     email: "",
     password: "",
+    role: "user",
+    projects: "",
     msg: null
   };
 
@@ -44,7 +47,6 @@ class RegisterModal extends Component {
     }
 
     // If authenticated, close modal
-    //***need to change this logic - should be if user added to db, close modal!! */
     if (this.state.modal) {
       if (isAuthenticated) {
         this.toggle();
@@ -67,13 +69,15 @@ class RegisterModal extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { name, email, password } = this.state;
+    const { name, email, password, role, projects } = this.state;
 
     // Create user object
     const newUser = {
       name,
       email,
-      password
+      password,
+      role,
+      projects
     };
 
     // Attempt to register
@@ -93,6 +97,7 @@ class RegisterModal extends Component {
             {this.state.msg ? (
               <Alert color="danger">{this.state.msg}</Alert>
             ) : null}
+
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="name">Name</Label>
@@ -124,6 +129,7 @@ class RegisterModal extends Component {
                   className="mb-3"
                   onChange={this.onChange}
                 />
+
                 <Button color="dark" style={{ marginTop: "2rem" }} block>
                   Register
                 </Button>

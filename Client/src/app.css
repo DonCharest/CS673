@@ -19,9 +19,13 @@ hr {
   background-color: #333; /* Modern Browsers */
 }
 
-.navbar-brand {
+.navbarBrand {
   color: crimson !important;
   font-size: 20px !important;
+}
+
+.adminPageColumns {
+  display: flex;
 }
 
 .crownImage > img {
@@ -29,26 +33,31 @@ hr {
   max-width: 100%;
 }
 
-.remove-btn {
+.viewBtn {
   margin-right: 0.5rem;
 }
 
-.fade-enter {
+.fadeEnter {
   opacity: 0.01;
 }
 
-.fade-enter-acive {
+.fadeEnterAcive {
   opacity: 1;
   transition: opacity 1000ms ease-in;
 }
 
-.fade-exit {
+.fadeExit {
   opacity: 1;
 }
 
-.fade-exit-acive {
+.fadeExitAcive {
   opacity: 0.01;
   transition: opacity 1000ms ease-in;
+}
+
+.listGroupItem {
+  border-width: thick;
+  color: black;
 }
 
 .allSprintColumns {
@@ -68,4 +77,3 @@ hr {
   border: solid gray 2px;
   border-radius: 5px;
 }
-
