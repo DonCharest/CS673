@@ -1,14 +1,85 @@
-* {
+body {
+  font-size: 16px;
+}
+
+.main {
+  background-color: silver;
+  min-height: 140vh;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  /* Set the hr color */
+  color: #333; /* old IE */
+  background-color: #333; /* Modern Browsers */
+}
+
+.navbarBrand {
+  color: crimson !important;
+  font-size: 20px !important;
+}
+
+.adminPageColumns {
+  display: flex;
+}
+
+.crownImage > img {
+  width: 1280px;
+  max-width: 100%;
+}
+
+.removeBtn {
+  margin-right: 0.5rem;
+}
+
+.fadeEnter {
+  opacity: 0.01;
+}
+
+.fadeEnterAcive {
+  opacity: 1;
+  transition: opacity 1000ms ease-in;
+}
+
+.fadeExit {
+  opacity: 1;
+}
+
+.fadeExitAcive {
+  opacity: 0.01;
+  transition: opacity 1000ms ease-in;
+}
+
+.allSprintColumns {
+  display: flex;
+}
+
+.columnContainer {
+  flex: 1;
+}
+
+.columnHeader {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.sprintStory {
+  border: solid gray 2px;
+  border-radius: 5px;
+}
+
+.chat-page {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font: 13px Helvetica, Arial; 
-}
-
-form {
+.chat-page form {
   background: #000;
   padding: 3px;
   position: fixed;
@@ -16,34 +87,30 @@ form {
   width: 100%;
 }
 
-form input {
+.chat-page form input {
   border: 0;
   padding: 10px;
   width: 90%;
-  margin-right: .5%;
+  margin-right: 0.5%;
 }
 
-form button {
+.chat-page form button {
   width: 9%;
   background: rgb(130, 224, 255);
   border: none;
   padding: 10px;
 }
 
-#chatPage__messages___nTPhA {
+#messages {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-#chatPage__messages___nTPhA li {
+#messages li {
   padding: 5px 10px;
 }
 
-#chatPage__messages___nTPhA li:nth-child(odd) {
+#messages li:nth-child(odd) {
   background: #eee;
 }
-body {
-  font-size: 16px;
-}
-

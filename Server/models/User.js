@@ -20,9 +20,13 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  isAdmin: {
-    type: Boolean,
-    default: false
+  role: {
+    type: String,
+    default: "user"
+  },
+  projects: {
+    type: String,
+    required: false
   }
 });
 
