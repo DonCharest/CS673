@@ -27,8 +27,8 @@ app.use(bodyParser.json());
 // Configure application middleware: MongoDB connection
 // REFERENCE: https://mongoosejs.com/docs/deprecation.html
 
-//const db = config.get("mongoURI");
-const db = "mongodb://localhost:27017/tracKing_DB";
+const db = config.get("mongoURI");
+//const db = "mongodb://localhost:27017/tracKing_DB";
 
 mongoose
   .connect(db, {
