@@ -165,13 +165,24 @@ router.put('/cardindex', async function (req, res){
 
     // Increment all Cards.index where (index < j && index >= i).
     // REFERENCE: https://stackoverflow.com/questions/5241344/multiple-inc-updates-in-mongodb
-    await Card.updateMany(
-        {
-            "project": card.project,
-            "index": {$lt: card.index, $gte: indexJ}
-        },
-        {$inc:{index: 1}}
-    );
+    if(card.index  > indexJ){
+        await Card.updateMany(
+            {
+                "project": card.project,
+                "index": {$lt: card.index, $gte: indexJ}
+            },
+            {$inc:{index: 1}}
+        );
+    } else {
+        await Card.updateMany(
+            {
+                "project": card.project,
+                "index": {$gte: card.index, $lt: indexJ}
+            },
+            {$inc:{index: -1}}
+        );
+    }
+
 
     // Update the target card, make sure to not set everything else to null (see PUT above).
     let params = {};
