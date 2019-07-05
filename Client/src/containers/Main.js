@@ -18,6 +18,7 @@ import BacklogPage from "./backlog/BacklogPage";
 import AdminPage from "./admin/AdminPage";
 import ChatPage from "./chat/ChatPage";
 import LoginPage from "./login/LoginPage";
+import ProjectPage from "./project/ProjectPage";
 import * as classes from "../app.css";
 
 class Main extends Component {
@@ -42,6 +43,9 @@ class Main extends Component {
       <Fragment>
         <Link className="nav-link" to="/Admin">
           Admin
+        </Link>
+        <Link className="nav-link" to="/Project">
+          Project
         </Link>
         <Link className="nav-link" to="/BackLog">
           Backlog
@@ -115,6 +119,11 @@ class Main extends Component {
               path="/login"
               exact
               component={isAuthenticated ? SprintPage : LoginPage}
+            />
+            <Route
+              path="/project"
+              exact
+              component={isAuthenticated ? ProjectPage : LoginPage}
             />
             <Route path="/" exact component={LoginPage} />
             <Redirect to="/sprint" />

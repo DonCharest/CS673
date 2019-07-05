@@ -84,13 +84,12 @@ class AdminPage extends Component {
           <TransitionGroup className={classes.userList}>
             {users.map(({ _id, email, role, option }) => (
               <CSSTransition key={_id} timeout={500} classNames={classes.fade}>
-                <ListGroupItem
-                  className={classes.listGroupItem}
-                  color="success"
-                >
+                <ListGroupItem className={classes.listGroupItem} color="light">
                   <h6>
                     <strong>{email + "\u00A0\u00A0\u00A0\u00A0"}</strong>
-                    <Badge pill>{role} </Badge>
+                    <Badge pill color="dark">
+                      {role}{" "}
+                    </Badge>
                   </h6>
                   <br />
                   <Form onSubmit={this.onSubmit}>
@@ -98,9 +97,9 @@ class AdminPage extends Component {
                       <Label for="userRole">Change User Role:</Label>
                       <Input
                         type="select"
-                        name="selectMulti"
+                        name="userRole"
                         id="userRole"
-                        multiple
+                        // multiple
                         onChange={e =>
                           this.setState({ selectedUserRole: e.target.value })
                         }
