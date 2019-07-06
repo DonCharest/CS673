@@ -14,11 +14,9 @@ import { tokenConfig } from "./authActions";
 import { returnErrors } from "./errorActions";
 
 // Create new Project
-export const newProject = data => (dispatch, getState) => {
-  // Request body
-  // const body = JSON.stringify({ name, shortCode, effortunit, description, projectMembers });
+export const newProject = project => (dispatch, getState) => {
   axios
-    .post("api/projects", data, tokenConfig(getState))
+    .post("api/projects", project, tokenConfig(getState))
     .then(res =>
       dispatch({
         type: PROJECT_SUCCESS,
@@ -36,10 +34,11 @@ export const newProject = data => (dispatch, getState) => {
 };
 
 // Get all Projects
-export const getProjects = () => (dispatch, getState) => {
+
+export const getProjects = () => dispatch => {
   dispatch(setProjectsLoading());
   axios
-    .get("/api/projects", tokenConfig(getState))
+    .get("/api/projects")
     .then(res =>
       dispatch({
         type: GET_PROJECTS,

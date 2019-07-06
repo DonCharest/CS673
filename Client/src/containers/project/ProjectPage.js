@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import { Container, ListGroup, ListGroupItem } from "reactstrap";
+import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { getProjects, deleteProject } from "../../actions/projectActions";
+import {
+  getProjects,
+  deleteProject,
+  viewProject
+} from "../../actions/projectActions";
+import { getUsers } from "../../actions/userActions";
 import NewProjectModal from "./NewProjectModal";
 import * as classes from "../../app.css";
 
@@ -16,32 +21,49 @@ class ProjectPage extends Component {
 
   static propTypes = {
     getProjects: PropTypes.func.isRequired,
-    // project: PropTypes.object.isRequired,
-    isAuthenticated: PropTypes.bool
+    getUsers: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool,
+    project: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired
   };
 
   componentDidMount() {
     this.props.getProjects();
+    this.props.getUsers();
   }
 
-  render() {
-    // const { projects } = this.props.project;
+  onDeleteClick = id => {
+    this.props.deleteProject(id);
+    this.props.getProjects();
+  };
 
+  onViewClick = id => {
+    this.props.viewProject(id);
+    this.props.getProjects();
+  };
+
+  render() {
+    const { projects } = this.props.project;
     return (
       <Container>
         <div>
-          <h1>Project Management</h1>
+          <h1>Project</h1>
           <hr />
-        </div>
-        <div>
           <NewProjectModal />
         </div>
         <div>
-          <h4>Manage Projects:</h4>
-          {/* <ListGroup>
-            <TransitionGroup className="projectList">
+          <ListGroup>
+            <h6>
+              <b>&nbsp;&nbsp;&nbsp;Project Management</b>
+            </h6>
+            <TransitionGroup className={classes.projectList}>
               {projects.map(({ _id, name }) => (
-                <CSSTransition key={_id} timeout={500} classNames="fade">
+                <CSSTransition
+                  key={_id}
+                  timeout={500}
+                  classNames={classes.fade}
+                >
                   <ListGroupItem>
                     {this.props.isAuthenticated ? (
                       <Button
@@ -53,12 +75,22 @@ class ProjectPage extends Component {
                         &times;
                       </Button>
                     ) : null}
-                    {name}
+                    {"\u00A0\u00A0\u00A0\u00A0" +
+                      name +
+                      "\u00A0\u00A0\u00A0\u00A0"}
+                    <Button
+                      className="remove-btn"
+                      color="info"
+                      size="sm"
+                      onClick={this.onViewClick.bind(this, _id)}
+                    >
+                      &times;
+                    </Button>
                   </ListGroupItem>
                 </CSSTransition>
               ))}
             </TransitionGroup>
-          </ListGroup> */}
+          </ListGroup>
         </div>
       </Container>
     );
@@ -67,10 +99,12 @@ class ProjectPage extends Component {
 
 const mapStateToProps = state => ({
   project: state.project,
+  auth: state.auth,
+  user: state.user,
   isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(
   mapStateToProps,
-  { getProjects, deleteProject }
+  { getProjects, deleteProject, viewProject, getUsers }
 )(ProjectPage);
