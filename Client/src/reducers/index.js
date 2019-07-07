@@ -1,20 +1,18 @@
 import { combineReducers } from "redux";
-import itemReducer from "./itemReducer";
+import userReducer from "./userReducer";
 import errorReducer from "./errorReducer";
 import authReducer from "./authReducer";
-import admin from './adminReducer'
-import backlog from './backlogReducer'
-import sprint from './sprintReducer'
+import admin from "./adminReducer";
+import backlog from "./backlogReducer";
+import sprint from "./sprintReducer";
 
-
-
-const rootReducer =  combineReducers({
-  item: itemReducer,
+const rootReducer = combineReducers({
+  user: userReducer,
   error: errorReducer,
   auth: authReducer,
   admin,
   backlog,
-  sprint,
+  sprint
 });
 
 export default rootReducer;

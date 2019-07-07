@@ -7,9 +7,13 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL
+  // GET_USERS,
+  // USERS_LOADING
 } from "../actions/types";
 
 const initialState = {
+  users: [],
+  loading: false,
   token: localStorage.getItem("token"),
   isAuthenticated: null,
   isLoading: false,

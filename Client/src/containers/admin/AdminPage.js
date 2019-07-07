@@ -1,57 +1,142 @@
 import React, { Component } from "react";
-
-import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
+import {
+  Container,
+  ListGroup,
+  ListGroupItem,
+  Button,
+  Badge,
+  Label,
+  Form,
+  FormGroup,
+  Input
+} from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
-import RegisterModal from "../auth/RegisterModal";
-//import ItemModel from "../item/itemModal";
-import { getItems, deleteItem } from "../../actions/itemActions";
+import {
+  getUsers,
+  viewUser,
+  updateUser,
+  deleteUser
+} from "../../actions/userActions";
 import PropTypes from "prop-types";
+import * as classes from "../../app.css";
 
 class AdminPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedUserRole: ""
+    };
+  }
+
   static propTypes = {
-    getItems: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired,
+    getUsers: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
     isAuthenticated: PropTypes.bool
   };
 
   componentDidMount() {
-    this.props.getItems();
+    this.props.getUsers();
   }
 
-  onDeleteClick = id => {
-    this.props.deleteItem(id);
+  onUpdateUserClick = id => {
+    const data = {
+      role: this.state.selectedUserRole
+    };
+
+    // send updated role & user ID to Actions
+    this.props.updateUser(id, data);
+    // refresh user to see role change
+    this.props.getUsers();
   };
 
   render() {
-    const { items } = this.props.item;
+    const { users } = this.props.user;
+    const userRoles = [
+      {
+        id: "0",
+        value: "user",
+        label: "User"
+      },
+      {
+        id: "1",
+        value: "project",
+        label: "Project"
+      },
+      {
+        id: "2",
+        value: "admin",
+        label: "Admin"
+      }
+    ];
+
     return (
       <Container>
         <div>
-          <h1>Admin Page</h1>
+          <h1>Admin</h1>
           <hr />
-          <div>
-            <p>View/Edit Projects:</p>
-          </div>
-          <div>
-            <p>View/Edit Users:</p>
-            {/* <RegisterModal /> */}
-          </div>
-          <div>
-            <p>View/Edit Spints:</p>
-          </div>
         </div>
+        <ListGroup>
+          <h6>
+            <b>&nbsp;&nbsp;&nbsp;User Management</b>
+          </h6>
+          <TransitionGroup className={classes.userList}>
+            {users.map(({ _id, email, role, option }) => (
+              <CSSTransition key={_id} timeout={500} classNames={classes.fade}>
+                <ListGroupItem className={classes.listGroupItem} color="light">
+                  <h6>
+                    <strong>{email + "\u00A0\u00A0\u00A0\u00A0"}</strong>
+                    <Badge pill color="dark">
+                      {role}{" "}
+                    </Badge>
+                  </h6>
+                  <br />
+                  <Form onSubmit={this.onSubmit}>
+                    <FormGroup>
+                      <Label for="userRole">Change User Role:</Label>
+                      <Input
+                        type="select"
+                        name="userRole"
+                        id="userRole"
+                        // multiple
+                        onChange={e =>
+                          this.setState({ selectedUserRole: e.target.value })
+                        }
+                      >
+                        >
+                        {userRoles.map(userRole => (
+                          <option key={userRole.id} value={userRole.value}>
+                            {userRole.label}
+                          </option>
+                        ))}
+                      </Input>
+                    </FormGroup>
+                    <Button
+                      className={classes.viewBtn}
+                      color="warning"
+                      size="sm"
+                      onClick={this.onUpdateUserClick.bind(this, _id, option)}
+                    >
+                      Update
+                    </Button>
+                  </Form>
+                </ListGroupItem>
+              </CSSTransition>
+            ))}
+          </TransitionGroup>
+        </ListGroup>
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  item: state.item,
+  user: state.user,
   isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(
   mapStateToProps,
-  { getItems, deleteItem }
+  { getUsers, viewUser, updateUser, deleteUser }
 )(AdminPage);

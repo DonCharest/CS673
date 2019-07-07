@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import { Container } from "reactstrap";
+import { Container, Button } from "reactstrap";
+import { connect } from "react-redux";
 import socketIOClient from "socket.io-client";
 import PropTypes from "prop-types";
 import "./chatPage.css";
 
-Container.propTypes = {
-  fluid: PropTypes.bool
-};
-
 class chatPage extends Component {
+  static propTypes = {
+    auth: PropTypes.object.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -49,6 +50,7 @@ class chatPage extends Component {
 
   render() {
     const { response } = this.state;
+    const { isAuthenticated, user } = this.props.auth;
 
     return (
       <Container>
@@ -56,17 +58,30 @@ class chatPage extends Component {
           <h1>Chat</h1>
           <hr />
 
-          <div style={{ textAlign: "center" }}>
-            {response ? (
-              <p>The temperature in Florence is: {response} °F</p>
-            ) : (
-              <p>Loading...</p>
-            )}
-          </div>
+          <p>
+            <strong>{user ? `Welcome ${user.name}` : ""}</strong>
+            {/* <strong>{user ? `Welcome ${user.email}` : ""}</strong> */}
+          </p>
+          <p>
+            <strong>{user ? `Role: ${user.role}` : ""}</strong>
+          </p>
+          <p>
+            <strong>{user ? `Projects: ${user.projects}` : ""}</strong>
+          </p>
+          <Button className="chat-button" color="primary">
+            Send a message
+          </Button>
         </div>
       </Container>
     );
   }
 }
 
-export default chatPage;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(chatPage);

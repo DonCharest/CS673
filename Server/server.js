@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 // REFERENCE: https://mongoosejs.com/docs/deprecation.html
 
 const db = config.get("mongoURI");
-////const db = "mongodb://localhost:27017/tracKing_DB";
+//const db = "mongodb://localhost:27017/tracKing_DB";
 
 mongoose
   .connect(db, {
@@ -47,7 +47,6 @@ app.use(express.static(path.resolve(__dirname, "..", "Client/build")));
 app.use(require("./routes"));
 
 // Use Routes ******* We need to modify the server setup to make these routes work ******
-app.use("/api/items", require("./routes/api/items"));
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/auth", require("./routes/api/auth"));
 
