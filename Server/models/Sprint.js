@@ -8,17 +8,17 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const StorySchema = require('./Story');
+const CardSchema = require('./Card');
 
 
 const sprintSchema = new Schema({
-    SprintID: Number,
+    sprintID: Number,
     startDate: Date,
     endDate: Date,
-    story: [StorySchema],
+    card: [CardSchema],
     project: { type: mongoose.Schema.Types.ObjectId,
               ref: 'Project'
              }
 });
 
-module.exports = Sprint = mongoose.model("sprint", sprintSchema);
+module.exports.Sprint = mongoose.model("sprint", sprintSchema);

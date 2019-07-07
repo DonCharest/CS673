@@ -9,7 +9,7 @@ const express = require("express");
 const router = express.Router();
 
 // TO DO:
-// remove a story/requirement from a sprint
+// remove a card from a sprint
 
 // const router = require('express').Router();
 const Sprint = require('./../../models/Sprint');
@@ -19,7 +19,7 @@ router.route('/sprint')
 // Display data about a sprint
 .get(async function (req, res) {
 
-    let sprint = await Sprint.find({"SprintID": req.body.id});
+    let sprint = await Sprint.find({"sprintID": req.body.id});
     res.status(200).send('sprint id found')
 })
 
@@ -44,7 +44,7 @@ router.route('/sprint')
 
 //Delete a sprint
 .delete(async function(req, res){
-    let deletedSprint = await Sprint.findOneAndDelete({'SprintID': req.body.id});
+    let deletedSprint = await Sprint.findOneAndDelete({'sprintID': req.body.id});
     if(deletedSprint){
         res.status(200).send('The sprint has been deleted: ${deletedSprint.SprintID}');
     } else {
@@ -52,17 +52,17 @@ router.route('/sprint')
     }
 })
 
-//Add a story to a sprint
-.put('/addStory', async function(req,res){
+//Add a card to a sprint
+.put('/addcard', async function(req,res){
     let sprint = await Sprint.findOne({'sprintID':req.body.id});
 
-    await sprint.story.push(req.body.story);
+    await sprint.story.push(req.body.card);
     await sprint.save((err) => {
         if(err){
-            res.status(500).send('The story was not added to the sprint: ${err.message}');
+            res.status(500).send('The card was not added to the sprint: ${err.message}');
         }
         else {
-            res.status(200).send('The story was saved to the sprint');
+            res.status(200).send('The card was saved to the sprint');
         }
     })
 })
