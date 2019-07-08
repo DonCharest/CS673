@@ -11,7 +11,7 @@ const { Project } = require("./../../models/Project");
 //***** Added a GET by ID route to view a Project  *****/
 router.get("/projects/:id", (req, res) => {
   Project.findById(req.params.id)
-    .then(user => res.json(user))
+    .then(project => res.json(project))
     .catch(err => res.status(404).json({ success: false }));
 });
 

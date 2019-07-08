@@ -57,15 +57,20 @@ class AdminPage extends Component {
       {
         id: "0",
         value: "user",
-        label: "User"
+        label: "Select Role"
       },
       {
         id: "1",
+        value: "user",
+        label: "User"
+      },
+      {
+        id: "2",
         value: "project",
         label: "Project"
       },
       {
-        id: "2",
+        id: "3",
         value: "admin",
         label: "Admin"
       }

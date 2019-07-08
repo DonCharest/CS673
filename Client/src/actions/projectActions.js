@@ -1,8 +1,6 @@
 import axios from "axios";
 import {
-  NEW_PROJECT,
-  PROJECT_SUCCESS,
-  PROJECT_FAIL,
+  ADD_PROJECT,
   GET_PROJECTS,
   VIEW_PROJECT,
   UPDATE_PROJECT,
@@ -14,27 +12,21 @@ import { tokenConfig } from "./authActions";
 import { returnErrors } from "./errorActions";
 
 // Create new Project
-export const newProject = project => (dispatch, getState) => {
+export const addProject = project => (dispatch, getState) => {
   axios
     .post("api/projects", project, tokenConfig(getState))
     .then(res =>
       dispatch({
-        type: PROJECT_SUCCESS,
+        type: ADD_PROJECT,
         payLoad: res.data
       })
     )
-    .catch(err => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "PROJECT_FAIL")
-      );
-      dispatch({
-        type: PROJECT_FAIL
-      });
-    });
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 // Get all Projects
-
 export const getProjects = () => dispatch => {
   dispatch(setProjectsLoading());
   axios

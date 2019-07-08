@@ -1,4 +1,5 @@
 import {
+  ADD_PROJECT,
   GET_PROJECTS,
   VIEW_PROJECT,
   UPDATE_PROJECT,
@@ -43,6 +44,11 @@ export default function(state = initialState, action) {
           project => project._id !== action.payLoad
         )
       };
+    // case ADD_PROJECT:
+    //   return {
+    //     ...state,
+    //     projects: [action.payLoad, ...state.projects]
+    //   };
     case PROJECT_LOADING:
       return {
         ...state,
