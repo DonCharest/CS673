@@ -14,7 +14,7 @@ import { addProject, getProjects } from "../../actions/projectActions";
 import { getUsers } from "../../actions/userActions";
 import PropTypes from "prop-types";
 
-class NewProjectModal extends Component {
+class UpdateProjectModal extends Component {
   state = {
     modal: false,
     name: "",
@@ -88,7 +88,7 @@ class NewProjectModal extends Component {
     const effortUnits = [
       {
         id: "0",
-        value: "points",
+        value: "Select Effort Units",
         label: "Select Effort Units"
       },
       {
@@ -199,4 +199,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { addProject, getUsers, getProjects }
-)(NewProjectModal);
+)(UpdateProjectModal);
