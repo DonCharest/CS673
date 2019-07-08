@@ -51,9 +51,9 @@ class ProjectPage extends Component {
         </div>
         <div>
           <ListGroup>
-            <h5>
+            <h6>
               <b>&nbsp;&nbsp;&nbsp;Project Management:</b>
-            </h5>
+            </h6>
             <TransitionGroup className="project-list">
               {projects.map(({ _id, name }) => (
                 <CSSTransition key={_id} timeout={500} classNames="fade">
