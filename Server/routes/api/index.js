@@ -5,4 +5,5 @@ const router = require("express").Router();
 router.use(require("./auth"));
 router.use(require("./card"));
 router.use(require("./project"));
+router.use(require("./sprint"));
 module.exports = router;

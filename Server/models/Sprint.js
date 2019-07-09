@@ -12,13 +12,14 @@ const CardSchema = require('./Card');
 
 
 const sprintSchema = new Schema({
-    sprintID: Number,
-    startDate: Date,
-    endDate: Date,
-    card: [CardSchema],
+    sprintID: {type: Number, required: true},
     project: { type: mongoose.Schema.Types.ObjectId,
-              ref: 'Project'
-             }
+        ref: 'Project'
+       },
+    startDate: {type: Date, required: true},
+    endDate: {type: Date, required: true},
+    capacity: {type: Number, required: false}
+    
 });
 
 module.exports.Sprint = mongoose.model("sprint", sprintSchema);
