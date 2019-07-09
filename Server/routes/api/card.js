@@ -69,7 +69,18 @@ router.route('/cards')
 // Delete a card by id: ADMIN ONLY!!!
 .delete(async function(req, res){
     let deletedStory = await Card.findOneAndDelete({'_id': req.body.id});
+
     if(deletedStory){
+
+        // Decrement the index of remaining cards in the project.
+        await Card.updateMany(
+            {
+                "project": deletedStory.project,
+                "index": {$gt: deletedStory.index}
+            },
+            {$inc:{index: -1}}
+        );
+        
         res.status(200).send(`Card delete success: ${deletedStory._id}`);
     }
     else {
