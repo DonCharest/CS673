@@ -16,59 +16,67 @@ router.route('/sprint')
 // Display data about a sprint
 .get(async function (req, res) {
 
-    let sprintCards = await Card.find({"sprint": req.body.id});
+    let sprintCards = await Card.find({'sprint': req.body.id});
     res.status(200).json(sprintCards);
 })
 
 
 // Create a new sprint
 .post( async function(req, res){
-    
-    let newSprint = new Sprint({
-        sprintID: req.body.sprintID,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate,
-        capacity: req.body.capacity
-    });
 
-    await newSprint.save((err) => {
-        if(err){
-            res.status(500).send(`The sprint was not saved: ${err.message}`);
-        } else {
-            res.status(200).send('The sprint has been saved');
-        }
-    })
+        await Sprint.countDocuments({project: req.body.project}, function(err, count){
+            sprintCount = count;
+
+        let newSprint = new Sprint({
+            index: sprintCount + 1,
+            project: req.body.project,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+            capacity: req.body.capacity,
+            capacityUnit: req.body.capacityUnit
+        });
+
+        await newSprint.save((err) => {
+            if(err){
+                res.status(500).send(`The sprint was not saved: ${err.message}`);
+            } else {
+                res.status(200).send('The sprint has been saved');
+            }
+        })
+    }) 
 })
+
+
 
 //Delete a sprint
 .delete(async function(req, res){
-    let deletedSprint = await Sprint.findOneAndDelete({'sprintID': req.body.id});
+    let deletedSprint = await Sprint.findOneAndDelete({'_id': req.body.id});
     if(deletedSprint){
-        res.status(200).send(`The sprint has been deleted: ${deletedSprint.sprintID}`);
+        res.status(200).send(`The sprint has been deleted: ${deletedSprint._id}`);
     } else {
         res.status(500).send('The sprint was not deleted');
     }
 })
+//TO DO: reset/decrement indices when deleting
 
-//Change the start date of a sprint
+//Change attributes of a sprint
 .put('/startdatechange', async function(req,res){
-    let updatedSprint = false;
-    updatedSprint = await Sprint.findOneAndUpdate({'sprintID': req.body.id, 'startDate': req.body.startDate})
-    if(updatedSprint){
-        res.status(100).send(`The Sprint\'s start date was updated: ${updatedSprint.sprintID}`);
-    } else {
-        res.status(200).send('The sprint\'s start date was not updated');
-    }
-})
+    let params = {};
+    for(let prop in req.body){
+        if(req.body[prop] = "index"){
+            res.status(200).send("WARNING: the sprint\'s index cannot be updated.");
+        }
+        else if(req.body[prop]){
+            params[prop] = req.body[prop];
+        }
+    };
 
-//Change the end date of a sprint
-.put('/enddatechange', async function(req,res){
     let updatedSprint = false;
-    updatedSprint = await Sprint.findOneAndUpdate({'sprintID': req.body.id, 'endDate': req.body.endDate})
+    updatedSprint = await Sprint.findOneAndUpdate({'_id': req.body.id}, params);
     if(updatedSprint){
-        res.status(100).send(`The Sprint\'s end date was updated: ${updatedSprint.sprintID}`);
+        res.status(200).send(`The sprint was updated: ${updatedSprint._id}`);
     } else {
-        res.status(200).send('The sprint\'s end date was not updated');
+        res.status(500).send('The sprint was not updated');
     }
 });
 

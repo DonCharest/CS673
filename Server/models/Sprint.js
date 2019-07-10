@@ -8,17 +8,15 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const CardSchema = require('./Card');
-
-
 const sprintSchema = new Schema({
-    sprintID: {type: Number, required: true},
+    index: {type: Number, required: true},
     project: { type: mongoose.Schema.Types.ObjectId,
         ref: 'Project'
        },
-    startDate: {type: Date, required: true},
-    endDate: {type: Date, required: true},
-    capacity: {type: Number, required: false}
+    startDate: {type: Date, required: true, default: Date.now},
+    endDate: {type: Date, required: true, default: null},
+    capacity: {type: Number, required: false},
+    capacityUnit: {type: String, required: true, default: 'hours'}
     
 });
 
