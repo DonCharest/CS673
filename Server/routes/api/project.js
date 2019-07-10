@@ -26,11 +26,6 @@ router.delete("/projects/:id", (req, res) => {
 router
   .route("/projects")
 
-  // ***** Updated GET route to pull all projects to client ******/
-
-  //     .get(function (req,res){
-  //       res.status(200).send('it works now make it do something useful');
-  //   })
   .get((req, res) => {
     Project.find()
       .sort({ date: -1 })
@@ -46,8 +41,6 @@ router
       dateCreated: Date.now(),
       description: req.body.description,
       projectMembers: req.body.projectMembers
-      // epics:[Epic],
-      // requirements:[String]
     });
 
     await newProject.save(err => {
@@ -88,11 +81,13 @@ router
 router.put("/projectuser", async function(req, res) {
   let project = await Project.findOne({ _id: req.body.projectID });
 
-  for (let newUserIDX in req.body.userID) {
+  for (let newUserIDX in req.body.projectMembers[0].userID) {
+    // new users in payload
     let dupeFound = false;
     for (let dupeCheck in project.projectMembers) {
+      // current users 
       if (
-        project.projectMembers[dupeCheck].userID === req.body.userID[newUserIDX]
+        project.projectMembers[dupeCheck].userID === req.body.projectMembers[0].userID[newUserIDX]
       ) {
         dupeFound = true;
         break;
@@ -101,7 +96,7 @@ router.put("/projectuser", async function(req, res) {
 
     if (dupeFound === false) {
       await project.projectMembers.push({
-        userID: req.body.userID[newUserIDX]
+        userID: req.body.projectMembers[0].userID[newUserIDX]
       });
     }
   }
@@ -114,5 +109,37 @@ router.put("/projectuser", async function(req, res) {
     }
   });
 });
+
+
+
+
+
+router
+  .route("/epic")
+
+
+  .post(async function(req, res) {
+    let project = await Project.findOne({ _id: req.body.projectID });
+
+    await project.epics.push({
+      name: req.body.epics
+    });
+
+    await project.save(err => {
+      if (err) {
+        res.status(500).send(`Project epic could not be added: ${err.message}`);
+      } else {
+        res.status(200).send("Project epic added");
+      }
+    });
+  })
+
+  
+  // Update a project to change information included in the request.
+  // REFERENCE: https://stackoverflow.com/questions/47877333/when-using-findoneandupdate-how-to-leave-fields-as-is-if-no-value-provided-i
+  .delete(async function(req, res) {
+    // NOT WORKING YET
+  });
+
 
 module.exports = router;

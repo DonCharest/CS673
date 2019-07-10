@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 
 // Epic schema 
 var Epic = new mongoose.Schema({
-    Name:{type: String}
+    name:{type: String, required: false}
 });
 
 // The Project Member schema tracks the users that are members of a 
@@ -36,7 +36,6 @@ module.exports.Project = mongoose.model('Project', new mongoose.Schema({
     description:{type: String, required: false},
     projectMembers:[projMemberSchema],
     epics:[Epic],
-    requirements:[String]
 }));
 
 
