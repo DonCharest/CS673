@@ -8,8 +8,8 @@
 const express = require("express");
 const router = express.Router();
 
-const Sprint = require('./../../models/Sprint');
-const Card = require('./../../models/Card');
+const Sprint = require('../../models/Sprint');
+const Card = require('../../models/Card');
 
 router.route('/sprint')
 
@@ -22,10 +22,11 @@ router.route('/sprint')
 
 
 // Create a new sprint
-.post( async function(req, res){
+.post(async function(req, res){
 
         await Sprint.countDocuments({project: req.body.project}, function(err, count){
-            sprintCount = count;
+
+        sprintCount = count;
 
         let newSprint = new Sprint({
             index: sprintCount + 1,
@@ -36,7 +37,7 @@ router.route('/sprint')
             capacityUnit: req.body.capacityUnit
         });
 
-        await newSprint.save((err) => {
+         newSprint.save((err) => {
             if(err){
                 res.status(500).send(`The sprint was not saved: ${err.message}`);
             } else {
@@ -60,7 +61,7 @@ router.route('/sprint')
 //TO DO: reset/decrement indices when deleting
 
 //Change attributes of a sprint
-.put('/startdatechange', async function(req,res){
+.put(async function(req,res){
     let params = {};
     for(let prop in req.body){
         if(req.body[prop] = "index"){
