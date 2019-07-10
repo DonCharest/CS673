@@ -49,7 +49,7 @@ router.route('/cards')
             type:req.body.type,
             load:req.body.load,
             stage:{
-                stageName: "BACKLOG",
+                stageName: req.body.stageName,
                 startDate: Date.now(),
                 endDate: null
             }

@@ -6,5 +6,4 @@ router.use(require("./auth"));
 router.use(require("./card"));
 router.use(require("./chat"));
 router.use(require("./project"));
-router.use(require("./users"));
 module.exports = router;
