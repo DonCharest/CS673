@@ -1,13 +1,23 @@
 import {
-    ADD_NEW_STORY
-} from '../constants/actionTypes';
+    ADD_NEW_CARD,
+    GET_CARDS,
+    CARDS_LOADING,
+    NEW_CARD
+} from "../actions/types";
 
 
-const sprint = (state = {todo: [], wip: [], verification: [], complete: []}, action) => {
+const sprint = (state = { backlog:[],
+          todo: [],
+          workinprogress : [],
+          verification: [],
+          done: []}, action) => {
   switch(action.type){
-    case ADD_NEW_STORY:
+    case GET_CARDS:
+        return action.payLoad
+    case NEW_CARD:
+        console.log(action.payLoad)
         return {...state, 
-            todo: [...state.todo, action.newStory]
+            backlog: [...state.backlog, action.payLoad]
         }
     default:
       return state;
