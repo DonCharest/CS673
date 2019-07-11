@@ -20,11 +20,12 @@ import {
   deleteProject,
   viewProject
 } from "../../actions/projectActions";
+import NewProjectModal from "./NewProjectModal";
 import { effortUnits } from "./effortUnits";
 import * as classes from "../../app.css";
 import PropTypes from "prop-types";
 import axios from "axios";
-// import { tokenConfig } from "../../actions/authActions";
+import { tokenConfig } from "../../actions/authActions";
 // import { getUsers } from "../../actions/userActions";
 // import UpdateProjectModal from "./UpdateProjectModal";
 
