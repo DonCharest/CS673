@@ -12,6 +12,7 @@ import {
 import { connect } from "react-redux";
 import { addProject, getProjects } from "../../actions/projectActions";
 import { getUsers } from "../../actions/userActions";
+import { effortUnits } from "./effortUnits";
 import PropTypes from "prop-types";
 
 class NewProjectModal extends Component {
@@ -84,25 +85,6 @@ class NewProjectModal extends Component {
 
   render() {
     const { users } = this.props.user;
-
-    const effortUnits = [
-      {
-        id: "0",
-        value: "points",
-        label: "Select Effort Units"
-      },
-      {
-        id: "1",
-        value: "points",
-        label: "points"
-      },
-      {
-        id: "2",
-        value: "hours",
-        label: "hours"
-      }
-    ];
-
     return (
       <div>
         {this.props.isAuthenticated ? (
