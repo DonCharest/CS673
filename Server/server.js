@@ -83,13 +83,15 @@ io.on("connection", function(socket) {
       }
     })
     
-    io.emit("chat message", JSON(
+    io.emit("chat message", JSON.stringify(
       {
         project: msg.project,
         user: msg.user,
         message: msg.message
       }
     ));
+
+ 
   });
 
   socket.on("disconnect", function() {
