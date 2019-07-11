@@ -59,9 +59,11 @@ export const viewProject = id => (dispatch, getState) => {
 };
 
 // Update Project
-export const updateProject = (id, data) => (dispatch, getState) => {
+//export const updateProject = (id, data) => (dispatch, getState) => {
+export const updateProject = data => dispatch => {
   axios
-    .put(`/api/projects/${id}`, data, tokenConfig(getState))
+    // .put(`/api/projects/${id}`, data, tokenConfig(getState))
+    .put(`api/projects`, data)
     .then(res =>
       dispatch({
         type: UPDATE_PROJECT,
