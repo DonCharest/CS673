@@ -90,6 +90,8 @@ io.on("connection", function(socket) {
         message: msg.message
       }
     ));
+
+ 
   });
 
   socket.on("disconnect", function() {
