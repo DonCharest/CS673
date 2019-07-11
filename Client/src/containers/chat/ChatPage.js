@@ -32,14 +32,13 @@ class chatPage extends Component {
 
   submitMsg(e) {
     e.preventDefault()
-    this.socket.emit('chat message', this.state.newMsg);
+    this.socket.emit('chat message', {message: this.state.newMsg, user: this.props.auth.user.name, project: 'default'});
     this.setState({newMsg: ''})
   }
 
   render() {
     const { response } = this.state;
     const { isAuthenticated, user } = this.props.auth;
-
     return (
       <Container>
         <div className="chat-page">
