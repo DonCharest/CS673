@@ -8,8 +8,8 @@
 const express = require("express");
 const router = express.Router();
 
-const Sprint = require('../../models/Sprint');
-const Card = require('../../models/Card');
+const {Sprint} = require('../../models/Sprint');
+const {Card} = require('../../models/Card');
 
 router.route('/sprint')
 
@@ -41,7 +41,7 @@ router.route('/sprint')
             if(err){
                 res.status(500).send(`The sprint was not saved: ${err.message}`);
             } else {
-                res.status(200).send('The sprint has been saved');
+                res.status(200).send(`The sprint has been saved' ${newSprint._id}`);
             }
         })
     }) 

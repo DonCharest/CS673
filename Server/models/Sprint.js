@@ -14,8 +14,8 @@ const sprintSchema = new Schema({
         ref: 'Project'
        },
     startDate: {type: Date, required: true, default: Date.now},
-    endDate: {type: Date, required: true, default: null},
-    capacity: {type: Number, required: false},
+    endDate: {type: Date, required: true, default: (Date.now() + 7*24*3600*1000)},
+    capacity: {type: Number, required: true, default: 0},
     capacityUnit: {type: String, required: true, default: 'hours'}
     
 });
