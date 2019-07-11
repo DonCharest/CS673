@@ -14,39 +14,27 @@ class chatPage extends Component {
     super(props);
     this.state = {
       response: false,
-      endpoint: "http://127.0.0.1:4001"
+      newMsg: ''
     };
+    this.socket = socketIOClient();
+
+    this.submitMsg = this.submitMsg.bind(this)
+    this.updateMsg = this.updateMsg.bind(this)
   }
 
   componentDidMount() {
-    const { endpoint } = this.state;
-    const socket = socketIOClient(endpoint);
-    socket.on("FromAPI", data => this.setState({ response: data }));
+    this.socket.on('chat message', data => this.setState({ response: data }));
   }
 
-  // $(function(){
-  //         var socket = io();
-  //         $('form').submit(function(e){
-  //             /* Block page reload.
-  //                 Emit the message text as a 'chat message' event.
-  //                 Reset the value of the message box.
-  //             */
-  //             e.preventDefault();
-  //             socket.emit('chat message', $('#m').val());
-  //             $('#m').val('');
-  //             return false;
-  //         });
+  updateMsg(e) {
+    this.setState({newMsg: e.target.value})
+  }
 
-  //         // When a message is received, append it to the text message list.
-  //         socket.on('chat message', function(msg){
-  //             $('#messages').append($('<li>').text(msg));
-  //         });
-  //     });
-
-  // <ul id="messages"></ul>
-  //     <form action="">
-  //         <input type="text" id="m" autocomplete="off" /><button>SEND</button>
-  //     </form>
+  submitMsg(e) {
+    e.preventDefault()
+    this.socket.emit('chat message', this.state.newMsg);
+    this.setState({newMsg: ''})
+  }
 
   render() {
     const { response } = this.state;
@@ -68,7 +56,8 @@ class chatPage extends Component {
           <p>
             <strong>{user ? `Projects: ${user.projects}` : ""}</strong>
           </p>
-          <Button className="chat-button" color="primary">
+          <input type="text" value={this.state.newMsg} onChange={this.updateMsg} />
+          <Button className="chat-button" color="primary" onClick={this.submitMsg}>
             Send a message
           </Button>
         </div>
