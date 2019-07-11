@@ -7,6 +7,7 @@
 */
 const router = require("express").Router();
 const { Project } = require("./../../models/Project");
+// var mongoose = require('mongoose');
 
 //***** Added a GET by ID route to view a Project  *****/
 router.get("/projects/:id", (req, res) => {
@@ -111,9 +112,6 @@ router.put("/projectuser", async function(req, res) {
 });
 
 
-
-
-
 router
   .route("/epic")
 
@@ -135,10 +133,22 @@ router
   })
 
   
-  // Update a project to change information included in the request.
+  // Delete Epic via ID
   // REFERENCE: https://stackoverflow.com/questions/47877333/when-using-findoneandupdate-how-to-leave-fields-as-is-if-no-value-provided-i
   .delete(async function(req, res) {
-    // NOT WORKING YET
+
+    let project = await Project.findOne({ _id: req.body.projectID });
+
+    project.epics.id(req.body.epics).remove();
+
+    await project.save(err => {
+      if (err) {
+        res.status(500).send(`Project epic could not be deleted: ${err.message}`);
+      } else {
+        res.status(200).send("Project epic deleted");
+      }
+    });
+
   });
 
 
