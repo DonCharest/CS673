@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { Container, Button } from "reactstrap";
 import { connect } from "react-redux";
 import socketIOClient from "socket.io-client";
@@ -24,6 +25,16 @@ class chatPage extends Component {
 
   componentDidMount() {
     this.socket.on('chat message', data => this.setState({ response: [...this.state.response, JSON.parse(data)]}));
+
+    axios
+    .get(`/api/chat/?project=default`)
+    .then(res => {
+        this.setState({response: res.data.chat})
+      }
+    )
+    .catch(err => {
+      console.error(err)
+    });
   }
 
   updateMsg(e) {
