@@ -3,9 +3,11 @@
 */
 const mongoose = require('mongoose');
 
-module.exports.Chat = mongoose.model('Chat', new mongoose.Schema({
+var chatSchema = new mongoose.Schema({
     project: {type: String, required: true},
     datestamp:{type: Date, required: true},
     user:{type: String, required: true},
     message:{type: String, required: false}
-}));
+});
+
+module.exports.Chat = mongoose.model('Chat', chatSchema);

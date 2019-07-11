@@ -13,3 +13,5 @@ router.route('/chat')
     let messages = await Chat.find(req.body.project);
     res.status(200).send({chat: messages});
 });
+
+module.exports = router;
