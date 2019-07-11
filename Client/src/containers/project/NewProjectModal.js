@@ -45,13 +45,13 @@ class NewProjectModal extends Component {
     });
   };
 
-  //   onChangeMembers = e => {
-  //     let value = Array.from(e.target.selectedOptions, option => option.value);
+  onChangeMembers = e => {
+    let value = Array.from(e.target.selectedOptions, option => option.value);
 
-  //     this.setState({
-  //       [e.target.name]: value
-  //     });
-  //   };
+    this.setState({
+      [e.target.name]: value
+    });
+  };
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -164,11 +164,11 @@ class NewProjectModal extends Component {
                 <Label for="userID">Select Project Members:</Label>
                 <Input
                   type="select"
-                  //multiple
+                  // multiple
                   name="userID"
                   id="userID"
                   onChange={this.onChange}
-                  //onChange={this.onChangeMembers}
+                  // onChange={this.onChangeMembers}
                 >
                   >
                   {users.map(({ _id, email }) => (
