@@ -16,6 +16,7 @@ import {
   Input
 } from "reactstrap";
 import {
+  updateProject,
   getProjects,
   deleteProject,
   viewProject
@@ -30,29 +31,6 @@ import { tokenConfig } from "../../actions/authActions";
 // import UpdateProjectModal from "./UpdateProjectModal";
 
 class ProjectPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false,
-      name: "",
-      shortCode: "",
-      effortUnit: "",
-      description: "",
-      projectMembers: ""
-    };
-
-    this.handleChange = this.onViewClick.bind(this);
-    //this.handleSubmit = this.handleSubmit.bind(this);
-
-    this.toggle = this.toggle.bind(this);
-  }
-
-  toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal
-    }));
-  }
-
   static propTypes = {
     getProjects: PropTypes.func.isRequired,
     project: PropTypes.object.isRequired,
@@ -61,6 +39,30 @@ class ProjectPage extends Component {
     // getUsers: PropTypes.func.isRequired,
     // auth: PropTypes.object.isRequired
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false,
+      _id: "",
+      name: "",
+      shortCode: "",
+      effortUnit: "",
+      description: "",
+      projectMembers: [],
+      userID: ""
+    };
+
+    // this.handleChange = this.onViewClick.bind(this);
+    //this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  }
 
   componentDidMount() {
     this.props.getProjects();
@@ -71,8 +73,9 @@ class ProjectPage extends Component {
   getProjectById(id) {
     axios.get(`/api/projects/${id}`).then(res => {
       const project = res.data;
-      console.log(project);
+
       this.setState({
+        _id: project._id,
         name: project.name,
         shortCode: project.shortCode,
         effortUnit: project.effortUnit,
@@ -89,10 +92,43 @@ class ProjectPage extends Component {
   };
 
   onViewClick = id => {
-    this.props.viewProject(id);
-    this.toggle();
+    // this.props.viewProject(id);
     this.getProjectById(id);
+
+    setTimeout(() => {
+      this.toggle();
+    }, 500);
   };
+
+  //  Update values ************************
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+
+    const updatedProject = {
+      _id: this.state._id,
+      name: this.state.name,
+      shortCode: this.state.shortCode,
+      effortUnit: this.state.effortUnit,
+      description: this.state.description
+      // projectMembers: [{ userID: this.state.userID }]
+    };
+
+    // Add Project via addProject action
+    this.props.updateProject(updatedProject);
+
+    // Close modal
+    this.toggle();
+
+    // Refresh project page
+    setTimeout(() => {
+      this.props.getProjects();
+    }, 500);
+  };
+  // End Update Values **********************
 
   render() {
     const { projects } = this.props.project;
@@ -157,7 +193,7 @@ class ProjectPage extends Component {
                     name="name"
                     id="name"
                     defaultValue={this.state.name}
-                    onChange={this.handleChange.bind(this, "name")}
+                    onChange={this.onChange}
                   />
                   <Label for="shortCode">Short Code:</Label>
                   <Input
@@ -166,15 +202,15 @@ class ProjectPage extends Component {
                     id="shortCode"
                     maxLength="4"
                     defaultValue={this.state.shortCode}
-                    onChange={this.handleChange.bind(this, "shortCode")}
+                    onChange={this.onChange}
                   />
                   <Label for="effortUnit">Effort Units:</Label>
                   <Input
-                    type="text"
+                    type="select"
                     name="effortUnit"
                     id="effortUnit"
                     defaultValue={this.state.effortUnit}
-                    onChange={this.handleChange.bind(this, "effortUnit")}
+                    onChange={this.onChange}
                   >
                     >
                     {effortUnits.map(effortUnit => (
@@ -189,7 +225,7 @@ class ProjectPage extends Component {
                     name="description"
                     id="description"
                     defaultValue={this.state.description}
-                    onChange={this.handleChange.bind(this, "description")}
+                    onChange={this.onChange}
                   />
                   <Label for="userID">Select Project Members:</Label>
                   <Input
@@ -198,8 +234,7 @@ class ProjectPage extends Component {
                     name="userID"
                     id="userID"
                     defaultValue={this.state.projectMembers}
-                    onChange={this.handleChange.bind(this, "projectMembers")}
-                    //onChange={this.onChangeMembers}
+                    onChange={this.onChange}
                   >
                     >
                     {users.map(({ _id, email }) => (
@@ -209,21 +244,12 @@ class ProjectPage extends Component {
                     ))}
                   </Input>
                   <Button color="dark" style={{ marginTop: "2rem" }} block>
-                    New Project
+                    Update Project
                   </Button>
                 </FormGroup>
               </Form>
             </ModalBody>
-            <ModalFooter>
-              <Button color="primary" onClick={this.toggle}>
-                Update
-              </Button>{" "}
-              <Button color="secondary" onClick={this.toggle}>
-                Cancel
-              </Button>
-            </ModalFooter>
           </Modal>
-          {/* ********************************************* */}
         </div>
       </Container>
     );
@@ -239,5 +265,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getProjects, deleteProject, viewProject }
+  { getProjects, deleteProject, viewProject, updateProject }
 )(ProjectPage);
