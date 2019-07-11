@@ -16,10 +16,22 @@ router.route('/sprint')
 // Display data about a sprint
 .get(async function (req, res) {
 
-    let sprintCards = await Card.find({'sprint': req.body.id});
+    let sprintCards = await Card.find({"project": req.body.project, 
+                                        "stage.stageName": "ToDo", 
+                                        "stage.endDate": null});
     res.status(200).json(sprintCards);
+
 })
 
+// Display data about a sprint
+.get('/backlog', async function (req, res) {
+
+    let sprintCards = await Card.find({"project": req.body.project, 
+                                        "stage.stageName": "BACKLOG", 
+                                        "stage.endDate": null});
+    res.status(200).json(sprintCards);
+
+})
 
 // Create a new sprint
 .post(async function(req, res){
