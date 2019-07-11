@@ -39,3 +39,14 @@
 #messages li:nth-child(odd) {
   background: #eee;
 }
+
+
+.singleChat {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.singleChatUser {
+  font-weight: bold;
+  margin-right: 10px;
+}
