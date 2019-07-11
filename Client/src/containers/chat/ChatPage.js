@@ -25,7 +25,7 @@ class chatPage extends Component {
 
   componentDidMount() {
     this.socket.on('chat message', data => this.setState({ response: [...this.state.response, JSON.parse(data)]}));
-
+    // request chat history
     axios
     .get(`/api/chat/?project=default`)
     .then(res => {
