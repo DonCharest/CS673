@@ -17,7 +17,7 @@ router.route('/sprint')
 .get(async function (req, res) {
 
     let sprintCards = await Card.find({"project": req.body.project, 
-                                        "stage.stageName": "ToDo", 
+                                        "stage.stageName": "TODO", 
                                         "stage.endDate": null});
     res.status(200).json(sprintCards);
 
