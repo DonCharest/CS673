@@ -28,3 +28,4 @@ export const PROJECTS_LOADING = "PROJECTS_LOADING";
 export const GET_CARDS = 'GET_CARDS'
 export const CARDS_LOADING = 'CARDS_LOADING'
 export const NEW_CARD = 'NEW_CARD'
+export const DELETE_CARD = 'DELETE_CARD'

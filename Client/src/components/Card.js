@@ -37,6 +37,7 @@ class Card extends Component {
           saveCard={this.props.actions.editCard}
           description={this.props.description}
           cardId={this.props.id}
+          deleteCard={this.props.actions.deleteCard}
         />
         
         <div className={classes.cardDescription}>

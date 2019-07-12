@@ -62,6 +62,24 @@ export const addNewCard = (newCard,successCallback) => dispatch => {
     });
 }
 
+export const deleteCard = (cardId, successCallback) => dispatch => {
+  dispatch(setCardsLoading());
+  axios
+    .delete("/api/cards", {id: cardId})
+    .then(res => {
+        dispatch({
+          type: DELETE_CARD,
+          payLoad: cardId
+        })
+
+      }
+    ).then(successCallback())
+    .catch(err => {
+      console.error(err)
+      dispatch(returnErrors(err.response.data, err.response.status))
+    });
+}
+
 export const editCard = () => {
   console.log('editing')
   // dispatch(setCardsLoading());
