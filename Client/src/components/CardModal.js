@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import { Container } from "reactstrap";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {Button, Modal, Form} from 'react-bootstrap';
 import * as classes from "../app.css";
@@ -9,19 +10,37 @@ import UsersDropdown from './UsersDropdown'
 class CardModal extends Component {
   constructor(props) {
     super(props);
+    console.log('props', props.loggedInId)
     this.state = {
-      description: this.props.description || '',
-      stage: this.props.stage || 'backlog',
-      assignedId: this.props.assignedId || '',
-      projectId: this.props.projectId || '',
-      shortcode: '',
-      priority: this.props.priority || '',
-      type: this.props.type || '',
-      load: this.props.load || 0,
+      description: props.cardData ? props.cardData.description : '',
+      stage: props.cardData ?  props.cardData.stage[0].stageName.toLowerCase() : 'backlog',
+      assignedId: props.cardData ?  props.cardData.assignedTo : props.loggedInId,
+      projectId: '',
+      shortcode:  '',
+      priority: props.cardData ?  props.cardData.priority : 'MEDIUM',
+      type: props.cardData ? props.cardData.type : 'REQUIREMENT',
+      load: props.cardData ? props.cardData.load : 1,
     };
 
     this.saveAndClose = this.saveAndClose.bind(this);
     this.updateField = this.updateField.bind(this);
+    this.autoSelectProject = this.autoSelectProject.bind(this)
+  }
+
+  componentDidMount() {
+    this.autoSelectProject()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.projects.length !== this.props.projects.length ) {
+      this.autoSelectProject()
+    }
+  }
+
+  autoSelectProject() {
+    if (this.props.projects.length > 0) {
+      this.updateField({target: {name: 'projectId', value: this.props.projects[0]._id}})
+    }
   }
 
   updateField(e) {
@@ -31,7 +50,7 @@ class CardModal extends Component {
   saveAndClose(e) {
     e.preventDefault()
 
-    const cardData =  {
+    const baseCardData =  {
       description: this.state.description, 
       stage: this.state.stage, 
       priority: this.state.priority,
@@ -39,19 +58,26 @@ class CardModal extends Component {
       load:this.state.load,
     }
 
-    const newCardData = {
-      project: this.state.projectId,
-      'project.shortcode': this.state.shortcode,
-      createdBy: this.props.user._id, 
+    let updatedCardData = {}
+
+    // if edit
+    if (this.props.cardData) {
+      updatedCardData = {...baseCardData, 
+        id: this.props.cardData._id,
+        assignedTo: this.state.assignedId, 
+        // sprint: 
+        // epic:    
+      }
+    } else {
+      // if new
+      updatedCardData = {...baseCardData, 
+         project: this.state.projectId,
+        'project.shortcode': this.state.shortcode,
+        createdBy: this.props.loggedInId, 
+      }
     }
 
-    const editCardData = {
-      id: this.props.cardId,
-      assignedTo: this.state.assignedId, 
-      // sprint: 
-      // epic:     
-    }
-    this.props.saveCard(cardData, this.props.toggleCardModal)
+    this.props.saveCard(updatedCardData, this.props.toggleCardModal)
     
   }
 
@@ -109,7 +135,7 @@ class CardModal extends Component {
                 as="select" 
                 name="type"
                 onChange={this.updateField} 
-                value={this.state.priority}>
+                value={this.state.type}>
                 <option value="“REQUIREMENT”">Requirement</option>
                 <option value="TASK">Task</option>
                 <option value="ISSUE">Issue</option>
@@ -126,7 +152,7 @@ class CardModal extends Component {
                 />
               </Form.Group>
 
-          {this.props.id ? 
+          {!this.props.cardData ? 
             <div>
               <ProjectsDropdown
                 value = {this.state.projectId}
@@ -145,7 +171,7 @@ class CardModal extends Component {
               </Form.Group>
             </div> : null}
 
-          {this.props.id ? 
+          {this.props.cardData ? 
             <div>
               <UsersDropdown
                 value = {this.state.userId}
@@ -171,4 +197,15 @@ class CardModal extends Component {
   
 };
 
-export default CardModal;
+const mapStateToProps = (state) => {
+  return {
+    loggedInId: state.auth.user._id,
+    projects: state.project.projects,
+  }
+};
+
+
+export default connect(
+  mapStateToProps,
+  null
+)(CardModal);
