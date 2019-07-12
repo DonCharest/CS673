@@ -54,7 +54,7 @@ router.route('/sprint')
     Card.find({project: req.body.project, 
             "stage.stageName": { $in: ["TODO","WIP","VERIFICATION","DONE"]},
             "stage.endDate": null})
-      .sort({ "stage.stateName": 1 })
+      .sort({ "stage.stageName": 1 })
       .then(cards => res.json(cards));
   })
 
