@@ -1,8 +1,6 @@
 import axios from "axios";
 import {
-  NEW_PROJECT,
-  PROJECT_SUCCESS,
-  PROJECT_FAIL,
+  ADD_PROJECT,
   GET_PROJECTS,
   VIEW_PROJECT,
   UPDATE_PROJECT,
@@ -14,32 +12,25 @@ import { tokenConfig } from "./authActions";
 import { returnErrors } from "./errorActions";
 
 // Create new Project
-export const newProject = data => (dispatch, getState) => {
-  // Request body
-  // const body = JSON.stringify({ name, shortCode, effortunit, description, projectMembers });
+export const addProject = project => (dispatch, getState) => {
   axios
-    .post("api/projects", data, tokenConfig(getState))
+    .post("api/projects", project, tokenConfig(getState))
     .then(res =>
       dispatch({
-        type: PROJECT_SUCCESS,
+        type: ADD_PROJECT,
         payLoad: res.data
       })
     )
-    .catch(err => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "PROJECT_FAIL")
-      );
-      dispatch({
-        type: PROJECT_FAIL
-      });
-    });
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 // Get all Projects
-export const getProjects = () => (dispatch, getState) => {
+export const getProjects = () => dispatch => {
   dispatch(setProjectsLoading());
   axios
-    .get("/api/projects", tokenConfig(getState))
+    .get("/api/projects")
     .then(res =>
       dispatch({
         type: GET_PROJECTS,
@@ -68,9 +59,11 @@ export const viewProject = id => (dispatch, getState) => {
 };
 
 // Update Project
-export const updateProject = (id, data) => (dispatch, getState) => {
+//export const updateProject = (id, data) => (dispatch, getState) => {
+export const updateProject = data => dispatch => {
   axios
-    .put(`/api/projects/${id}`, data, tokenConfig(getState))
+    // .put(`/api/projects/${id}`, data, tokenConfig(getState))
+    .put(`api/projects`, data)
     .then(res =>
       dispatch({
         type: UPDATE_PROJECT,

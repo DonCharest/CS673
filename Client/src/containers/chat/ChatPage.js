@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { Container, Button } from "reactstrap";
 import { connect } from "react-redux";
 import socketIOClient from "socket.io-client";
 import PropTypes from "prop-types";
-import "./chatPage.css";
+import * as classes from "./chatPage.css";
 
 class chatPage extends Component {
   static propTypes = {
@@ -13,45 +14,43 @@ class chatPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      response: false,
-      endpoint: "http://127.0.0.1:4001"
+      response: [],
+      newMsg: ''
     };
+    this.socket = socketIOClient();
+
+    this.submitMsg = this.submitMsg.bind(this)
+    this.updateMsg = this.updateMsg.bind(this)
   }
 
   componentDidMount() {
-    const { endpoint } = this.state;
-    const socket = socketIOClient(endpoint);
-    socket.on("FromAPI", data => this.setState({ response: data }));
+    this.socket.on('chat message', data => this.setState({ response: [...this.state.response, JSON.parse(data)]}));
+
+    axios
+    .get(`/api/chat/?project=default`)
+    .then(res => {
+        this.setState({response: res.data.chat})
+      }
+    )
+    .catch(err => {
+      console.error(err)
+    });
   }
 
-  // $(function(){
-  //         var socket = io();
-  //         $('form').submit(function(e){
-  //             /* Block page reload.
-  //                 Emit the message text as a 'chat message' event.
-  //                 Reset the value of the message box.
-  //             */
-  //             e.preventDefault();
-  //             socket.emit('chat message', $('#m').val());
-  //             $('#m').val('');
-  //             return false;
-  //         });
+  updateMsg(e) {
+    this.setState({newMsg: e.target.value})
+  }
 
-  //         // When a message is received, append it to the text message list.
-  //         socket.on('chat message', function(msg){
-  //             $('#messages').append($('<li>').text(msg));
-  //         });
-  //     });
-
-  // <ul id="messages"></ul>
-  //     <form action="">
-  //         <input type="text" id="m" autocomplete="off" /><button>SEND</button>
-  //     </form>
+  submitMsg(e) {
+    e.preventDefault()
+    this.socket.emit('chat message', {message: this.state.newMsg, user: this.props.auth.user.name, project: 'default'});
+    this.setState({newMsg: ''})
+  }
 
   render() {
     const { response } = this.state;
     const { isAuthenticated, user } = this.props.auth;
-
+    console.log('this.state', this.state)
     return (
       <Container>
         <div className="chat-page">
@@ -68,7 +67,18 @@ class chatPage extends Component {
           <p>
             <strong>{user ? `Projects: ${user.projects}` : ""}</strong>
           </p>
-          <Button className="chat-button" color="primary">
+          {this.state.response.map((item, index) => {
+            console.log('item', item)
+            return (
+              <div key={index} className={classes.singleChat}>
+                <div className={classes.singleChatUser}>{item.user}:</div>
+                <div className={classes.singleChatMessage}>{item.message}</div>
+              </div>
+            )
+
+          })}
+          <input type="text" value={this.state.newMsg} onChange={this.updateMsg} />
+          <Button className="chat-button" color="primary" onClick={this.submitMsg}>
             Send a message
           </Button>
         </div>

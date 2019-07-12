@@ -46,13 +46,14 @@ app.use(express.static(path.resolve(__dirname, "..", "Client/build")));
 
 app.use(require("./routes"));
 
-// Use Routes ******* We need to modify the server setup to make these routes work ******
+// User Routes ******* We need to modify the server setup to make these routes work ******
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/auth", require("./routes/api/auth"));
 
 // Configure application middleware: HTTP communication server and Socket.io
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
+const { Chat } = require("./models/Chat");
 
 /* Initialize the Socket IO functionality:
     On connect
@@ -65,9 +66,32 @@ io.on("connection", function(socket) {
   console.log("A user has connected.");
 
   socket.on("chat message", function(msg) {
-    //  console.log('message: ' + msg);
-    // Push msg to DB
-    io.emit("chat message", msg);
+    console.log("message: " + msg.message);
+
+    // Push the message object to the database to be loaded when the next user connects.
+    let newMessage = new Chat({
+      project: msg.project,
+      datestamp: Date.now(),
+      user: msg.user,
+      message: msg.message
+    });
+
+    // If there is an error it is server side only, there is no response to send.
+    newMessage.save(err => {
+      if (err) {
+        this.emit("error", new Error(`Card save failed: ${err.message}`));
+      }
+
+    })
+    
+    io.emit("chat message", JSON.stringify(
+      {
+        project: msg.project,
+        user: msg.user,
+        message: msg.message
+      }
+    ));
+
   });
 
   socket.on("disconnect", function() {

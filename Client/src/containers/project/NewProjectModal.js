@@ -7,13 +7,12 @@ import {
   Form,
   FormGroup,
   Label,
-  Input,
-  Badge
+  Input
 } from "reactstrap";
 import { connect } from "react-redux";
-import { newProject } from "../../actions/projectActions";
+import { addProject, getProjects } from "../../actions/projectActions";
 import { getUsers } from "../../actions/userActions";
-
+import { effortUnits } from "./effortUnits";
 import PropTypes from "prop-types";
 
 class NewProjectModal extends Component {
@@ -33,7 +32,8 @@ class NewProjectModal extends Component {
     isAuthenticated: PropTypes.bool,
     getUsers: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    getProjects: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -46,13 +46,13 @@ class NewProjectModal extends Component {
     });
   };
 
-  //   onChangeMembers = e => {
-  //     let value = Array.from(e.target.selectedOptions, option => option.value);
+  onChangeMembers = e => {
+    let value = Array.from(e.target.selectedOptions, option => option.value);
 
-  //     this.setState({
-  //       [e.target.name]: value
-  //     });
-  //   };
+    this.setState({
+      [e.target.name]: value
+    });
+  };
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -60,8 +60,10 @@ class NewProjectModal extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { isAuthenticated, user } = this.props.auth;
-    const addProject = {
+
+    const { user } = this.props.auth;
+
+    const newProject = {
       name: this.state.name,
       shortCode: this.state.shortCode,
       effortUnit: this.state.effortUnit,
@@ -69,34 +71,20 @@ class NewProjectModal extends Component {
       projectMembers: [{ userID: this.state.userID }, { userID: user._id }]
     };
 
-    // New Project via addProject action
-    this.props.newProject(addProject);
+    // Add Project via addProject action
+    this.props.addProject(newProject);
 
     // Close modal
     this.toggle();
+
+    // Refresh project page
+    setTimeout(() => {
+      this.props.getProjects();
+    }, 500);
   };
 
   render() {
     const { users } = this.props.user;
-
-    const effortUnits = [
-      {
-        id: "0",
-        value: "Select Effort Units",
-        label: "Select Effort Units"
-      },
-      {
-        id: "1",
-        value: "points",
-        label: "points"
-      },
-      {
-        id: "2",
-        value: "hours",
-        label: "hours"
-      }
-    ];
-
     return (
       <div>
         {this.props.isAuthenticated ? (
@@ -158,11 +146,11 @@ class NewProjectModal extends Component {
                 <Label for="userID">Select Project Members:</Label>
                 <Input
                   type="select"
-                  //multiple
+                  // multiple
                   name="userID"
                   id="userID"
                   onChange={this.onChange}
-                  //onChange={this.onChangeMembers}
+                  // onChange={this.onChangeMembers}
                 >
                   >
                   {users.map(({ _id, email }) => (
@@ -192,5 +180,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { newProject, getUsers }
+  { addProject, getUsers, getProjects }
 )(NewProjectModal);
