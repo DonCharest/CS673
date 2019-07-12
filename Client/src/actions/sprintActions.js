@@ -44,7 +44,7 @@ export const setCardsLoading = () => {
 };
 
 
-export const addNewCard = (newCard) => dispatch => {
+export const addNewCard = (newCard,successCallback) => dispatch => {
   dispatch(setCardsLoading());
   axios
     .post("/api/cards", newCard)
@@ -53,10 +53,30 @@ export const addNewCard = (newCard) => dispatch => {
           type: NEW_CARD,
           payLoad: newCard
         })
+
       }
-    )
+    ).then(successCallback())
     .catch(err => {
       console.error(err)
       dispatch(returnErrors(err.response.data, err.response.status))
     });
+}
+
+export const editCard = () => {
+  console.log('editing')
+  // dispatch(setCardsLoading());
+  // axios
+  //   .post("/api/cards", newCard)
+  //   .then(res => {
+  //       dispatch({
+  //         type: NEW_CARD,
+  //         payLoad: newCard
+  //       })
+
+  //     }
+  //   ).then(successCallback())
+  //   .catch(err => {
+  //     console.error(err)
+  //     dispatch(returnErrors(err.response.data, err.response.status))
+  //   });
 }
