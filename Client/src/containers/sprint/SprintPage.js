@@ -50,16 +50,19 @@ class SprintPage extends Component {
         <div className={classes.allSprintColumns}>
           <div className={classes.columnContainer}>
             <div className={classes.columnHeader}>To do</div>
-            {this.props.sprint.todo.map((item, index) => <div key={index} className={classes.sprintStory}>{item.description}</div>)}
+            {this.props.sprint.todo.map((item, index) => <Card key={index} cardData={item} />)}
           </div>
           <div className={classes.columnContainer}>
             <div className={classes.columnHeader}>WIP</div>
+            {this.props.sprint.workinprogress.map((item, index) => <Card key={index} cardData={item} />)}
           </div>
           <div className={classes.columnContainer}>
             <div className={classes.columnHeader}>Verification</div>
+            {this.props.sprint.verification.map((item, index) => <Card key={index} cardData={item} />)}
           </div>
           <div className={classes.columnContainer}>
             <div className={classes.columnHeader}>Complete</div>
+            {this.props.sprint.done.map((item, index) => <Card key={index} cardData={item} />)}
           </div>
         </div>
       </div>

@@ -35,13 +35,13 @@ class Card extends Component {
           showCardModal={this.state.showCardModal}
           toggleCardModal={this.toggleCardModal}
           saveCard={this.props.actions.editCard}
-          description={this.props.description}
-          cardId={this.props.id}
           deleteCard={this.props.actions.deleteCard}
+          cardData={this.props.cardData}
         />
         
         <div className={classes.cardDescription}>
-          {this.props.description}
+          {this.props.cardData.description}
+
         </div>
 
         <Button onClick={this.toggleCardModal}>Edit</Button>

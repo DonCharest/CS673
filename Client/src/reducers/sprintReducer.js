@@ -19,9 +19,11 @@ const sprint = (state = {
   case GET_CARDS:
     return action.payLoad
   case NEW_CARD:
-    return {...state, 
-      backlog: [...state.backlog, action.payLoad]
-    }
+    return state
+    // return {...state, 
+    //   backlog: [...state.backlog, action.payLoad]
+    // }
+
   case DELETE_CARD:
     return {
       backlog: state.backlog.filter(item => item._id !== action.payload),

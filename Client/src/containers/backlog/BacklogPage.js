@@ -51,7 +51,7 @@ class BacklogPage extends Component {
         <Button onClick={this.toggleCardModal}>Add Story</Button>
         <div className={classes.allSprintColumns}>
           <div className={classes.columnContainer}>
-            {this.props.sprint.backlog.map((item, index) => <Card key={index} description={item.description} id={item._id} />)}
+            {this.props.sprint.backlog.map((item, index) => <Card key={index} cardData={item} />)}
           </div>
         </div>
 

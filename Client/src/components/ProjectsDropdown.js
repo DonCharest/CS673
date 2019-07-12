@@ -20,6 +20,7 @@ class ProjectsDropdown extends Component {
           <Form.Label>Projects</Form.Label>
           <Form.Control 
             as="select" name={this.props.name} >
+            <option key="blank" value="">Select</option>
           {this.props.projects.map((item) => {
             return <option key={item._id} value={item._id}>{item.name}</option>
           })}

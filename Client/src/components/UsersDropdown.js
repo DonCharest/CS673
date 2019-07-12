@@ -21,6 +21,7 @@ class UsersDropdown extends Component {
           <Form.Label>Users</Form.Label>
           <Form.Control 
             as="select" name={this.props.name} >
+            <option key="blank" value="">Select</option>
             {this.props.users.map((item) => {
               return <option key={item._id} value={item._id}>{item.name}</option>
             })}

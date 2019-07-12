@@ -80,21 +80,20 @@ export const deleteCard = (cardId, successCallback) => dispatch => {
     });
 }
 
-export const editCard = () => {
-  console.log('editing')
-  // dispatch(setCardsLoading());
-  // axios
-  //   .post("/api/cards", newCard)
-  //   .then(res => {
-  //       dispatch({
-  //         type: NEW_CARD,
-  //         payLoad: newCard
-  //       })
+export const editCard = (newCard,successCallback) => dispatch => {
+  dispatch(setCardsLoading());
+  axios
+    .put("/api/cards", newCard)
+    .then(res => {
+        dispatch({
+          type: NEW_CARD,
+          payLoad: newCard
+        })
 
-  //     }
-  //   ).then(successCallback())
-  //   .catch(err => {
-  //     console.error(err)
-  //     dispatch(returnErrors(err.response.data, err.response.status))
-  //   });
+      }
+    ).then(successCallback())
+    .catch(err => {
+      console.error(err)
+      dispatch(returnErrors(err.response.data, err.response.status))
+    });
 }
