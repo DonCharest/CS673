@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Button, Modal, Form} from 'react-bootstrap';
-import * as actions from '../../reducers/actions';
+import CardModal from '../../components/CardModal'
+import Card from '../../components/Card'
+import * as actions from '../../actions/sprintActions';
 import * as classes from '../../app.css';
 
 
@@ -13,62 +15,42 @@ class SprintPage extends Component {
     super(props)
 
     this.state = {
-      showAddStoryModal: false,
-      newStoryName: ''
+      showCardModal: false,
     }
 
-    this.toggleAddStoryModal = this.toggleAddStoryModal.bind(this);
-    this.saveAndClose = this.saveAndClose.bind(this);
-    this.updateNewStoryName = this.updateNewStoryName.bind(this);
+    this.toggleCardModal = this.toggleCardModal.bind(this);
   }
 
+  componentDidMount() {
+    // request all cards
+    this.props.actions.getCards()
+  }
 
-  toggleAddStoryModal() {
-    if (this.state.showAddStoryModal) {
-      this.setState({showAddStoryModal: false, newStoryName: ''})
+  toggleCardModal() {
+    if (this.state.showCardModal) {
+      this.setState({showCardModal: false})
     } else {
-      this.setState({showAddStoryModal: true})
+      this.setState({showCardModal: true})
     }
   }
 
-  updateNewStoryName(e) {
-    this.setState({newStoryName: e.target.value})
-  }
-
-  saveAndClose() {
-    this.props.actions.addNewStory({name: this.state.newStoryName})
-    this.toggleAddStoryModal();
-  }
+  
 
   render() {
     return (
       <div>
-        <Modal show={this.state.showAddStoryModal} onHide={this.toggleAddStoryModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add New Story</Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body>
-            <Form>
-              <Form.Group controlId="story-name">
-                <Form.Label>Story Name</Form.Label>
-                <Form.Control onChange={this.updateNewStoryName} type="text" placeholder="story name" />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-
-          <Modal.Footer>
-            <Button variant="secondary"  onClick={this.toggleAddStoryModal}>Close</Button>
-            <Button variant="primary" onClick={this.saveAndClose}>Save changes</Button>
-          </Modal.Footer>
-        </Modal>
-
+        <CardModal
+          title="Add New Story"
+          showCardModal={this.state.showCardModal}
+          toggleCardModal={this.toggleCardModal}
+          saveCard={this.props.actions.addNewCard}
+        />
         <h1>Sprint</h1>
-        <Button onClick={this.toggleAddStoryModal}>Add Story</Button>
+        <Button onClick={this.toggleCardModal}>Add Story</Button>
         <div className={classes.allSprintColumns}>
           <div className={classes.columnContainer}>
             <div className={classes.columnHeader}>To do</div>
-            {this.props.sprint.todo.map((item) => <div className={classes.sprintStory}>{item.name}</div>)}
+            {this.props.sprint.todo.map((item, index) => <div key={index} className={classes.sprintStory}>{item.description}</div>)}
           </div>
           <div className={classes.columnContainer}>
             <div className={classes.columnHeader}>WIP</div>
@@ -89,6 +71,7 @@ class SprintPage extends Component {
 const mapStateToProps = (state) => {
   return {
     sprint: state.sprint,
+    auth: state.auth
   }
 };
 
