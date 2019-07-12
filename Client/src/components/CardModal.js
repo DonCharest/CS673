@@ -189,7 +189,7 @@ class CardModal extends Component {
 
         <Modal.Footer>
           <Button variant="secondary"  onClick={this.props.toggleCardModal}>Close</Button>
-          {this.props.cardId ? <Button variant="danger"  onClick={() => this.props.deleteCard(this.props.cardId, this.props.toggleCardModal)}>Delete</Button> : null}
+          {this.props.cardData ? <Button variant="danger"  onClick={() => this.props.deleteCard(this.props.cardId, this.props.toggleCardModal)}>Delete</Button> : null}
           <Button variant="primary" onClick={this.saveAndClose}>Save changes</Button>
         </Modal.Footer>
       </Modal>
