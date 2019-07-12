@@ -48,11 +48,7 @@ router.route('/cards')
             priority:req.body.priority,
             type:req.body.type,
             load:req.body.load,
-            stage:{
-                stageName: req.body.stageName,
-                startDate: Date.now(),
-                endDate: null
-            }
+            stage:{stageName: req.body.stageName}
         });
         
         newCard.save((err) => {
@@ -142,8 +138,7 @@ router.put('/cardcomment', async function (req,res){
     // Create the next comment
     await card.comments.push({
         'commentText':req.body.comment,
-        'projectMember':req.body.username,
-        'date':req.body.date
+        'projectMember':req.body.username
     });
     
     // Save the changes
