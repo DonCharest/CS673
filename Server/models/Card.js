@@ -23,7 +23,8 @@ var stageSchema = new mongoose.Schema({
     },
     endDate:{
         type: Date, 
-        required: false
+        required: false,
+        default: null
     }
 });
 stageSchema.plugin(immutablePlugin);
