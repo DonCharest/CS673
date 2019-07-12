@@ -13,6 +13,7 @@ const sprintSchema = new Schema({
     project: { type: mongoose.Schema.Types.ObjectId,
         ref: 'Project'
        },
+    //project: { type: String, required: true},
     startDate: {type: Date, required: true, default: Date.now},
     endDate: {type: Date, required: false},
     capacity: {type: Number, required: true, default: 0},
