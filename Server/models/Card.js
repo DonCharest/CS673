@@ -12,8 +12,7 @@ const immutablePlugin = require('mongoose-immutable');
 var stageSchema = new mongoose.Schema({
     stageName:{
         type: String, 
-        required: true, 
-        default: "BACKLOG"
+        required: true
     },
     startDate:{
         type: Date, 
@@ -65,6 +64,10 @@ var cardSchema = new mongoose.Schema({
     index:{
         type: Number, 
         required: false
+    },
+    title:{
+        type: String,
+        required: true
     },
     description:{
         type: String, 
