@@ -75,8 +75,14 @@ hr {
   font-weight: bold;
 }
 
-.sprintStory {
+
+.card {
+  background-color: white;
   border: solid gray 2px;
   border-radius: 5px;
+  padding: 5px;
 }
 
+.cardDescription {
+
+}
