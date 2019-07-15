@@ -100,3 +100,23 @@ export const editCard = (newCard,successCallback) => dispatch => {
       dispatch(returnErrors(err.response.data, err.response.status))
     });
 }
+
+export const updateStage = (id, newStage) => dispatch => {
+  dispatch(setCardsLoading());
+  const data = {
+    id,
+    stageName: newStage.toUpperCase()
+  }
+  axios
+    .put("/api/stagechange", data)
+    .then(res => {
+        setTimeout(() => {
+          dispatch(getCards())
+        }, 2000)
+      }
+    )
+    .catch(err => {
+      console.error(err)
+      dispatch(returnErrors(err.response.data, err.response.status))
+    });
+}
