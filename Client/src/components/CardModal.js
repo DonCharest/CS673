@@ -11,7 +11,6 @@ class CardModal extends Component {
   constructor(props) {
     super(props);
 
-    console.log('props', props.loggedInId)
     this.state = {
       description: props.cardData ? props.cardData.description : '',
       stage: props.cardData ?  props.cardData.stage[0].stageName.toLowerCase() : 'backlog',
