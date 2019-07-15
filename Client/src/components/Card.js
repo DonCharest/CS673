@@ -17,6 +17,7 @@ class Card extends Component {
     }
 
     this.toggleCardModal = this.toggleCardModal.bind(this);
+    this.updateStage = this.updateStage.bind(this)
   }
 
   toggleCardModal() {
@@ -25,6 +26,10 @@ class Card extends Component {
     } else {
       this.setState({showCardModal: true})
     }
+  }
+
+  updateStage(e) {
+    this.props.actions.updateStage(this.props.cardData._id, e.target.value)
   }
 
   render() {
@@ -40,10 +45,23 @@ class Card extends Component {
         />
         
         <div className={classes.cardDescription}>
-          {this.props.cardData.description}
+          {this.props.cardData.title}
 
         </div>
-
+        <Form.Group controlId="stage">
+          <Form.Label>Stage</Form.Label>
+          <Form.Control 
+            as="select"  
+            name="stage"
+            onChange={this.updateStage} 
+            value={this.props.cardData.stage[0].stageName}>
+            <option value="backlog">BackLog</option>
+            <option value="todo">ToDo</option>
+            <option value="workinprogress">Work in Progress</option>
+            <option value="verification">Verification</option>
+            <option value="done">Done</option>
+          </Form.Control>
+        </Form.Group>
         <Button onClick={this.toggleCardModal}>Edit</Button>
       </div>
     );

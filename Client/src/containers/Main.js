@@ -9,7 +9,7 @@ import {
   NavItem
 } from "reactstrap";
 import { connect } from "react-redux";
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import * as actions from "../actions/authActions";
 import RegisterModal from "./auth/RegisterModal";
@@ -24,17 +24,20 @@ import ProjectPage from "./project/ProjectPage";
 import * as classes from "../app.css";
 
 class Main extends Component {
-  componentDidMount() {
-    this.props.actions.loadUser();
-  }
-
-  state = {
-    isOpen: false
-  };
-
   static propTypes = {
     auth: PropTypes.object.isRequired
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isOpen: false
+    };
+  }
+
+  componentDidMount() {
+    this.props.actions.loadUser();
+  }
 
   toggle = () => {
     this.setState({
@@ -45,14 +48,35 @@ class Main extends Component {
   render() {
     const { isAuthenticated, user } = this.props.auth;
 
+    var adminLink;
+    if (user) {
+      if (user.role == undefined) {
+        window.location.reload();
+      }
+      if (user.role == "admin") {
+        adminLink = (
+          <Link className="nav-link" to="/Admin">
+            Admin
+          </Link>
+        );
+      }
+    }
+
+    var projectLink;
+    if (user) {
+      if (user.role == "project") {
+        projectLink = (
+          <Link className="nav-link" to="/Project">
+            Project
+          </Link>
+        );
+      }
+    }
+
     const authLinks = (
       <Fragment>
-        <Link className="nav-link" to="/Admin">
-          Admin
-        </Link>
-        <Link className="nav-link" to="/Project">
-          Project
-        </Link>
+        {adminLink}
+        {projectLink}
         <Link className="nav-link" to="/BackLog">
           Backlog
         </Link>
@@ -144,9 +168,9 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    actions: bindActionCreators({...actions}, dispatch),  
+    actions: bindActionCreators({ ...actions }, dispatch)
   };
 };
 
