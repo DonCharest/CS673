@@ -36,14 +36,17 @@ var commentSchema = new mongoose.Schema({
     },
     projectMember:{
         type: String, 
-        required: true
+        required: true,
+        immutable: true
     },
     date:{
         type: Date, 
         default: Date.now,
-        required: false
+        required: false,
+        immutable: true
     }
 })
+commentSchema.plugin(immutablePlugin);
 
 // The Card model holds all components of a story and its subdocuments.
 var cardSchema = new mongoose.Schema({
