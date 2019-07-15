@@ -19,7 +19,11 @@ class ProjectsDropdown extends Component {
         <Form.Group controlId="projects">
           <Form.Label>Projects</Form.Label>
           <Form.Control 
-            as="select" name={this.props.name} >
+            as="select" 
+            name={this.props.name} 
+            onChange={this.props.onChange}
+            value={this.props.value}
+            >
             <option key="blank" value="">Select</option>
           {this.props.projects.map((item) => {
             return <option key={item._id} value={item._id}>{item.name}</option>
