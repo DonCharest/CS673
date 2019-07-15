@@ -4,6 +4,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
+  ModalFooter,
   Form,
   FormGroup,
   Label,
@@ -20,12 +21,12 @@ class NewProjectModal extends Component {
     modal: false,
     name: "",
     shortCode: "",
-    effortUnit: "",
+    // effortUnit: "",
     description: "",
     projectMemebers: [],
-    userID: "",
-    epics: [],
-    epic: ""
+    userID: ""
+    // epics: [],
+    // epic: ""
   };
 
   static propTypes = {
@@ -66,9 +67,10 @@ class NewProjectModal extends Component {
     const newProject = {
       name: this.state.name,
       shortCode: this.state.shortCode,
-      effortUnit: this.state.effortUnit,
+      // effortUnit: this.state.effortUnit,
       description: this.state.description,
-      projectMembers: [{ userID: this.state.userID }, { userID: user._id }]
+      // projectMembers: [{ userID: this.state.userID }, { userID: user._id }]
+      projectMembers: [{ userID: user._id }]
     };
 
     // Add Project via addProject action
@@ -121,7 +123,7 @@ class NewProjectModal extends Component {
                   maxLength="4"
                   onChange={this.onChange}
                 />
-                <Label for="effortUnit">Effort Units:</Label>
+                {/* <Label for="effortUnit">Effort Units:</Label>
                 <Input
                   type="select"
                   name="effortUnit"
@@ -134,7 +136,7 @@ class NewProjectModal extends Component {
                       {effortUnit.label}
                     </option>
                   ))}
-                </Input>
+                </Input> */}
                 <Label for="description">Description:</Label>
                 <Input
                   type="textarea"
@@ -143,7 +145,7 @@ class NewProjectModal extends Component {
                   placeholder="e.g. 'Create an Agile project management software application'"
                   onChange={this.onChange}
                 />
-                <Label for="userID">Select Project Members:</Label>
+                {/* <Label for="userID">Select Project Members:</Label>
                 <Input
                   type="select"
                   // multiple
@@ -158,7 +160,7 @@ class NewProjectModal extends Component {
                       {email}
                     </option>
                   ))}
-                </Input>
+                </Input> */}
                 <Button color="dark" style={{ marginTop: "2rem" }} block>
                   New Project
                 </Button>

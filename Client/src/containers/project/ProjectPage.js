@@ -9,6 +9,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
+  ModalFooter,
   Form,
   FormGroup,
   Label,
@@ -152,7 +153,7 @@ class ProjectPage extends Component {
                     {<strong>{name}</strong>}
                     <Button
                       className="float-right"
-                      outline
+                      // outline
                       color="danger"
                       size="sm"
                       style={{ marginRight: "5px" }}
@@ -162,8 +163,8 @@ class ProjectPage extends Component {
                     </Button>
                     <Button
                       className="float-right"
-                      outline
-                      color="info"
+                      // outline
+                      color="primary"
                       size="sm"
                       style={{ marginRight: "5px" }}
                       onClick={this.onViewClick.bind(this, _id)}
@@ -201,9 +202,9 @@ class ProjectPage extends Component {
                     id="shortCode"
                     maxLength="4"
                     defaultValue={this.state.shortCode}
-                    onChange={this.onChange}
+                    // onChange={this.onChange}
                   />
-                  <Label for="effortUnit">Effort Units:</Label>
+                  {/* <Label for="effortUnit">Effort Units:</Label>
                   <Input
                     type="select"
                     name="effortUnit"
@@ -217,7 +218,7 @@ class ProjectPage extends Component {
                         {effortUnit.label}
                       </option>
                     ))}
-                  </Input>
+                  </Input> */}
                   <Label for="description">Description:</Label>
                   <Input
                     type="textarea"
@@ -226,7 +227,7 @@ class ProjectPage extends Component {
                     defaultValue={this.state.description}
                     onChange={this.onChange}
                   />
-                  <Label for="userID">Select Project Members:</Label>
+                  {/* <Label for="userID">Select Project Members:</Label>
                   <Input
                     type="select"
                     multiple
@@ -241,13 +242,17 @@ class ProjectPage extends Component {
                         {email}
                       </option>
                     ))}
-                  </Input>
+                  </Input> */}
                   <Button color="dark" style={{ marginTop: "2rem" }} block>
-                    Update Project
+                    Update Project Details
                   </Button>
                 </FormGroup>
               </Form>
             </ModalBody>
+            <ModalFooter>
+              <Button color="primary">Project Members</Button>
+              <Button color="primary">Project Epics</Button>
+            </ModalFooter>
           </Modal>
         </div>
       </Container>
