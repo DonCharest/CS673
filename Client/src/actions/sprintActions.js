@@ -53,7 +53,9 @@ export const addNewCard = (newCard,successCallback) => dispatch => {
           type: NEW_CARD,
           payLoad: newCard
         })
-
+        setTimeout(() => {
+          dispatch(getCards())
+        }, 2000)
       }
     ).then(successCallback())
     .catch(err => {
@@ -64,8 +66,7 @@ export const addNewCard = (newCard,successCallback) => dispatch => {
 
 export const deleteCard = (cardId, successCallback) => dispatch => {
   dispatch(setCardsLoading());
-  axios
-    .delete("/api/cards", {id: cardId})
+  axios({method: 'delete', url: "/api/cards", data: {id: cardId}, })
     .then(res => {
         dispatch({
           type: DELETE_CARD,
@@ -89,7 +90,9 @@ export const editCard = (newCard,successCallback) => dispatch => {
           type: NEW_CARD,
           payLoad: newCard
         })
-
+        setTimeout(() => {
+          dispatch(getCards())
+        }, 2000)
       }
     ).then(successCallback())
     .catch(err => {
