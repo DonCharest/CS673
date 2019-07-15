@@ -51,6 +51,12 @@ class AdminPage extends Component {
     this.props.getUsers();
   };
 
+  onDeleteUserClick = id => {
+    if (window.confirm("This project will be permanently deleted!")) {
+      this.props.deleteUser(id);
+    }
+  };
+
   render() {
     const { users } = this.props.user;
     const userRoles = [
@@ -119,11 +125,20 @@ class AdminPage extends Component {
                     </FormGroup>
                     <Button
                       className={classes.viewBtn}
-                      color="warning"
+                      color="primary"
                       size="sm"
                       onClick={this.onUpdateUserClick.bind(this, _id, option)}
                     >
                       Update
+                    </Button>
+
+                    <Button
+                      className={classes.deleteBtn}
+                      color="danger"
+                      size="sm"
+                      onClick={this.onDeleteUserClick.bind(this, _id, option)}
+                    >
+                      Delete
                     </Button>
                   </Form>
                 </ListGroupItem>
