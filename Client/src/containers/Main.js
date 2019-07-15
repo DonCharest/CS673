@@ -30,10 +30,8 @@ class Main extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
-      isOpen: false,
-      role: ""
+      isOpen: false
     };
   }
 
@@ -52,36 +50,27 @@ class Main extends Component {
 
     var adminLink;
     if (user) {
-      console.log("AL - " + user.role);
+      if (user.role == undefined) {
+        window.location.reload();
+      }
       if (user.role == "admin") {
-        console.log("AL - true");
         adminLink = (
           <Link className="nav-link" to="/Admin">
             Admin
           </Link>
         );
-      } else {
-        console.log("AL - false");
       }
-    } else {
-      console.log("AL - User not found");
     }
 
     var projectLink;
     if (user) {
-      console.log("PL - " + user.role);
       if (user.role == "project") {
-        console.log("PL - true");
         projectLink = (
           <Link className="nav-link" to="/Project">
             Project
           </Link>
         );
-      } else {
-        console.log("PL - false");
       }
-    } else {
-      console.log("PL - User not found");
     }
 
     const authLinks = (
