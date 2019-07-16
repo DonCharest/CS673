@@ -74,8 +74,7 @@ class CardModal extends Component {
     } else {
       // if new
       updatedCardData = {...baseCardData, 
-        currentStage: this.state.stage, 
-        "stage.0.stageName": this.state.stage, 
+        stageName: this.state.stage, 
          project: this.state.projectId,
         createdBy: this.props.loggedInId, 
       }
