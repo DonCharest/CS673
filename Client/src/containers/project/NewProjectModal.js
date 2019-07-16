@@ -47,13 +47,13 @@ class NewProjectModal extends Component {
     });
   };
 
-  onChangeMembers = e => {
-    let value = Array.from(e.target.selectedOptions, option => option.value);
+  // onChangeMembers = e => {
+  //   let value = Array.from(e.target.selectedOptions, option => option.value);
 
-    this.setState({
-      [e.target.name]: value
-    });
-  };
+  //   this.setState({
+  //     [e.target.name]: value
+  //   });
+  // };
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });

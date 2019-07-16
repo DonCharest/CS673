@@ -29,6 +29,7 @@ import axios from "axios";
 import { tokenConfig } from "../../actions/authActions";
 // import { getUsers } from "../../actions/userActions";
 // import UpdateProjectModal from "./UpdateProjectModal";
+import ProjectMemberModal from "./ProjectMemberModal";
 
 class ProjectPage extends Component {
   static propTypes = {
@@ -50,18 +51,29 @@ class ProjectPage extends Component {
       effortUnit: "",
       description: "",
       projectMembers: [],
-      userID: ""
+      userID: "",
+      showProjectMemberModal: false
     };
 
     // this.handleChange = this.onViewClick.bind(this);
     //this.handleSubmit = this.handleSubmit.bind(this);
     this.toggle = this.toggle.bind(this);
+
+    this.toggleProjectMemberModal = this.toggleProjectMemberModal.bind(this);
   }
 
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
+  }
+
+  toggleProjectMemberModal() {
+    if (this.state.showProjectMemberModal) {
+      this.setState({ showProjectMemberModal: false });
+    } else {
+      this.setState({ showProjectMemberModal: true });
+    }
   }
 
   componentDidMount() {
@@ -204,21 +216,7 @@ class ProjectPage extends Component {
                     defaultValue={this.state.shortCode}
                     // onChange={this.onChange}
                   />
-                  {/* <Label for="effortUnit">Effort Units:</Label>
-                  <Input
-                    type="select"
-                    name="effortUnit"
-                    id="effortUnit"
-                    defaultValue={this.state.effortUnit}
-                    onChange={this.onChange}
-                  >
-                    >
-                    {effortUnits.map(effortUnit => (
-                      <option key={effortUnit.id} value={effortUnit.value}>
-                        {effortUnit.label}
-                      </option>
-                    ))}
-                  </Input> */}
+
                   <Label for="description">Description:</Label>
                   <Input
                     type="textarea"
@@ -227,22 +225,7 @@ class ProjectPage extends Component {
                     defaultValue={this.state.description}
                     onChange={this.onChange}
                   />
-                  {/* <Label for="userID">Select Project Members:</Label>
-                  <Input
-                    type="select"
-                    multiple
-                    name="userID"
-                    id="userID"
-                    defaultValue={this.state.projectMembers}
-                    onChange={this.onChange}
-                  >
-                    >
-                    {users.map(({ _id, email }) => (
-                      <option key={_id} value={_id}>
-                        {email}
-                      </option>
-                    ))}
-                  </Input> */}
+
                   <Button color="dark" style={{ marginTop: "2rem" }} block>
                     Update Project Details
                   </Button>
@@ -252,6 +235,12 @@ class ProjectPage extends Component {
             <ModalFooter>
               <Button color="primary">Project Members</Button>
               <Button color="primary">Project Epics</Button>
+              <ProjectMemberModal
+                _id={this.state._id}
+                showProjectMemberModal={this.state.showProjectMemberModal}
+                toggleProjectMemberModal={this.toggleProjectMemberModal}
+                //saveCard={this.props.actions.addNewCard}
+              />
             </ModalFooter>
           </Modal>
         </div>
