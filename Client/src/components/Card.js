@@ -53,7 +53,7 @@ class Card extends Component {
               as="select"  
               name="stage"
               onChange={this.updateStage} 
-              value={this.props.cardData.stage[0].stageName}>
+              value={this.props.cardData.currentStage ? this.props.cardData.currentStage.toLowerCase()  : this.props.cardData.stage[0].stageName.toLowerCase()}>
               <option value="backlog">BackLog</option>
               <option value="todo">ToDo</option>
               <option value="workinprogress">Work in Progress</option>
