@@ -21,7 +21,12 @@ export const getCards = () => dispatch => {
           done: [],
         } ;
         res.data.forEach( (item) => {
-          orderedSprint[item.stage[0].stageName.toLowerCase()].push(item)
+          if (item.currentStage) {
+            orderedSprint[item.currentStage.toLowerCase()].push(item)  
+          } else {
+            orderedSprint[item.stage[0].stageName.toLowerCase()].push(item)  
+          }
+          
         })
 
         dispatch({

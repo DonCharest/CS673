@@ -13,7 +13,7 @@ class CardModal extends Component {
 
     this.state = {
       description: props.cardData ? props.cardData.description : '',
-      stage: props.cardData ?  props.cardData.stage[0].stageName.toLowerCase() : 'backlog',
+      stage: props.cardData && props.cardData.currentStage ? props.cardData.currentStage.toLowerCase() : 'backlog',
       assignedId: props.cardData ?  props.cardData.assignedTo : props.loggedInId,
       projectId: '',
       shortcode:  '',
