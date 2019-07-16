@@ -9,7 +9,6 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Form,
   FormGroup,
   Label,
@@ -19,17 +18,13 @@ import {
   updateProject,
   getProjects,
   deleteProject,
-  viewProject
+  viewProject,
+  addProjectMembers
 } from "../../actions/projectActions";
 import NewProjectModal from "./NewProjectModal";
-import { effortUnits } from "./effortUnits";
 import * as classes from "../../app.css";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { tokenConfig } from "../../actions/authActions";
-// import { getUsers } from "../../actions/userActions";
-// import UpdateProjectModal from "./UpdateProjectModal";
-import ProjectMemberModal from "./ProjectMemberModal";
 
 class ProjectPage extends Component {
   static propTypes = {
@@ -37,49 +32,27 @@ class ProjectPage extends Component {
     project: PropTypes.object.isRequired,
     isAuthenticated: PropTypes.bool,
     user: PropTypes.object.isRequired
-    // getUsers: PropTypes.func.isRequired,
-    // auth: PropTypes.object.isRequired
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      modal: false,
+      modalDetails: false,
+      modalMembers: false,
       _id: "",
       name: "",
       shortCode: "",
-      effortUnit: "",
       description: "",
       projectMembers: [],
-      userID: "",
-      showProjectMemberModal: false
+      userID: ""
     };
 
-    // this.handleChange = this.onViewClick.bind(this);
-    //this.handleSubmit = this.handleSubmit.bind(this);
-    this.toggle = this.toggle.bind(this);
-
-    this.toggleProjectMemberModal = this.toggleProjectMemberModal.bind(this);
-  }
-
-  toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal
-    }));
-  }
-
-  toggleProjectMemberModal() {
-    if (this.state.showProjectMemberModal) {
-      this.setState({ showProjectMemberModal: false });
-    } else {
-      this.setState({ showProjectMemberModal: true });
-    }
+    this.toggleDetails = this.toggleDetails.bind(this);
+    this.toggleMembers = this.toggleMembers.bind(this);
   }
 
   componentDidMount() {
     this.props.getProjects();
-    // this.props.getUsers();
-    // this.getProjectById(this.props._id);
   }
 
   getProjectById(id) {
@@ -90,34 +63,40 @@ class ProjectPage extends Component {
         _id: project._id,
         name: project.name,
         shortCode: project.shortCode,
-        effortUnit: project.effortUnit,
         description: project.description,
-        projectMembers: project.projectMembers
+        projectMembers: project.projectMembers,
+        userID: project.userID
       });
     });
   }
 
+  // ****** Delete a Project ******
   onDeleteClick = id => {
     if (window.confirm("This project will be permanently deleted!")) {
       this.props.deleteProject(id);
     }
   };
 
-  onViewClick = id => {
-    // this.props.viewProject(id);
+  // ****** Project Details ( View & Update ) ******
+  toggleDetails() {
+    this.setState(prevState => ({
+      modalDetails: !prevState.modalDetails
+    }));
+  }
+
+  onDetailsClick = id => {
     this.getProjectById(id);
 
     setTimeout(() => {
-      this.toggle();
+      this.toggleDetails();
     }, 500);
   };
 
-  //  Update values ************************
-  onChange = e => {
+  onChangeDetails = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  onSubmit = e => {
+  onSubmitDetails = e => {
     e.preventDefault();
 
     const updatedProject = {
@@ -126,21 +105,62 @@ class ProjectPage extends Component {
       shortCode: this.state.shortCode,
       effortUnit: this.state.effortUnit,
       description: this.state.description
-      // projectMembers: [{ userID: this.state.userID }]
     };
 
-    // Add Project via addProject action
+    // Update Project Details via updateProject action
     this.props.updateProject(updatedProject);
 
-    // Close modal
-    this.toggle();
+    // Close details modal
+    this.toggleDetails();
 
     // Refresh project page
     setTimeout(() => {
       this.props.getProjects();
     }, 500);
   };
-  // End Update Values **********************
+
+  // ****** ADD Project Members ******
+  toggleMembers() {
+    this.setState(prevState => ({
+      modalMembers: !prevState.modalMembers
+    }));
+  }
+
+  onAddMembersClick = id => {
+    this.getProjectById(id);
+
+    setTimeout(() => {
+      this.toggleMembers();
+    }, 500);
+  };
+
+  onChangeMembers = e => {
+    let value = Array.from(e.target.selectedOptions, option => option.value);
+
+    this.setState({
+      [e.target.name]: value
+    });
+  };
+
+  onSubmitProjectMembers = e => {
+    e.preventDefault();
+
+    const newProjectMembers = {
+      projectID: this.state._id,
+      projectMembers: [{ userID: this.state.userID }]
+    };
+
+    // Add Project Members via addProjectMembers action
+    this.props.addProjectMembers(newProjectMembers);
+
+    // Close modal
+    this.toggleMembers();
+
+    // Refresh project page
+    setTimeout(() => {
+      this.props.getProjects();
+    }, 500);
+  };
 
   render() {
     const { projects } = this.props.project;
@@ -148,6 +168,7 @@ class ProjectPage extends Component {
 
     return (
       <Container>
+        {/* Main Project Page */}
         <div>
           <h1>Project</h1>
           <hr />
@@ -165,7 +186,6 @@ class ProjectPage extends Component {
                     {<strong>{name}</strong>}
                     <Button
                       className="float-right"
-                      // outline
                       color="danger"
                       size="sm"
                       style={{ marginRight: "5px" }}
@@ -175,11 +195,19 @@ class ProjectPage extends Component {
                     </Button>
                     <Button
                       className="float-right"
-                      // outline
-                      color="primary"
+                      color="secondary"
                       size="sm"
                       style={{ marginRight: "5px" }}
-                      onClick={this.onViewClick.bind(this, _id)}
+                      onClick={this.onAddMembersClick.bind(this, _id)}
+                    >
+                      Add Members
+                    </Button>
+                    <Button
+                      className="float-right"
+                      color="info"
+                      size="sm"
+                      style={{ marginRight: "5px" }}
+                      onClick={this.onDetailsClick.bind(this, _id)}
                     >
                       Details
                     </Button>
@@ -188,16 +216,18 @@ class ProjectPage extends Component {
               ))}
             </TransitionGroup>
           </ListGroup>
-          {/* ******************************************** */}
 
+          {/* Details Modal */}
           <Modal
-            isOpen={this.state.modal}
-            toggle={this.toggle}
+            isOpen={this.state.modalDetails}
+            toggle={this.toggleDetails}
             className={this.props.className}
           >
-            <ModalHeader toggle={this.toggle}>Project Details</ModalHeader>
+            <ModalHeader toggle={this.toggleDetails}>
+              Project Details
+            </ModalHeader>
             <ModalBody>
-              <Form onSubmit={this.onSubmit}>
+              <Form onSubmit={this.onSubmitDetails}>
                 <FormGroup>
                   <Label for="name">Project Name:</Label>
                   <Input
@@ -205,25 +235,35 @@ class ProjectPage extends Component {
                     name="name"
                     id="name"
                     defaultValue={this.state.name}
-                    onChange={this.onChange}
+                    onChange={this.onChangeDetails}
                   />
                   <Label for="shortCode">Short Code:</Label>
                   <Input
+                    readOnly
                     type="text"
                     name="shortCode"
                     id="shortCode"
                     maxLength="4"
                     defaultValue={this.state.shortCode}
-                    // onChange={this.onChange}
                   />
-
                   <Label for="description">Description:</Label>
                   <Input
                     type="textarea"
                     name="description"
                     id="description"
                     defaultValue={this.state.description}
-                    onChange={this.onChange}
+                    onChange={this.onChangeDetails}
+                  />
+                  {/* I would like to list all current project members here */}
+                  <Label for="members">Project Members:</Label>
+                  <Input
+                    readOnly
+                    type="textarea"
+                    name="members"
+                    id="members"
+                    value={JSON.stringify(this.state.projectMembers, [
+                      "userID"
+                    ])}
                   />
 
                   <Button color="dark" style={{ marginTop: "2rem" }} block>
@@ -232,16 +272,41 @@ class ProjectPage extends Component {
                 </FormGroup>
               </Form>
             </ModalBody>
-            <ModalFooter>
-              <Button color="primary">Project Members</Button>
-              <Button color="primary">Project Epics</Button>
-              <ProjectMemberModal
-                _id={this.state._id}
-                showProjectMemberModal={this.state.showProjectMemberModal}
-                toggleProjectMemberModal={this.toggleProjectMemberModal}
-                //saveCard={this.props.actions.addNewCard}
-              />
-            </ModalFooter>
+          </Modal>
+
+          {/* Add Members Modal */}
+          <Modal
+            isOpen={this.state.modalMembers}
+            toggle={this.toggleMembers}
+            className={this.props.className}
+          >
+            <ModalHeader toggle={this.toggleMembers}>
+              Add Project Members
+            </ModalHeader>
+            <ModalBody>
+              <Form onSubmit={this.onSubmitProjectMembers}>
+                <FormGroup>
+                  <Label for="userID">Select Project Members:</Label>
+                  <Input
+                    type="select"
+                    multiple
+                    name="userID"
+                    id="userID"
+                    onChange={this.onChangeMembers}
+                  >
+                    >
+                    {users.map(({ _id, email }) => (
+                      <option key={_id} value={_id}>
+                        {email}
+                      </option>
+                    ))}
+                  </Input>
+                  <Button color="dark" style={{ marginTop: "2rem" }} block>
+                    Add Members
+                  </Button>
+                </FormGroup>
+              </Form>
+            </ModalBody>
           </Modal>
         </div>
       </Container>
@@ -253,10 +318,9 @@ const mapStateToProps = state => ({
   project: state.project,
   user: state.user,
   isAuthenticated: state.auth.isAuthenticated
-  // auth: state.auth,
 });
 
 export default connect(
   mapStateToProps,
-  { getProjects, deleteProject, viewProject, updateProject }
+  { getProjects, deleteProject, viewProject, updateProject, addProjectMembers }
 )(ProjectPage);
