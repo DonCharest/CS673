@@ -55,6 +55,7 @@ router.route('/cards')
             priority:req.body.priority,
             type:req.body.type,
             load:req.body.load,
+            currentStage: req.body.stageName,
             stage:{stageName: req.body.stageName}
         });
         
@@ -274,9 +275,7 @@ router.put('/cardindex', async function (req, res){
 //  Target URL: */api/stagechange PUT
 /*  Change the card stage:
     - The card stages are stored as a collection of documents, with each document being 
-        the history of a card in one stage.
-    - When a card is created, it is added to BACKLOG by default with a start date of 
-        Date.now and no end date. 
+        the history of a card in one stage. 
     - When a card changes stage:
         1. It's current stage is given an end date,
         2. Create the new stage with a start date of now.
@@ -292,7 +291,8 @@ router.put('/stagechange', async function (req, res){
         {"_id": req.body.id, "stage.endDate":null},
         {
             "$set":{
-                "stage.$.endDate": today
+                "stage.$.endDate": today,
+                "currentStage":req.body.stageName
             }
         },
         function(err, doc){
@@ -328,5 +328,4 @@ router.put('/stagechange', async function (req, res){
         }
     });
 });
-
 module.exports = router;
