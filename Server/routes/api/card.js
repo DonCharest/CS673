@@ -73,34 +73,6 @@ router.route('/cards')
     });
 }) // NOTE - NO SEMICOLON!!!
 
-// Delete a card by id: ADMIN ONLY!!!
-.delete(async function(req, res){
-    let card = await Card.findOneAndDelete({'_id': req.body.id});
-
-    if(card){
-
-        // Decrement the index of remaining cards in the project.
-        await Card.updateMany(
-            {
-                "project": card.project,
-                "index": {$gt: card.index}
-            },
-            {$inc:{index: -1}}
-        );
-        
-        res.status(200).json({
-                success: true,
-                cards: card
-            });
-    }
-    else {
-        res.status(500).json({
-            success: false,
-            error: `Card delete failed: ID ${req.body.id}`
-        });
-    }
-}) // NOTE - NO SEMICOLON!!!
-
 // Update a card by ID to change information included in the request.body.
 //  NOTE - Do not use this route for updating INDEX.
 // REFERENCE: https://stackoverflow.com/questions/47877333/when-using-findoneandupdate-how-to-leave-fields-as-is-if-no-value-provided-i
@@ -137,6 +109,35 @@ router.route('/cards')
     }
 });
 // END OF router.route('/cards').
+
+// Target URL: */api/cards/card_id DELETE
+// Delete a card by id: ADMIN ONLY!!!
+router.delete('/cards/:id/', async function(req, res){
+    let card = await Card.findOneAndDelete({'_id': req.params.id});
+
+    if(card){
+
+        // Decrement the index of remaining cards in the project.
+        await Card.updateMany(
+            {
+                "project": card.project,
+                "index": {$gt: card.index}
+            },
+            {$inc:{index: -1}}
+        );
+        
+        res.status(200).json({
+                success: true,
+                cards: card
+            });
+    }
+    else {
+        res.status(500).json({
+            success: false,
+            error: `Card delete failed: ID ${req.params.id}`
+        });
+    }
+});
 
 // Target URL: */api/addrelated PUT
 // Add a RELATED CARD ID to a card by pushing the text String.
