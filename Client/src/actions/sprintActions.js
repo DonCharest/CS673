@@ -111,7 +111,7 @@ export const updateStage = (id, newStage) => dispatch => {
     dispatch(setCardsLoading());
     const data = {
       id,
-      stageName: newStage.toUpperCase()
+      currentStage: newStage.toUpperCase()
     }
     axios
       .put("/api/stagechange", data)
