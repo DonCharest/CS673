@@ -12,11 +12,11 @@ class CardModal extends Component {
     super(props);
 
     this.state = {
+      title: props.cardData ? props.cardData.title : '',
       description: props.cardData ? props.cardData.description : '',
       stage: props.cardData && props.cardData.currentStage ? props.cardData.currentStage.toLowerCase() : 'backlog',
       assignedId: props.cardData ?  props.cardData.assignedTo : props.loggedInId,
       projectId: '',
-      shortcode:  '',
       priority: props.cardData ?  props.cardData.priority : 'MEDIUM',
       type: props.cardData ? props.cardData.type : 'REQUIREMENT',
       load: props.cardData ? props.cardData.load : 1,
@@ -53,8 +53,8 @@ class CardModal extends Component {
 
 
     const baseCardData =  {
+      title: this.state.title, 
       description: this.state.description, 
-      stage: this.state.stage, 
       priority: this.state.priority,
       type: this.state.type,
       load:this.state.load,
@@ -74,8 +74,9 @@ class CardModal extends Component {
     } else {
       // if new
       updatedCardData = {...baseCardData, 
+        currentStage: this.state.stage, 
+        "stage.0.stageName": this.state.stage, 
          project: this.state.projectId,
-        'project.shortcode': this.state.shortcode,
         createdBy: this.props.loggedInId, 
       }
     }
@@ -95,28 +96,24 @@ class CardModal extends Component {
         <Modal.Body>
           <Form>
             <Form.Group controlId="story-name">
-              <Form.Label>Story Name</Form.Label>
+              <Form.Label>Title</Form.Label>
               <Form.Control 
-                value={this.state.description} 
+                value={this.state.title} 
                 onChange={this.updateField} 
-                name="description"
+                name="title"
                 type="text" 
                 placeholder="story name" 
               />
             </Form.Group>
-            <Form.Group controlId="stage">
-              <Form.Label>Stage</Form.Label>
+            <Form.Group controlId="story-description">
+                <Form.Label>Description</Form.Label>
               <Form.Control 
-                as="select" 
-                name="stage"
-                onChange={this.updateField} 
-                value={this.state.stage}>
-                <option value="backlog">BackLog</option>
-                <option value="todo">ToDo</option>
-                <option value="workinprogress">Work in Progress</option>
-                <option value="verification">Verification</option>
-                <option value="done">Done</option>
-              </Form.Control>
+                  value={this.state.description} 
+                  onChange={this.updateField} 
+                  name="description"
+                  type="textarea" 
+                  placeholder="" 
+                />
             </Form.Group>
 
             <Form.Group controlId="priorty">
@@ -157,21 +154,25 @@ class CardModal extends Component {
           {!this.props.cardData ? 
 
             <div>
+              <Form.Group controlId="stage">
+                <Form.Label>Stage</Form.Label>
+                <Form.Control 
+                  as="select" 
+                  name="stage"
+                  onChange={this.updateField} 
+                  value={this.state.stage}>
+                  <option value="backlog">BackLog</option>
+                  <option value="todo">ToDo</option>
+                  <option value="workinprogress">Work in Progress</option>
+                  <option value="verification">Verification</option>
+                  <option value="done">Done</option>
+                </Form.Control>
+              </Form.Group>
               <ProjectsDropdown
                 value = {this.state.projectId}
                 name="projectId"
                 onChange={this.updateField}
               /> 
-              <Form.Group controlId="project-shortcode">
-                <Form.Label>Story Name</Form.Label>
-                <Form.Control 
-                  value={this.state.shortcode} 
-                  onChange={this.updateField} 
-                  name="shortcode"
-                  type="text" 
-                  placeholder="project shortcode" 
-                />
-              </Form.Group>
             </div> : null}
           {this.props.cardData ? 
             <div>
@@ -188,7 +189,7 @@ class CardModal extends Component {
 
         <Modal.Footer>
           <Button variant="secondary"  onClick={this.props.toggleCardModal}>Close</Button>
-          {this.props.cardData ? <Button variant="danger"  onClick={() => this.props.deleteCard(this.props.cardId, this.props.toggleCardModal)}>Delete</Button> : null}
+          {this.props.cardData ? <Button variant="danger"  onClick={() => this.props.deleteCard(this.props.cardData._id, this.props.toggleCardModal)}>Delete</Button> : null}
           <Button variant="primary" onClick={this.saveAndClose}>Save changes</Button>
         </Modal.Footer>
       </Modal>
