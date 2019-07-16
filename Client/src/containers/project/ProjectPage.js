@@ -19,7 +19,8 @@ import {
   getProjects,
   deleteProject,
   viewProject,
-  addProjectMembers
+  addProjectMembers,
+  addEpics
 } from "../../actions/projectActions";
 import NewProjectModal from "./NewProjectModal";
 import * as classes from "../../app.css";
@@ -39,16 +40,20 @@ class ProjectPage extends Component {
     this.state = {
       modalDetails: false,
       modalMembers: false,
+      modalEpics: false,
       _id: "",
       name: "",
       shortCode: "",
       description: "",
       projectMembers: [],
-      userID: ""
+      userID: "",
+      epics: [],
+      epicName: ""
     };
 
     this.toggleDetails = this.toggleDetails.bind(this);
     this.toggleMembers = this.toggleMembers.bind(this);
+    this.toggleEpics = this.toggleEpics.bind(this);
   }
 
   componentDidMount() {
@@ -65,7 +70,9 @@ class ProjectPage extends Component {
         shortCode: project.shortCode,
         description: project.description,
         projectMembers: project.projectMembers,
-        userID: project.userID
+        userID: project.userID,
+        epics: project.epics,
+        epicName: project.epicName
       });
     });
   }
@@ -76,6 +83,7 @@ class ProjectPage extends Component {
       this.props.deleteProject(id);
     }
   };
+  // ****** End => Delete a Project ******
 
   // ****** Project Details ( View & Update ) ******
   toggleDetails() {
@@ -118,6 +126,7 @@ class ProjectPage extends Component {
       this.props.getProjects();
     }, 500);
   };
+  // ****** End => Project Details ( View & Update ) ******
 
   // ****** ADD Project Members ******
   toggleMembers() {
@@ -161,6 +170,48 @@ class ProjectPage extends Component {
       this.props.getProjects();
     }, 500);
   };
+  // ****** End => ADD Project Members ******
+
+  // ****** Add Epics to a Project ******
+  toggleEpics() {
+    this.setState(prevState => ({
+      modalEpics: !prevState.modalEpics
+    }));
+  }
+
+  onAddEpicsClick = id => {
+    this.getProjectById(id);
+
+    setTimeout(() => {
+      this.toggleEpics();
+    }, 500);
+  };
+
+  onChangeEpics = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  onSubmitEpics = e => {
+    e.preventDefault();
+
+    const epic = {
+      projectID: this.state._id,
+      // epics: [{ epicName: this.state.epicName }]
+      epics: this.state.epicName
+    };
+
+    // Update Project Details via updateProject action
+    this.props.addEpics(epic);
+
+    // Close details modal
+    this.toggleEpics();
+
+    // Refresh project page
+    setTimeout(() => {
+      this.props.getProjects();
+    }, 500);
+  };
+  // ****** End => Add Epics to a Project ******
 
   render() {
     const { projects } = this.props.project;
@@ -198,7 +249,7 @@ class ProjectPage extends Component {
                       color="secondary"
                       size="sm"
                       style={{ marginRight: "5px" }}
-                      // onClick={this.onAddEpicsClick.bind(this, _id)}
+                      onClick={this.onAddEpicsClick.bind(this, _id)}
                     >
                       Add Epics
                     </Button>
@@ -282,7 +333,7 @@ class ProjectPage extends Component {
                     type="textarea"
                     name="epics"
                     id="epics"
-                    value={JSON.stringify(this.state.epics, ["epic.name"])}
+                    value={JSON.stringify(this.state.epics, ["epicName"])}
                   />
 
                   <Button color="dark" style={{ marginTop: "2rem" }} block>
@@ -327,6 +378,35 @@ class ProjectPage extends Component {
               </Form>
             </ModalBody>
           </Modal>
+
+          {/* Add Epics Modal */}
+          <Modal
+            isOpen={this.state.modalEpics}
+            toggle={this.toggleEpics}
+            className={this.props.className}
+          >
+            <ModalHeader toggle={this.toggleEpics}>
+              Add Epic to Project
+            </ModalHeader>
+            <ModalBody>
+              <Form onSubmit={this.onSubmitEpics}>
+                <FormGroup>
+                  <Label for="epicName">Epic Name:</Label>
+                  <Input
+                    type="text"
+                    name="epicName"
+                    id="epicName"
+                    placeholder="Epic Title"
+                    onChange={this.onChangeEpics}
+                  />
+
+                  <Button color="dark" style={{ marginTop: "2rem" }} block>
+                    Add Epic
+                  </Button>
+                </FormGroup>
+              </Form>
+            </ModalBody>
+          </Modal>
         </div>
       </Container>
     );
@@ -341,5 +421,12 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getProjects, deleteProject, viewProject, updateProject, addProjectMembers }
+  {
+    getProjects,
+    deleteProject,
+    viewProject,
+    updateProject,
+    addProjectMembers,
+    addEpics
+  }
 )(ProjectPage);

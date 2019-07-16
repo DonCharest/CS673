@@ -13,7 +13,7 @@ const mongoose = require("mongoose");
 
 // Epic schema
 var Epic = new mongoose.Schema({
-  name: { type: String, required: false }
+  epicName: { type: String, required: false }
 });
 
 // The Project Member schema tracks the users that are members of a
