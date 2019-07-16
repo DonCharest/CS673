@@ -198,6 +198,15 @@ class ProjectPage extends Component {
                       color="secondary"
                       size="sm"
                       style={{ marginRight: "5px" }}
+                      // onClick={this.onAddEpicsClick.bind(this, _id)}
+                    >
+                      Add Epics
+                    </Button>
+                    <Button
+                      className="float-right"
+                      color="secondary"
+                      size="sm"
+                      style={{ marginRight: "5px" }}
                       onClick={this.onAddMembersClick.bind(this, _id)}
                     >
                       Add Members
@@ -264,6 +273,16 @@ class ProjectPage extends Component {
                     value={JSON.stringify(this.state.projectMembers, [
                       "userID"
                     ])}
+                  />
+
+                  {/* I would like to list all current project epics here */}
+                  <Label for="epics">Project Epics:</Label>
+                  <Input
+                    readOnly
+                    type="textarea"
+                    name="epics"
+                    id="epics"
+                    value={JSON.stringify(this.state.epics, ["epic.name"])}
                   />
 
                   <Button color="dark" style={{ marginTop: "2rem" }} block>
