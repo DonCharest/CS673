@@ -74,17 +74,35 @@ router.route('/cards')
 }) // NOTE - NO SEMICOLON!!!
 
 // Update a card by ID to change information included in the request.body.
-//  NOTE - Do not use this route for updating INDEX.
 // REFERENCE: https://stackoverflow.com/questions/47877333/when-using-findoneandupdate-how-to-leave-fields-as-is-if-no-value-provided-i
 .put(async function(req, res){
 
     // What values are being updated in the request body?
     let params = {};
     for(let prop in req.body){
-        if(req.body[prop] = "index"){
+
+        //  Do not use this route for updating INDEX, STAGE, COMMENTS or RELATED CARDS.
+        if(['index', 'comment', 'related', 'stage', 'currentStage'].indexOf(prop) >= 0){
+            let message = "";
+            switch (prop){
+                case 'index': 
+                    message = "WARNING: Use /api/cardindex to UPDATE Card.index";
+                    break;
+                case 'comment':
+                    message = "WARNING: Use /api/cardcomment to UPDATE Card.comments";
+                    break;
+                case 'related':
+                    message = "WARNING: Use /api/addrelated to UPDATE Card.related";
+                    break;
+                case 'stage': 
+                    message = "WARNING: Use /api/stagechange to UPDATE Card.stage";
+                    break;
+                case 'currentStage':
+                    message = "WARNING: Use /api/stagechange to UPDATE Card.currentStage";
+            }
             res.status(200).json({
                 success: false,
-                error: "WARNING: Use /api/cardindex to UPDATE Card.index"
+                error: message
             });
         }
         else if(req.body[prop]){
@@ -111,7 +129,6 @@ router.route('/cards')
 // END OF router.route('/cards').
 
 // Target URL: */api/cards/card_id DELETE
-// Delete a card by id: ADMIN ONLY!!!
 router.delete('/cards/:id/', async function(req, res){
     let card = await Card.findOneAndDelete({'_id': req.params.id});
 
