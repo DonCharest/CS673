@@ -7,6 +7,7 @@
 */
 const router = require("express").Router();
 const { Project } = require("./../../models/Project");
+const { User } = require("./../../models/User");
 // var mongoose = require('mongoose');
 
 //***** Added a GET by ID route to view a Project  *****/
@@ -85,6 +86,7 @@ router.put("/projectuser", async function(req, res) {
   for (let newUserIDX in req.body.projectMembers[0].userID) {
     // new users in payload
     let dupeFound = false;
+    let userObj = User.findOne({"_id":req.body.projectMembers[0].userID});
     for (let dupeCheck in project.projectMembers) {
       // current users
       if (
@@ -98,7 +100,8 @@ router.put("/projectuser", async function(req, res) {
 
     if (dupeFound === false) {
       await project.projectMembers.push({
-        userID: req.body.projectMembers[0].userID[newUserIDX]
+        userID: req.body.projectMembers[0].userID[newUserIDX],
+        userEmail: userObj.email
       });
     }
   }

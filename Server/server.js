@@ -43,7 +43,6 @@ mongoose.Promise = global.Promise;
 // Initialize routes to the client with static files.
 //  https://flaviocopes.com/react-server-side-rendering/
 app.use(express.static(path.resolve(__dirname, "..", "Client/build")));
-
 app.use(require("./routes"));
 
 // User Routes ******* We need to modify the server setup to make these routes work ******
@@ -66,7 +65,7 @@ io.on("connection", function(socket) {
   console.log("A user has connected.");
 
   socket.on("chat message", function(msg) {
-    console.log("message: " + msg.message);
+  //console.log("message: " + msg.message);
 
     // Push the message object to the database to be loaded when the next user connects.
     let newMessage = new Chat({
@@ -79,7 +78,7 @@ io.on("connection", function(socket) {
     // If there is an error it is server side only, there is no response to send.
     newMessage.save(err => {
       if (err) {
-        this.emit("error", new Error(`Card save failed: ${err.message}`));
+        this.emit("error", new Error(`Chat message save failed: ${err.message}`));
       }
     });
 
