@@ -86,6 +86,21 @@ class ProjectPage extends Component {
   };
   // ****** End => Delete a Project ******
 
+  // ****** Delete a Project Member ******
+  onDeleteMemberClick = id => {
+    if (
+      window.confirm(
+        "This member will be permanently removed from the project!"
+      )
+    ) {
+      // console.log("epic _id: " + id);
+      let projID = this.state._id;
+      // this.props.deleteMember(id, projID);
+      this.toggleDetails();
+    }
+  };
+  // ****** End => Delete  a Project Member ******
+
   // ****** Delete an Epic ******
   onDeleteEpicClick = id => {
     if (window.confirm("This epic will be permanently deleted!")) {
@@ -326,8 +341,8 @@ class ProjectPage extends Component {
                     defaultValue={this.state.description}
                     onChange={this.onChangeDetails}
                   />
-                  {/* I would like to list all current project members here */}
-                  <Label for="members">Project Members:</Label>
+
+                  {/* <Label for="members">Project Members:</Label>
                   <Input
                     readOnly
                     type="textarea"
@@ -336,7 +351,33 @@ class ProjectPage extends Component {
                     value={JSON.stringify(this.state.projectMembers, [
                       "userID"
                     ])}
-                  />
+                  /> */}
+
+                  <ListGroup>
+                    <Label>Project Members:</Label>
+                    <TransitionGroup className="members-list">
+                      {this.state.projectMembers.map(({ _id, userID }) => (
+                        <CSSTransition
+                          key={_id}
+                          timeout={500}
+                          classNames="fade"
+                        >
+                          <ListGroupItem className={classes.listGroupEpicItem}>
+                            {userID}
+                            <Button
+                              className="float-right"
+                              color="danger"
+                              size="sm"
+                              style={{ marginRight: "5px" }}
+                              onClick={this.onDeleteMemberClick.bind(this, _id)}
+                            >
+                              Delete
+                            </Button>
+                          </ListGroupItem>
+                        </CSSTransition>
+                      ))}
+                    </TransitionGroup>
+                  </ListGroup>
 
                   <ListGroup>
                     <Label>Project Epics:</Label>
