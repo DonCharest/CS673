@@ -8,7 +8,8 @@ import {
   PROJECT_LOADING,
   PROJECTS_LOADING,
   ADD_MEMBERS,
-  ADD_EPICS
+  ADD_EPICS,
+  DELETE_EPIC
 } from "./types";
 import { tokenConfig } from "./authActions";
 import { returnErrors } from "./errorActions";
@@ -109,6 +110,27 @@ export const addEpics = epic => dispatch => {
     );
 };
 
+// Delete Epic from Project
+export const deleteEpic = (id, projID) => dispatch => {
+  axios
+    .delete(`/api/epic`, {
+      data: {
+        projectID: projID,
+        epics: id
+      }
+    })
+    .then(res =>
+      dispatch({
+        type: DELETE_EPIC,
+        payLoad: res.data
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+
+// Delete a Project
 export const deleteProject = id => (dispatch, getState) => {
   axios
     .delete(`/api/projects/${id}`, tokenConfig(getState))

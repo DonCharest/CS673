@@ -20,7 +20,8 @@ import {
   deleteProject,
   viewProject,
   addProjectMembers,
-  addEpics
+  addEpics,
+  deleteEpic
 } from "../../actions/projectActions";
 import NewProjectModal from "./NewProjectModal";
 import * as classes from "../../app.css";
@@ -84,6 +85,17 @@ class ProjectPage extends Component {
     }
   };
   // ****** End => Delete a Project ******
+
+  // ****** Delete an Epic ******
+  onDeleteEpicClick = id => {
+    if (window.confirm("This epic will be permanently deleted!")) {
+      // console.log("epic _id: " + id);
+      let projID = this.state._id;
+      this.props.deleteEpic(id, projID);
+      this.toggleDetails();
+    }
+  };
+  // ****** End => Delete an Epic ******
 
   // ****** Project Details ( View & Update ) ******
   toggleDetails() {
@@ -196,7 +208,6 @@ class ProjectPage extends Component {
 
     const epic = {
       projectID: this.state._id,
-      // epics: [{ epicName: this.state.epicName }]
       epics: this.state.epicName
     };
 
@@ -279,6 +290,7 @@ class ProjectPage extends Component {
 
           {/* Details Modal */}
           <Modal
+            scrollable={true}
             isOpen={this.state.modalDetails}
             toggle={this.toggleDetails}
             className={this.props.className}
@@ -326,15 +338,31 @@ class ProjectPage extends Component {
                     ])}
                   />
 
-                  {/* I would like to list all current project epics here */}
-                  <Label for="epics">Project Epics:</Label>
-                  <Input
-                    readOnly
-                    type="textarea"
-                    name="epics"
-                    id="epics"
-                    value={JSON.stringify(this.state.epics, ["epicName"])}
-                  />
+                  <ListGroup>
+                    <Label>Project Epics:</Label>
+                    <TransitionGroup className="epic-list">
+                      {this.state.epics.map(({ _id, epicName }) => (
+                        <CSSTransition
+                          key={_id}
+                          timeout={500}
+                          classNames="fade"
+                        >
+                          <ListGroupItem className={classes.listGroupEpicItem}>
+                            {epicName}
+                            <Button
+                              className="float-right"
+                              color="danger"
+                              size="sm"
+                              style={{ marginRight: "5px" }}
+                              onClick={this.onDeleteEpicClick.bind(this, _id)}
+                            >
+                              Delete
+                            </Button>
+                          </ListGroupItem>
+                        </CSSTransition>
+                      ))}
+                    </TransitionGroup>
+                  </ListGroup>
 
                   <Button color="dark" style={{ marginTop: "2rem" }} block>
                     Update Project Details
@@ -427,6 +455,7 @@ export default connect(
     viewProject,
     updateProject,
     addProjectMembers,
-    addEpics
+    addEpics,
+    deleteEpic
   }
 )(ProjectPage);
