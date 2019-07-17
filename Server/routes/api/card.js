@@ -55,6 +55,7 @@ router.route('/cards')
             priority:req.body.priority,
             type:req.body.type,
             load:req.body.load,
+            currentStage: req.body.stageName,
             stage:{stageName: req.body.stageName}
         });
         
@@ -72,46 +73,36 @@ router.route('/cards')
     });
 }) // NOTE - NO SEMICOLON!!!
 
-// Delete a card by id: ADMIN ONLY!!!
-.delete(async function(req, res){
-    let card = await Card.findOneAndDelete({'_id': req.body.id});
-
-    if(card){
-
-        // Decrement the index of remaining cards in the project.
-        await Card.updateMany(
-            {
-                "project": card.project,
-                "index": {$gt: card.index}
-            },
-            {$inc:{index: -1}}
-        );
-        
-        res.status(200).json({
-                success: true,
-                cards: card
-            });
-    }
-    else {
-        res.status(500).json({
-            success: false,
-            error: `Card delete failed: ID ${req.body.id}`
-        });
-    }
-}) // NOTE - NO SEMICOLON!!!
-
 // Update a card by ID to change information included in the request.body.
-//  NOTE - Do not use this route for updating INDEX.
 // REFERENCE: https://stackoverflow.com/questions/47877333/when-using-findoneandupdate-how-to-leave-fields-as-is-if-no-value-provided-i
 .put(async function(req, res){
 
     // What values are being updated in the request body?
     let params = {};
     for(let prop in req.body){
-        if(req.body[prop] = "index"){
+
+        //  Do not use this route for updating INDEX, STAGE, COMMENTS or RELATED CARDS.
+        if(['index', 'comment', 'related', 'stage', 'currentStage'].indexOf(prop) >= 0){
+            let message = "";
+            switch (prop){
+                case 'index': 
+                    message = "WARNING: Use /api/cardindex to UPDATE Card.index";
+                    break;
+                case 'comment':
+                    message = "WARNING: Use /api/cardcomment to UPDATE Card.comments";
+                    break;
+                case 'related':
+                    message = "WARNING: Use /api/addrelated to UPDATE Card.related";
+                    break;
+                case 'stage': 
+                    message = "WARNING: Use /api/stagechange to UPDATE Card.stage";
+                    break;
+                case 'currentStage':
+                    message = "WARNING: Use /api/stagechange to UPDATE Card.currentStage";
+            }
             res.status(200).json({
                 success: false,
-                error: "WARNING: Use /api/cardindex to UPDATE Card.index"
+                error: message
             });
         }
         else if(req.body[prop]){
@@ -136,6 +127,34 @@ router.route('/cards')
     }
 });
 // END OF router.route('/cards').
+
+// Target URL: */api/cards/card_id DELETE
+router.delete('/cards/:id/', async function(req, res){
+    let card = await Card.findOneAndDelete({'_id': req.params.id});
+
+    if(card){
+
+        // Decrement the index of remaining cards in the project.
+        await Card.updateMany(
+            {
+                "project": card.project,
+                "index": {$gt: card.index}
+            },
+            {$inc:{index: -1}}
+        );
+        
+        res.status(200).json({
+                success: true,
+                cards: card
+            });
+    }
+    else {
+        res.status(500).json({
+            success: false,
+            error: `Card delete failed: ID ${req.params.id}`
+        });
+    }
+});
 
 // Target URL: */api/addrelated PUT
 // Add a RELATED CARD ID to a card by pushing the text String.
@@ -274,9 +293,7 @@ router.put('/cardindex', async function (req, res){
 //  Target URL: */api/stagechange PUT
 /*  Change the card stage:
     - The card stages are stored as a collection of documents, with each document being 
-        the history of a card in one stage.
-    - When a card is created, it is added to BACKLOG by default with a start date of 
-        Date.now and no end date. 
+        the history of a card in one stage. 
     - When a card changes stage:
         1. It's current stage is given an end date,
         2. Create the new stage with a start date of now.
@@ -292,7 +309,8 @@ router.put('/stagechange', async function (req, res){
         {"_id": req.body.id, "stage.endDate":null},
         {
             "$set":{
-                "stage.$.endDate": today
+                "stage.$.endDate": today,
+                "currentStage":req.body.stageName
             }
         },
         function(err, doc){
@@ -328,5 +346,4 @@ router.put('/stagechange', async function (req, res){
         }
     });
 });
-
 module.exports = router;
