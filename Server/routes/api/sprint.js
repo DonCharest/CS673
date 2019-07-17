@@ -11,14 +11,60 @@ const router = express.Router();
 const {Sprint} = require('../../models/Sprint');
 const {Card} = require('../../models/Card');
 
+// View sprint by id
+router.get("/sprint/:id", (req, res) => {
+    Sprint.findById(req.params.id)
+      .then(sprint => res.json(sprint))
+      .catch(err => res.status(404).json({ success: false }));
+  });
+
+//remove sprint by id
+router.delete("/sprint/:id", (req, res) => {
+    //Sprint.findById(req.params.id)
+    Sprint.findOneAndDelete(req.params.id)
+      .then(sprint => sprint.remove().then(() => res.json({ success: true })))
+      .catch(err => res.status(404).json({ success: false }));
+  });
+
+//remove sprint by id
+// router.delete("/sprint/:id", (req, res) => {
+//     Sprint.findOneAndDelete(req.params.id)
+//       .then(sprint => sprint.remove().then(() => res.json({ success: true })))
+//       .catch(err => res.status(404).json({ success: false }));
+//   });
+
+  //edit sprint by id
+  router.put("/sprint/:id", async function(req,res){
+    let params = {};
+    for(let prop in req.body){
+        if(req.body[prop] = "index"){
+            res.status(200).send("WARNING: the sprint\'s index cannot be updated.");
+        }
+        else if(req.body[prop]){
+            params[prop] = req.body[prop];
+        }
+    };
+
+    let updatedSprint = false;
+    updatedSprint = await Sprint.findOneAndUpdate({'_id': req.params.id}, params);
+    if(updatedSprint){
+        res.status(200).send(`The sprint was updated: ${updatedSprint._id}`);
+    } else {
+        res.status(500).send('The sprint was not updated');
+    }
+});
+
 router.route('/sprint')
 
-// Display data about a sprint
-.get(async function (req, res) {
-
-    let sprintCards = await Card.find({'sprint': req.body.id});
-    res.status(200).json(sprintCards);
-})
+//get all sprint cards
+.get((req, res) => {
+    //Card.find()
+    Card.find({project: req.body.project, 
+            "stage.stageName": { $in: ["TODO","WIP","VERIFICATION","DONE"]},
+            "stage.endDate": null})
+      .sort({ "stage.stageName": 1 })
+      .then(cards => res.json(cards));
+  })
 
 
 // Create a new sprint
@@ -48,12 +94,23 @@ router.route('/sprint')
 })
 
 
-
+//TO BE REMOVED
 //Delete a sprint
 .delete(async function(req, res){
-    let deletedSprint = await Sprint.findOneAndDelete({'_id': req.body.id});
+    let deletedSprint = await Sprint.findOneAndDelete({'_id': req.params.index});
     if(deletedSprint){
-        res.status(200).send(`The sprint has been deleted: ${deletedSprint._id}`);
+
+        // Decrement the index of remaining sprints in the project.
+        await Sprint.updateMany(
+            {
+                "project": deletedSprint.project,
+                "index": {$gt: deletedSprint.index}
+            },
+            {$inc:{index: -1}}
+        );
+
+        // res.status(200).send(`The sprint has been deleted: ${deletedSprint._id}`);
+        res.status(200).send(`The sprint has been deleted: ${req.params.index}`);
     } else {
         res.status(500).send('The sprint was not deleted');
     }

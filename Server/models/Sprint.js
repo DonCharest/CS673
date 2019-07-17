@@ -13,8 +13,9 @@ const sprintSchema = new Schema({
     project: { type: mongoose.Schema.Types.ObjectId,
         ref: 'Project'
        },
+    //project: { type: String, required: true},
     startDate: {type: Date, required: true, default: Date.now},
-    endDate: {type: Date, required: true, default: (Date.now() + 7*24*3600*1000)},
+    endDate: {type: Date, required: false},
     capacity: {type: Number, required: true, default: 0},
     capacityUnit: {type: String, required: true, default: 'hours'}
     
