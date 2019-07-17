@@ -50,3 +50,9 @@
   font-weight: bold;
   margin-right: 10px;
 }
+
+
+.chatWindow {
+  max-height: 500px;
+  overflow-x: scroll;
+}
