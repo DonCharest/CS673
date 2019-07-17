@@ -26,6 +26,7 @@ export const PROJECT_LOADING = "PROJECT_LOADING";
 export const PROJECTS_LOADING = "PROJECTS_LOADING";
 export const ADD_MEMBERS = "ADD_MEMBERS";
 export const ADD_EPICS = "ADD_EPICS";
+export const DELETE_EPIC = "DELETE_EPIC";
 
 export const GET_CARDS = "GET_CARDS";
 export const CARDS_LOADING = "CARDS_LOADING";
