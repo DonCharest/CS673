@@ -80,40 +80,62 @@ router
 
 // Target URL: */api/projectuser PUT
 // Add a user to a project
-router.put("/projectuser", async function(req, res) {
-  let project = await Project.findOne({ _id: req.body.projectID });
+router
+  .route("/projectuser")
 
-  for (let newUserIDX in req.body.projectMembers[0].userID) {
-    // new users in payload
-    let dupeFound = false;
-    let userObj = User.findOne({"_id":req.body.projectMembers[0].userID});
-    for (let dupeCheck in project.projectMembers) {
-      // current users
-      if (
-        project.projectMembers[dupeCheck].userID ===
-        req.body.projectMembers[0].userID[newUserIDX]
-      ) {
-        dupeFound = true;
-        break;
+  .put(async function(req, res) {
+    let project = await Project.findOne({ _id: req.body.projectID });
+
+    for (let newUserIDX in req.body.projectMembers[0].userID) {
+      // new users in payload
+      let dupeFound = false;
+      // let userObj = await User.findOne({ _id: req.body.projectMembers[0].userID[newUserIDX] });
+      for (let dupeCheck in project.projectMembers) {
+        // current users
+        if ( project.projectMembers[dupeCheck].userID === req.body.projectMembers[0].userID[newUserIDX] ) {
+          dupeFound = true;
+          break;
+        }
+      }
+
+      if (dupeFound === false) {
+        await project.projectMembers.push({
+          userID: req.body.projectMembers[0].userID[newUserIDX],
+          // userEmail: userObj.email
+        });
       }
     }
 
-    if (dupeFound === false) {
-      await project.projectMembers.push({
-        userID: req.body.projectMembers[0].userID[newUserIDX],
-        userEmail: userObj.email
-      });
-    }
-  }
+    await project.save(err => {
+      if (err) {
+        res.status(500).send(`Project user could not be added: ${err.message}`);
+      } else {
+        res.status(200).send("Project user added");
+      }
+    });
+  })
 
-  await project.save(err => {
-    if (err) {
-      res.status(500).send(`Project user could not be added: ${err.message}`);
-    } else {
-      res.status(200).send("Project user added");
+  .delete(async function(req, res) {
+    let project = await Project.findOne({ _id: req.body.projectID });
+
+    for (let userToDelIDX in project.projectMembers) {
+      // find mongoID of projectMembers obj from userID
+      if (project.projectMembers[userToDelIDX].userID === req.body.userID)
+        // NOW DELETE IT
+        project.projectMembers.id(project.projectMembers[userToDelIDX]._id).remove();
     }
+
+    await project.save(err => {
+      if (err) {
+        res
+          .status(500)
+          .send(`Project member could not be deleted: ${err.message}`);
+      } else {
+        res.status(200).send("Project member deleted");
+      }
+    });
   });
-});
+
 
 router
   .route("/epic")

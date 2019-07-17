@@ -21,7 +21,8 @@ var Epic = new mongoose.Schema({
 var projMemberSchema = new mongoose.Schema({
   startDate: { type: Date, required: true, default: Date.now },
   endDate: { type: Date, required: false, default: null },
-  userID: { type: String, required: true }
+  userID: { type: String, required: true },
+  userEmail: { type: String, required: false }
 });
 
 //  The Project model holds all components of a project and its subdocuments.
