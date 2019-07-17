@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import socketIOClient from "socket.io-client";
 import PropTypes from "prop-types";
 import * as classes from "./chatPage.css";
+import ProjectsDropdown from '../../components/ProjectsDropdown'
 
 class chatPage extends Component {
   static propTypes = {
@@ -15,21 +16,47 @@ class chatPage extends Component {
     super(props);
     this.state = {
       response: [],
-      newMsg: ''
+      newMsg: '',
+      projectId: ''
     };
     this.socket = socketIOClient();
 
     this.submitMsg = this.submitMsg.bind(this)
     this.updateMsg = this.updateMsg.bind(this)
+    this.onChangeProject = this.onChangeProject.bind(this)
+    this.autoSelectProject = this.autoSelectProject.bind(this)
+    this.scrollToBottom = this.scrollToBottom.bind(this)
   }
 
   componentDidMount() {
     this.socket.on('chat message', data => this.setState({ response: [...this.state.response, JSON.parse(data)]}));
-    // request chat history
+    this.autoSelectProject()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.projects.length !== this.props.projects.length ) {
+      this.autoSelectProject()
+    }
+  }
+
+  autoSelectProject() {
+    if (this.props.projects.length > 0) {
+      this.onChangeProject({target: {value: this.props.projects[0]._id}})
+    }
+  }
+
+  scrollToBottom() {
+    this.el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  onChangeProject(e) {
+    this.setState({response: [], projectId: e.target.value})
+
     axios
-    .get(`/api/chat/?project=default`)
+    .get(`/api/chat/?project=${this.state.projectId}`)
     .then(res => {
         this.setState({response: res.data.chat})
+        this.scrollToBottom();
       }
     )
     .catch(err => {
@@ -43,44 +70,65 @@ class chatPage extends Component {
 
   submitMsg(e) {
     e.preventDefault()
-    this.socket.emit('chat message', {message: this.state.newMsg, user: this.props.auth.user.name, project: 'default'});
+    this.socket.emit('chat message', {
+      message: this.state.newMsg, 
+      user: this.props.auth.user.name, 
+      project: this.state.projectId
+    });
+    setTimeout(() => {
+      this.scrollToBottom()
+    }, 1000)
+
     this.setState({newMsg: ''})
+  }
+
+  getDate (timeStamp) {
+    const date = new Date(timeStamp)
+    const monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+    ];
+    return `${monthNames[date.getMonth()]} ${date.getDate()} at ${date.getHours() > 12 ? date.getHours() - 12 : date.getHours()}:${date.getMinutes()}${date.getHours() > 12 ? 'pm': 'am' }`
+
   }
 
   render() {
     const { response } = this.state;
     const { isAuthenticated, user } = this.props.auth;
-    console.log('this.state', this.state)
     return (
       <Container>
         <div className="chat-page">
           <h1>Chat</h1>
-          <hr />
 
-          <p>
-            <strong>{user ? `Welcome ${user.name}` : ""}</strong>
-            {/* <strong>{user ? `Welcome ${user.email}` : ""}</strong> */}
-          </p>
-          <p>
-            <strong>{user ? `Role: ${user.role}` : ""}</strong>
-          </p>
-          <p>
-            <strong>{user ? `Projects: ${user.projects}` : ""}</strong>
-          </p>
-          {this.state.response.map((item, index) => {
-            console.log('item', item)
-            return (
-              <div key={index} className={classes.singleChat}>
-                <div className={classes.singleChatUser}>{item.user}:</div>
-                <div className={classes.singleChatMessage}>{item.message}</div>
-              </div>
-            )
+          <ProjectsDropdown
+            value = {this.state.projectId}
+            name="project"
+            onChange={this.onChangeProject}
+          />
 
-          })}
-          <input type="text" value={this.state.newMsg} onChange={this.updateMsg} />
-          <Button className="chat-button" color="primary" onClick={this.submitMsg}>
-            Send a message
-          </Button>
+          <div className={classes.chatWindow}>
+            {this.state.response.map((item, index) => {
+              return (
+                <div key={index} >
+                  <div>{this.getDate(item.datestamp)}</div>
+                  <div className={classes.singleChat}>
+                    <div className={classes.singleChatUser}>{item.user}:</div>
+                    <div className={classes.singleChatMessage}>{item.message}</div>
+                  </div>
+                </div>
+              )
+
+            })}
+            <div ref={el => { this.el = el; }} > </div>
+          </div>
+          <form onSubmit={this.submitMsg}>
+            <input type="text" value={this.state.newMsg} onChange={this.updateMsg} />
+            <Button type="submit" className="chat-button" color="primary" onClick={this.submitMsg}>
+              Send a message
+            </Button>
+          </form>
         </div>
       </Container>
     );
@@ -88,7 +136,8 @@ class chatPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  projects: state.project.projects,
 });
 
 export default connect(

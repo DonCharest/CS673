@@ -81,17 +81,16 @@ io.on("connection", function(socket) {
       if (err) {
         this.emit("error", new Error(`Card save failed: ${err.message}`));
       }
+    });
 
-    })
-    
-    io.emit("chat message", JSON.stringify(
-      {
+    io.emit(
+      "chat message",
+      JSON.stringify({
         project: msg.project,
         user: msg.user,
         message: msg.message
-      }
-    ));
-
+      })
+    );
   });
 
   socket.on("disconnect", function() {

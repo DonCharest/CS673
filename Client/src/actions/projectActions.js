@@ -6,7 +6,10 @@ import {
   UPDATE_PROJECT,
   DELETE_PROJECT,
   PROJECT_LOADING,
-  PROJECTS_LOADING
+  PROJECTS_LOADING,
+  ADD_MEMBERS,
+  ADD_EPICS,
+  DELETE_EPIC
 } from "./types";
 import { tokenConfig } from "./authActions";
 import { returnErrors } from "./errorActions";
@@ -75,6 +78,59 @@ export const updateProject = data => dispatch => {
     );
 };
 
+// Update Project to add members
+//export const addProjectMembers = (id, data) => (dispatch, getState) => {
+export const addProjectMembers = data => dispatch => {
+  axios
+    // .put(`/api/projects/${id}`, data, tokenConfig(getState))
+    .put(`api/projectuser`, data)
+    .then(res =>
+      dispatch({
+        type: ADD_MEMBERS,
+        payLoad: res.data
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+
+// Add Epic to Project
+export const addEpics = epic => dispatch => {
+  axios
+    .post("api/epic", epic)
+    .then(res =>
+      dispatch({
+        type: ADD_EPICS,
+        payLoad: res.data
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+
+// Delete Epic from Project
+export const deleteEpic = (id, projID) => dispatch => {
+  axios
+    .delete(`/api/epic`, {
+      data: {
+        projectID: projID,
+        epics: id
+      }
+    })
+    .then(res =>
+      dispatch({
+        type: DELETE_EPIC,
+        payLoad: res.data
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+
+// Delete a Project
 export const deleteProject = id => (dispatch, getState) => {
   axios
     .delete(`/api/projects/${id}`, tokenConfig(getState))

@@ -12,8 +12,7 @@ const immutablePlugin = require('mongoose-immutable');
 var stageSchema = new mongoose.Schema({
     stageName:{
         type: String, 
-        required: true, 
-        default: "BACKLOG"
+        required: true
     },
     startDate:{
         type: Date, 
@@ -23,7 +22,8 @@ var stageSchema = new mongoose.Schema({
     },
     endDate:{
         type: Date, 
-        required: false
+        required: false,
+        default: null
     }
 });
 stageSchema.plugin(immutablePlugin);
@@ -36,14 +36,17 @@ var commentSchema = new mongoose.Schema({
     },
     projectMember:{
         type: String, 
-        required: true
+        required: true,
+        immutable: true
     },
     date:{
         type: Date, 
         default: Date.now,
-        required: false
+        required: false,
+        immutable: true
     }
 })
+commentSchema.plugin(immutablePlugin);
 
 // The Card model holds all components of a story and its subdocuments.
 var cardSchema = new mongoose.Schema({
@@ -64,6 +67,10 @@ var cardSchema = new mongoose.Schema({
     index:{
         type: Number, 
         required: false
+    },
+    title:{
+        type: String,
+        required: true
     },
     description:{
         type: String, 
@@ -96,6 +103,10 @@ var cardSchema = new mongoose.Schema({
         type: Number, 
         required: true, 
         default: 1
+    },
+    currentStage:{
+        type: String, 
+        required: true
     },
     stage:[stageSchema],
     comments:[commentSchema],
