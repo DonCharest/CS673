@@ -14,7 +14,7 @@ import {
 import { connect } from "react-redux";
 import Proptypes from "prop-types";
 import { login } from "../../actions/authActions";
-import { clearErrors } from "../../actions/errorActions";
+import { clearErrors } from "../../actions/authErrorActions";
 
 class LoginModal extends Component {
   state = {
@@ -124,7 +124,7 @@ class LoginModal extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  error: state.error
+  error: state.authError
 });
 
 export default connect(

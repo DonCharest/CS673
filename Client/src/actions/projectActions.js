@@ -12,7 +12,7 @@ import {
   DELETE_EPIC
 } from "./types";
 import { tokenConfig } from "./authActions";
-import { returnErrors } from "./errorActions";
+import { returnErrors } from "./authErrorActions";
 
 // Create new Project
 export const addProject = project => (dispatch, getState) => {

@@ -1,8 +1,15 @@
 import React, {Component} from "react";
-import { Container } from "reactstrap";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import {Button, Modal, Form} from 'react-bootstrap';
+import {Button, 
+  Modal, 
+  ModalHeader, 
+  ModalBody, 
+  ModalFooter,
+  FormGroup,
+  Label,
+  Input,
+  Form} from 'reactstrap';
 import * as classes from "../app.css";
 import ProjectsDropdown from './ProjectsDropdown'
 import UsersDropdown from './UsersDropdown'
@@ -87,76 +94,75 @@ class CardModal extends Component {
   render() {
     return (
     <div>
-      <Modal show={this.props.showCardModal} onHide={this.props.toggleCardModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>{this.props.title}</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="story-name">
-              <Form.Label>Title</Form.Label>
-              <Form.Control 
+      <Modal isOpen={this.props.showCardModal} toggle={this.props.toggleCardModal}>
+        <ModalHeader toggle={this.props.toggleCardModal}>
+          {this.props.title}
+        </ModalHeader>
+        <Form onSubmit={this.saveAndClose}>
+        <ModalBody>
+            <FormGroup>
+              <Label>Title</Label>
+              <Input
                 value={this.state.title} 
                 onChange={this.updateField} 
                 name="title"
                 type="text" 
                 placeholder="story name" 
               />
-            </Form.Group>
-            <Form.Group controlId="story-description">
-                <Form.Label>Description</Form.Label>
-              <Form.Control 
+            </FormGroup>
+            <FormGroup >
+                <Label>Description</Label>
+              <Input
                   value={this.state.description} 
                   onChange={this.updateField} 
                   name="description"
                   type="textarea" 
                   placeholder="" 
                 />
-            </Form.Group>
+            </FormGroup>
 
-            <Form.Group controlId="priorty">
-              <Form.Label>Priority</Form.Label>
-              <Form.Control 
-                as="select" 
+            <FormGroup>
+              <Label>Priority</Label>
+              <Input
+                type="select" 
                 name="priority"
                 onChange={this.updateField} 
                 value={this.state.priority}>
                 <option value="LOW">Low</option>
                 <option value="MEDIUM">Medium</option>
                 <option value="HIGH">High</option>
-              </Form.Control>
-            </Form.Group>
+              </Input>
+            </FormGroup>
 
-            <Form.Group controlId="type">
-              <Form.Label>Type</Form.Label>
-              <Form.Control 
-                as="select" 
+            <FormGroup>
+              <Label>Type</Label>
+              <Input
+                type="select" 
                 name="type"
                 onChange={this.updateField} 
                 value={this.state.type}>
                 <option value="“REQUIREMENT”">Requirement</option>
                 <option value="TASK">Task</option>
                 <option value="ISSUE">Issue</option>
-              </Form.Control>
-            </Form.Group>
-            <Form.Group controlId="load">
-                <Form.Label>Story Name</Form.Label>
-                <Form.Control 
+              </Input>
+            </FormGroup>
+            <FormGroup>
+                <Label>Story Name</Label>
+                <Input
                   value={this.state.load} 
                   onChange={this.updateField} 
                   name="load"
                   type="number" 
                   placeholder="project load" 
                 />
-              </Form.Group>
+              </FormGroup>
           {!this.props.cardData ? 
 
             <div>
-              <Form.Group controlId="stage">
-                <Form.Label>Stage</Form.Label>
-                <Form.Control 
-                  as="select" 
+              <FormGroup>
+                <Label>Stage</Label>
+                <Input
+                  type="select" 
                   name="stage"
                   onChange={this.updateField} 
                   value={this.state.stage}>
@@ -165,12 +171,13 @@ class CardModal extends Component {
                   <option value="workinprogress">Work in Progress</option>
                   <option value="verification">Verification</option>
                   <option value="done">Done</option>
-                </Form.Control>
-              </Form.Group>
+                </Input>
+              </FormGroup>
               <ProjectsDropdown
                 value = {this.state.projectId}
                 name="projectId"
                 onChange={this.updateField}
+                dropdownId="projectsDropdownNewCard"
               /> 
             </div> : null}
           {this.props.cardData ? 
@@ -183,14 +190,15 @@ class CardModal extends Component {
             </div> : null}
             
             
-          </Form>
-        </Modal.Body>
+          
+        </ModalBody>
 
-        <Modal.Footer>
-          <Button variant="secondary"  onClick={this.props.toggleCardModal}>Close</Button>
-          {this.props.cardData ? <Button variant="danger"  onClick={() => this.props.deleteCard(this.props.cardData._id, this.props.toggleCardModal)}>Delete</Button> : null}
-          <Button variant="primary" onClick={this.saveAndClose}>Save changes</Button>
-        </Modal.Footer>
+        <ModalFooter>
+          <Button color="secondary"  onClick={this.props.toggleCardModal}>Close</Button>
+          {this.props.cardData ? <Button color="danger"  onClick={() => this.props.deleteCard(this.props.cardData._id, this.props.toggleCardModal)}>Delete</Button> : null}
+          <Button type="submit" color="primary" onClick={this.saveAndClose}>Save changes</Button>
+        </ModalFooter>
+        </Form>
       </Modal>
 
     </div>

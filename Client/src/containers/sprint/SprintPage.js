@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Button, Modal, Form} from 'react-bootstrap';
+import {Container, Button} from 'reactstrap';
 import CardModal from '../../components/CardModal'
 import Card from '../../components/Card'
 import * as actions from '../../actions/sprintActions';
@@ -38,15 +38,17 @@ class SprintPage extends Component {
 
   render() {
     return (
-      <div>
-        <CardModal
-          title="Add New Story"
-          showCardModal={this.state.showCardModal}
-          toggleCardModal={this.toggleCardModal}
-          saveCard={this.props.actions.addNewCard}
-        />
-        <h1>Sprint</h1>
-        <Button onClick={this.toggleCardModal}>Add Story</Button>
+      <Container>
+        <div className={classes.pageHeader}>
+          <CardModal
+            title="Add New Story"
+            showCardModal={this.state.showCardModal}
+            toggleCardModal={this.toggleCardModal}
+            saveCard={this.props.actions.addNewCard}
+          />
+          <h1>Sprint</h1>
+          <Button onClick={this.toggleCardModal}>Add Story</Button>
+        </div>
         <div className={classes.allSprintColumns}>
           <div className={classes.columnContainer}>
             <div className={classes.columnHeader}>To do</div>
@@ -65,7 +67,7 @@ class SprintPage extends Component {
             {this.props.sprint.done.map((item, index) => <Card key={index} cardData={item} />)}
           </div>
         </div>
-      </div>
+      </Container>
     );
   }
 };

@@ -16,9 +16,9 @@ class ProjectsDropdown extends Component {
     return (
       <div>
         <FormGroup>
-          <Label for={props.dropdownId || 'projectDropdown'}>Projects</Label>
+          <Label for={this.props.dropdownId || 'projectsDropdown'}>Projects</Label>
           <Input 
-            id={props.dropdownId || 'projectDropdown'}
+            id={this.props.dropdownId || 'projectDropdown'}
             type="select" 
             name={this.props.name} 
             onChange={this.props.onChange}

@@ -1,9 +1,8 @@
 import React, {Component} from "react";
 import { connect } from "react-redux";
 import {bindActionCreators} from 'redux';
-import { Container } from "reactstrap";
+import { Button, Label, Input, FormGroup } from "reactstrap";
 import PropTypes from "prop-types";
-import {Button, Modal, Form} from 'react-bootstrap';
 import * as classes from "../app.css";
 import CardModal from './CardModal'
 import * as actions from '../actions/sprintActions';
@@ -47,10 +46,10 @@ class Card extends Component {
         <div className={classes.cardDescription}>
           {this.props.cardData.title}
         </div>
-        <Form.Group controlId="stage">
-            <Form.Label>Stage</Form.Label>
-            <Form.Control 
-              as="select"  
+        <FormGroup >
+            <Label>Stage</Label>
+            <Input
+              type="select"  
               name="stage"
               onChange={this.updateStage} 
               value={this.props.cardData.currentStage ? this.props.cardData.currentStage.toLowerCase()  : this.props.cardData.stage[0].stageName.toLowerCase()}>
@@ -59,8 +58,8 @@ class Card extends Component {
               <option value="workinprogress">Work in Progress</option>
               <option value="verification">Verification</option>
               <option value="done">Done</option>
-            </Form.Control>
-          </Form.Group>
+            </Input>
+          </FormGroup>
 
         <Button onClick={this.toggleCardModal}>Edit</Button>
       </div>

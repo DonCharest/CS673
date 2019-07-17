@@ -14,7 +14,7 @@ import {
 import { connect } from "react-redux";
 import Proptypes from "prop-types";
 import { register } from "../../actions/authActions";
-import { clearErrors } from "../../actions/errorActions";
+import { clearErrors } from "../../actions/authErrorActions";
 import * as classes from "../../app.css";
 
 class RegisterModal extends Component {
@@ -144,7 +144,7 @@ class RegisterModal extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  error: state.error
+  error: state.authError
 });
 
 export default connect(

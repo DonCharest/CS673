@@ -32,3 +32,6 @@ export const GET_CARDS = "GET_CARDS";
 export const CARDS_LOADING = "CARDS_LOADING";
 export const NEW_CARD = "NEW_CARD";
 export const DELETE_CARD = "DELETE_CARD";
+
+export const SET_APP_ERRORS = "SET_APP_ERRORS"
+export const CLEAR_APP_ERRORS = "CLEAR_APP_ERRORS"

@@ -8,7 +8,7 @@ import {
   USERS_LOADING
 } from "./types";
 import { tokenConfig } from "./authActions";
-import { returnErrors } from "./errorActions";
+import { returnErrors } from "./authErrorActions";
 
 // Get all Users
 export const getUsers = () => (dispatch, getState) => {
