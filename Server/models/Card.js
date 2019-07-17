@@ -104,6 +104,10 @@ var cardSchema = new mongoose.Schema({
         required: true, 
         default: 1
     },
+    currentStage:{
+        type: String, 
+        required: true
+    },
     stage:[stageSchema],
     comments:[commentSchema],
     related:[String]
