@@ -24,8 +24,11 @@ export const UPDATE_PROJECT = "UPDATE_PROJECT";
 export const DELETE_PROJECT = "DELETE_PROJECT";
 export const PROJECT_LOADING = "PROJECT_LOADING";
 export const PROJECTS_LOADING = "PROJECTS_LOADING";
+export const ADD_MEMBERS = "ADD_MEMBERS";
+export const ADD_EPICS = "ADD_EPICS";
+export const DELETE_EPIC = "DELETE_EPIC";
 
-export const GET_CARDS = 'GET_CARDS'
-export const CARDS_LOADING = 'CARDS_LOADING'
-export const NEW_CARD = 'NEW_CARD'
-export const DELETE_CARD = 'DELETE_CARD'
+export const GET_CARDS = "GET_CARDS";
+export const CARDS_LOADING = "CARDS_LOADING";
+export const NEW_CARD = "NEW_CARD";
+export const DELETE_CARD = "DELETE_CARD";

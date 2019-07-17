@@ -1,11 +1,13 @@
 import {
-  ADD_PROJECT,
+  // ADD_PROJECT,
   GET_PROJECTS,
   VIEW_PROJECT,
   UPDATE_PROJECT,
   DELETE_PROJECT,
   PROJECT_LOADING,
-  PROJECTS_LOADING
+  PROJECTS_LOADING,
+  ADD_MEMBERS,
+  ADD_EPICS
 } from "../actions/types";
 
 const initialState = {
@@ -30,6 +32,22 @@ export default function(state = initialState, action) {
         loading: false
       };
     case UPDATE_PROJECT:
+      return {
+        ...state,
+        projects: state.projects.filter(
+          project => project._id !== action.payLoad
+        ),
+        loading: false
+      };
+    case ADD_MEMBERS:
+      return {
+        ...state,
+        projects: state.projects.filter(
+          project => project._id !== action.payLoad
+        ),
+        loading: false
+      };
+    case ADD_EPICS:
       return {
         ...state,
         projects: state.projects.filter(

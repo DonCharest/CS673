@@ -2,7 +2,8 @@ import axios from "axios";
 import {
   GET_CARDS,
   NEW_CARD,
-  CARDS_LOADING
+  CARDS_LOADING,
+  DELETE_CARD
 } from "./types";
 import { returnErrors } from "./errorActions";
 
@@ -21,7 +22,12 @@ export const getCards = () => dispatch => {
           done: [],
         } ;
         res.data.forEach( (item) => {
-          orderedSprint[item.stage[0].stageName.toLowerCase()].push(item)
+          if (item.currentStage) {
+            orderedSprint[item.currentStage.toLowerCase()].push(item)  
+          } else {
+            orderedSprint[item.stage[0].stageName.toLowerCase()].push(item)  
+          }
+          
         })
 
         dispatch({
@@ -66,13 +72,12 @@ export const addNewCard = (newCard,successCallback) => dispatch => {
 
 export const deleteCard = (cardId, successCallback) => dispatch => {
   dispatch(setCardsLoading());
-  axios({method: 'delete', url: "/api/cards", data: {id: cardId}, })
+  axios({method: 'delete', url: `/api/cards/${cardId}` })
     .then(res => {
         dispatch({
           type: DELETE_CARD,
-          payLoad: cardId
+          payLoad: res.data.cards._id
         })
-
       }
     ).then(successCallback())
     .catch(err => {
@@ -100,3 +105,24 @@ export const editCard = (newCard,successCallback) => dispatch => {
       dispatch(returnErrors(err.response.data, err.response.status))
     });
 }
+
+
+export const updateStage = (id, newStage) => dispatch => {
+    dispatch(setCardsLoading());
+    const data = {
+      id,
+      stageName: newStage.toUpperCase()
+    }
+    axios
+      .put("/api/stagechange", data)
+      .then(res => {
+          setTimeout(() => {
+            dispatch(getCards())
+          }, 2000)
+        }
+      )
+      .catch(err => {
+        console.error(err)
+        dispatch(returnErrors(err.response.data, err.response.status))
+      });
+  }

@@ -18,16 +18,15 @@ import {
   updateProject,
   getProjects,
   deleteProject,
-  viewProject
+  viewProject,
+  addProjectMembers,
+  addEpics,
+  deleteEpic
 } from "../../actions/projectActions";
 import NewProjectModal from "./NewProjectModal";
-import { effortUnits } from "./effortUnits";
 import * as classes from "../../app.css";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { tokenConfig } from "../../actions/authActions";
-// import { getUsers } from "../../actions/userActions";
-// import UpdateProjectModal from "./UpdateProjectModal";
 
 class ProjectPage extends Component {
   static propTypes = {
@@ -35,38 +34,31 @@ class ProjectPage extends Component {
     project: PropTypes.object.isRequired,
     isAuthenticated: PropTypes.bool,
     user: PropTypes.object.isRequired
-    // getUsers: PropTypes.func.isRequired,
-    // auth: PropTypes.object.isRequired
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      modal: false,
+      modalDetails: false,
+      modalMembers: false,
+      modalEpics: false,
       _id: "",
       name: "",
       shortCode: "",
-      effortUnit: "",
       description: "",
       projectMembers: [],
-      userID: ""
+      userID: "",
+      epics: [],
+      epicName: ""
     };
 
-    // this.handleChange = this.onViewClick.bind(this);
-    //this.handleSubmit = this.handleSubmit.bind(this);
-    this.toggle = this.toggle.bind(this);
-  }
-
-  toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal
-    }));
+    this.toggleDetails = this.toggleDetails.bind(this);
+    this.toggleMembers = this.toggleMembers.bind(this);
+    this.toggleEpics = this.toggleEpics.bind(this);
   }
 
   componentDidMount() {
     this.props.getProjects();
-    // this.props.getUsers();
-    // this.getProjectById(this.props._id);
   }
 
   getProjectById(id) {
@@ -77,34 +69,69 @@ class ProjectPage extends Component {
         _id: project._id,
         name: project.name,
         shortCode: project.shortCode,
-        effortUnit: project.effortUnit,
         description: project.description,
-        projectMembers: project.projectMembers
+        projectMembers: project.projectMembers,
+        userID: project.userID,
+        epics: project.epics,
+        epicName: project.epicName
       });
     });
   }
 
+  // ****** Delete a Project ******
   onDeleteClick = id => {
     if (window.confirm("This project will be permanently deleted!")) {
       this.props.deleteProject(id);
     }
   };
+  // ****** End => Delete a Project ******
 
-  onViewClick = id => {
-    // this.props.viewProject(id);
+  // ****** Delete a Project Member ******
+  onDeleteMemberClick = id => {
+    if (
+      window.confirm(
+        "This member will be permanently removed from the project!"
+      )
+    ) {
+      // console.log("epic _id: " + id);
+      let projID = this.state._id;
+      // this.props.deleteMember(id, projID);
+      this.toggleDetails();
+    }
+  };
+  // ****** End => Delete  a Project Member ******
+
+  // ****** Delete an Epic ******
+  onDeleteEpicClick = id => {
+    if (window.confirm("This epic will be permanently deleted!")) {
+      // console.log("epic _id: " + id);
+      let projID = this.state._id;
+      this.props.deleteEpic(id, projID);
+      this.toggleDetails();
+    }
+  };
+  // ****** End => Delete an Epic ******
+
+  // ****** Project Details ( View & Update ) ******
+  toggleDetails() {
+    this.setState(prevState => ({
+      modalDetails: !prevState.modalDetails
+    }));
+  }
+
+  onDetailsClick = id => {
     this.getProjectById(id);
 
     setTimeout(() => {
-      this.toggle();
+      this.toggleDetails();
     }, 500);
   };
 
-  //  Update values ************************
-  onChange = e => {
+  onChangeDetails = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  onSubmit = e => {
+  onSubmitDetails = e => {
     e.preventDefault();
 
     const updatedProject = {
@@ -113,21 +140,104 @@ class ProjectPage extends Component {
       shortCode: this.state.shortCode,
       effortUnit: this.state.effortUnit,
       description: this.state.description
-      // projectMembers: [{ userID: this.state.userID }]
     };
 
-    // Add Project via addProject action
+    // Update Project Details via updateProject action
     this.props.updateProject(updatedProject);
 
-    // Close modal
-    this.toggle();
+    // Close details modal
+    this.toggleDetails();
 
     // Refresh project page
     setTimeout(() => {
       this.props.getProjects();
     }, 500);
   };
-  // End Update Values **********************
+  // ****** End => Project Details ( View & Update ) ******
+
+  // ****** ADD Project Members ******
+  toggleMembers() {
+    this.setState(prevState => ({
+      modalMembers: !prevState.modalMembers
+    }));
+  }
+
+  onAddMembersClick = id => {
+    this.getProjectById(id);
+
+    setTimeout(() => {
+      this.toggleMembers();
+    }, 500);
+  };
+
+  onChangeMembers = e => {
+    let value = Array.from(e.target.selectedOptions, option => option.value);
+
+    this.setState({
+      [e.target.name]: value
+    });
+  };
+
+  onSubmitProjectMembers = e => {
+    e.preventDefault();
+
+    const newProjectMembers = {
+      projectID: this.state._id,
+      projectMembers: [{ userID: this.state.userID }]
+    };
+
+    // Add Project Members via addProjectMembers action
+    this.props.addProjectMembers(newProjectMembers);
+
+    // Close modal
+    this.toggleMembers();
+
+    // Refresh project page
+    setTimeout(() => {
+      this.props.getProjects();
+    }, 500);
+  };
+  // ****** End => ADD Project Members ******
+
+  // ****** Add Epics to a Project ******
+  toggleEpics() {
+    this.setState(prevState => ({
+      modalEpics: !prevState.modalEpics
+    }));
+  }
+
+  onAddEpicsClick = id => {
+    this.getProjectById(id);
+
+    setTimeout(() => {
+      this.toggleEpics();
+    }, 500);
+  };
+
+  onChangeEpics = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  onSubmitEpics = e => {
+    e.preventDefault();
+
+    const epic = {
+      projectID: this.state._id,
+      epics: this.state.epicName
+    };
+
+    // Update Project Details via updateProject action
+    this.props.addEpics(epic);
+
+    // Close details modal
+    this.toggleEpics();
+
+    // Refresh project page
+    setTimeout(() => {
+      this.props.getProjects();
+    }, 500);
+  };
+  // ****** End => Add Epics to a Project ******
 
   render() {
     const { projects } = this.props.project;
@@ -135,6 +245,7 @@ class ProjectPage extends Component {
 
     return (
       <Container>
+        {/* Main Project Page */}
         <div>
           <h1>Project</h1>
           <hr />
@@ -152,7 +263,6 @@ class ProjectPage extends Component {
                     {<strong>{name}</strong>}
                     <Button
                       className="float-right"
-                      outline
                       color="danger"
                       size="sm"
                       style={{ marginRight: "5px" }}
@@ -162,11 +272,28 @@ class ProjectPage extends Component {
                     </Button>
                     <Button
                       className="float-right"
-                      outline
+                      color="secondary"
+                      size="sm"
+                      style={{ marginRight: "5px" }}
+                      onClick={this.onAddEpicsClick.bind(this, _id)}
+                    >
+                      Add Epics
+                    </Button>
+                    <Button
+                      className="float-right"
+                      color="secondary"
+                      size="sm"
+                      style={{ marginRight: "5px" }}
+                      onClick={this.onAddMembersClick.bind(this, _id)}
+                    >
+                      Add Members
+                    </Button>
+                    <Button
+                      className="float-right"
                       color="info"
                       size="sm"
                       style={{ marginRight: "5px" }}
-                      onClick={this.onViewClick.bind(this, _id)}
+                      onClick={this.onDetailsClick.bind(this, _id)}
                     >
                       Details
                     </Button>
@@ -175,16 +302,19 @@ class ProjectPage extends Component {
               ))}
             </TransitionGroup>
           </ListGroup>
-          {/* ******************************************** */}
 
+          {/* Details Modal */}
           <Modal
-            isOpen={this.state.modal}
-            toggle={this.toggle}
+            scrollable={true}
+            isOpen={this.state.modalDetails}
+            toggle={this.toggleDetails}
             className={this.props.className}
           >
-            <ModalHeader toggle={this.toggle}>Project Details</ModalHeader>
+            <ModalHeader toggle={this.toggleDetails}>
+              Project Details
+            </ModalHeader>
             <ModalBody>
-              <Form onSubmit={this.onSubmit}>
+              <Form onSubmit={this.onSubmitDetails}>
                 <FormGroup>
                   <Label for="name">Project Name:</Label>
                   <Input
@@ -192,48 +322,116 @@ class ProjectPage extends Component {
                     name="name"
                     id="name"
                     defaultValue={this.state.name}
-                    onChange={this.onChange}
+                    onChange={this.onChangeDetails}
                   />
                   <Label for="shortCode">Short Code:</Label>
                   <Input
+                    readOnly
                     type="text"
                     name="shortCode"
                     id="shortCode"
                     maxLength="4"
                     defaultValue={this.state.shortCode}
-                    onChange={this.onChange}
                   />
-                  <Label for="effortUnit">Effort Units:</Label>
-                  <Input
-                    type="select"
-                    name="effortUnit"
-                    id="effortUnit"
-                    defaultValue={this.state.effortUnit}
-                    onChange={this.onChange}
-                  >
-                    >
-                    {effortUnits.map(effortUnit => (
-                      <option key={effortUnit.id} value={effortUnit.value}>
-                        {effortUnit.label}
-                      </option>
-                    ))}
-                  </Input>
                   <Label for="description">Description:</Label>
                   <Input
                     type="textarea"
                     name="description"
                     id="description"
                     defaultValue={this.state.description}
-                    onChange={this.onChange}
+                    onChange={this.onChangeDetails}
                   />
+
+                  {/* <Label for="members">Project Members:</Label>
+                  <Input
+                    readOnly
+                    type="textarea"
+                    name="members"
+                    id="members"
+                    value={JSON.stringify(this.state.projectMembers, [
+                      "userID"
+                    ])}
+                  /> */}
+
+                  <ListGroup>
+                    <Label>Project Members:</Label>
+                    <TransitionGroup className="members-list">
+                      {this.state.projectMembers.map(({ _id, userID }) => (
+                        <CSSTransition
+                          key={_id}
+                          timeout={500}
+                          classNames="fade"
+                        >
+                          <ListGroupItem className={classes.listGroupEpicItem}>
+                            {userID}
+                            <Button
+                              className="float-right"
+                              color="danger"
+                              size="sm"
+                              style={{ marginRight: "5px" }}
+                              onClick={this.onDeleteMemberClick.bind(this, _id)}
+                            >
+                              Delete
+                            </Button>
+                          </ListGroupItem>
+                        </CSSTransition>
+                      ))}
+                    </TransitionGroup>
+                  </ListGroup>
+
+                  <ListGroup>
+                    <Label>Project Epics:</Label>
+                    <TransitionGroup className="epic-list">
+                      {this.state.epics.map(({ _id, epicName }) => (
+                        <CSSTransition
+                          key={_id}
+                          timeout={500}
+                          classNames="fade"
+                        >
+                          <ListGroupItem className={classes.listGroupEpicItem}>
+                            {epicName}
+                            <Button
+                              className="float-right"
+                              color="danger"
+                              size="sm"
+                              style={{ marginRight: "5px" }}
+                              onClick={this.onDeleteEpicClick.bind(this, _id)}
+                            >
+                              Delete
+                            </Button>
+                          </ListGroupItem>
+                        </CSSTransition>
+                      ))}
+                    </TransitionGroup>
+                  </ListGroup>
+
+                  <Button color="dark" style={{ marginTop: "2rem" }} block>
+                    Update Project Details
+                  </Button>
+                </FormGroup>
+              </Form>
+            </ModalBody>
+          </Modal>
+
+          {/* Add Members Modal */}
+          <Modal
+            isOpen={this.state.modalMembers}
+            toggle={this.toggleMembers}
+            className={this.props.className}
+          >
+            <ModalHeader toggle={this.toggleMembers}>
+              Add Project Members
+            </ModalHeader>
+            <ModalBody>
+              <Form onSubmit={this.onSubmitProjectMembers}>
+                <FormGroup>
                   <Label for="userID">Select Project Members:</Label>
                   <Input
                     type="select"
                     multiple
                     name="userID"
                     id="userID"
-                    defaultValue={this.state.projectMembers}
-                    onChange={this.onChange}
+                    onChange={this.onChangeMembers}
                   >
                     >
                     {users.map(({ _id, email }) => (
@@ -243,7 +441,36 @@ class ProjectPage extends Component {
                     ))}
                   </Input>
                   <Button color="dark" style={{ marginTop: "2rem" }} block>
-                    Update Project
+                    Add Members
+                  </Button>
+                </FormGroup>
+              </Form>
+            </ModalBody>
+          </Modal>
+
+          {/* Add Epics Modal */}
+          <Modal
+            isOpen={this.state.modalEpics}
+            toggle={this.toggleEpics}
+            className={this.props.className}
+          >
+            <ModalHeader toggle={this.toggleEpics}>
+              Add Epic to Project
+            </ModalHeader>
+            <ModalBody>
+              <Form onSubmit={this.onSubmitEpics}>
+                <FormGroup>
+                  <Label for="epicName">Epic Name:</Label>
+                  <Input
+                    type="text"
+                    name="epicName"
+                    id="epicName"
+                    placeholder="Epic Title"
+                    onChange={this.onChangeEpics}
+                  />
+
+                  <Button color="dark" style={{ marginTop: "2rem" }} block>
+                    Add Epic
                   </Button>
                 </FormGroup>
               </Form>
@@ -259,10 +486,17 @@ const mapStateToProps = state => ({
   project: state.project,
   user: state.user,
   isAuthenticated: state.auth.isAuthenticated
-  // auth: state.auth,
 });
 
 export default connect(
   mapStateToProps,
-  { getProjects, deleteProject, viewProject, updateProject }
+  {
+    getProjects,
+    deleteProject,
+    viewProject,
+    updateProject,
+    addProjectMembers,
+    addEpics,
+    deleteEpic
+  }
 )(ProjectPage);

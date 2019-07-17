@@ -26,11 +26,11 @@ const sprint = (state = {
 
   case DELETE_CARD:
     return {
-      backlog: state.backlog.filter(item => item._id !== action.payload),
-      todo: state.todo.filter(item => item._id !== action.payload),
-      workinprogress: state.workinprogress.filter(item => item._id !== action.payload),
-      verification: state.verification.filter(item => item._id !== action.payload),
-      done: state.done.filter(item => item._id !== action.payload)
+      backlog: state.backlog.filter(item => item._id !== action.payLoad),
+      todo: state.todo.filter(item => item._id !== action.payLoad),
+      workinprogress: state.workinprogress.filter(item => item._id !== action.payLoad),
+      verification: state.verification.filter(item => item._id !== action.payLoad),
+      done: state.done.filter(item => item._id !== action.payLoad)
     }
   default:
     return state;

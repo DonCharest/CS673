@@ -86,9 +86,10 @@ router.put("/projectuser", async function(req, res) {
     // new users in payload
     let dupeFound = false;
     for (let dupeCheck in project.projectMembers) {
-      // current users 
+      // current users
       if (
-        project.projectMembers[dupeCheck].userID === req.body.projectMembers[0].userID[newUserIDX]
+        project.projectMembers[dupeCheck].userID ===
+        req.body.projectMembers[0].userID[newUserIDX]
       ) {
         dupeFound = true;
         break;
@@ -111,16 +112,14 @@ router.put("/projectuser", async function(req, res) {
   });
 });
 
-
 router
   .route("/epic")
-
 
   .post(async function(req, res) {
     let project = await Project.findOne({ _id: req.body.projectID });
 
     await project.epics.push({
-      name: req.body.epics
+      epicName: req.body.epics
     });
 
     await project.save(err => {
@@ -132,24 +131,22 @@ router
     });
   })
 
-  
   // Delete Epic via ID
   // REFERENCE: https://stackoverflow.com/questions/47877333/when-using-findoneandupdate-how-to-leave-fields-as-is-if-no-value-provided-i
   .delete(async function(req, res) {
-
     let project = await Project.findOne({ _id: req.body.projectID });
 
     project.epics.id(req.body.epics).remove();
 
     await project.save(err => {
       if (err) {
-        res.status(500).send(`Project epic could not be deleted: ${err.message}`);
+        res
+          .status(500)
+          .send(`Project epic could not be deleted: ${err.message}`);
       } else {
         res.status(200).send("Project epic deleted");
       }
     });
-
   });
-
 
 module.exports = router;
