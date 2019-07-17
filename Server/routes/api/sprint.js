@@ -20,10 +20,18 @@ router.get("/sprint/:id", (req, res) => {
 
 //remove sprint by id
 router.delete("/sprint/:id", (req, res) => {
-    Sprint.findById(req.params.id)
+    //Sprint.findById(req.params.id)
+    Sprint.findOneAndDelete(req.params.id)
       .then(sprint => sprint.remove().then(() => res.json({ success: true })))
       .catch(err => res.status(404).json({ success: false }));
   });
+
+//remove sprint by id
+// router.delete("/sprint/:id", (req, res) => {
+//     Sprint.findOneAndDelete(req.params.id)
+//       .then(sprint => sprint.remove().then(() => res.json({ success: true })))
+//       .catch(err => res.status(404).json({ success: false }));
+//   });
 
   //edit sprint by id
   router.put("/sprint/:id", async function(req,res){
@@ -50,11 +58,11 @@ router.route('/sprint')
 
 //get all sprint cards
 .get((req, res) => {
-    Card.find()
+    //Card.find()
     Card.find({project: req.body.project, 
             "stage.stageName": { $in: ["TODO","WIP","VERIFICATION","DONE"]},
             "stage.endDate": null})
-      .sort({ "stage.stateName": 1 })
+      .sort({ "stage.stageName": 1 })
       .then(cards => res.json(cards));
   })
 
@@ -86,11 +94,21 @@ router.route('/sprint')
 })
 
 
-
+//TO BE REMOVED
 //Delete a sprint
 .delete(async function(req, res){
-    let deletedSprint = await Sprint.deleteOne({"index": req.params.index});
+    let deletedSprint = await Sprint.findOneAndDelete({'_id': req.params.index});
     if(deletedSprint){
+
+        // Decrement the index of remaining sprints in the project.
+        await Sprint.updateMany(
+            {
+                "project": deletedSprint.project,
+                "index": {$gt: deletedSprint.index}
+            },
+            {$inc:{index: -1}}
+        );
+
         // res.status(200).send(`The sprint has been deleted: ${deletedSprint._id}`);
         res.status(200).send(`The sprint has been deleted: ${req.params.index}`);
     } else {
