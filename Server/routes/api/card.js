@@ -342,17 +342,16 @@ router.put('/stagechange', async function (req, res){
 
     // Create the next stage and push it into the Card.stage array with an endDate of null.
     // If the next stage is "DONE", set an end date.
+    // The startDate of the new stage is set in the Card model.
     if(`${req.body.stageName}`.toUpperCase() == "DONE"){
         await card.stage.push({
             'stageName':req.body.stageName,
-            'startDate':Date.now(),
             'endDate':Date.now()
         });
     }
     else{
         await card.stage.push({
             'stageName':req.body.stageName,
-            'startDate':Date.now(),
             'endDate':null
         });
     }
