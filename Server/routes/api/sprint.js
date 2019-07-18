@@ -16,10 +16,10 @@ router.get("/sprint/:id", (req, res) => {
     Sprint.findById(req.params.id)
       .then(sprint => res.json(sprint))
       .catch(err => res.status(404).json({ success: false }));
-  });
+});
 
-  //edit sprint by id
-  router.put("/sprint/:id", async function(req,res){
+//edit sprint by id
+router.put("/sprint/:id", async function(req,res){
     let params = {};
     for(let prop in req.body){
         if(prop == "index"){
