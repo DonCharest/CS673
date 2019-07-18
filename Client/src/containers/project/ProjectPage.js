@@ -21,7 +21,8 @@ import {
   viewProject,
   addProjectMembers,
   addEpics,
-  deleteEpic
+  deleteEpic,
+  deleteMember
 } from "../../actions/projectActions";
 import NewProjectModal from "./NewProjectModal";
 import * as classes from "../../app.css";
@@ -73,7 +74,8 @@ class ProjectPage extends Component {
         projectMembers: project.projectMembers,
         userID: project.userID,
         epics: project.epics,
-        epicName: project.epicName
+        epicName: project.epicName,
+        userEmail: project.userEmail
       });
     });
   }
@@ -93,9 +95,9 @@ class ProjectPage extends Component {
         "This member will be permanently removed from the project!"
       )
     ) {
-      // console.log("epic _id: " + id);
+      // console.log("_id: " + id);
       let projID = this.state._id;
-      // this.props.deleteMember(id, projID);
+      this.props.deleteMember(id, projID);
       this.toggleDetails();
     }
   };
@@ -342,28 +344,17 @@ class ProjectPage extends Component {
                     onChange={this.onChangeDetails}
                   />
 
-                  {/* <Label for="members">Project Members:</Label>
-                  <Input
-                    readOnly
-                    type="textarea"
-                    name="members"
-                    id="members"
-                    value={JSON.stringify(this.state.projectMembers, [
-                      "userID"
-                    ])}
-                  /> */}
-
                   <ListGroup>
                     <Label>Project Members:</Label>
                     <TransitionGroup className="members-list">
-                      {this.state.projectMembers.map(({ _id, userID }) => (
+                      {this.state.projectMembers.map(({ _id, userEmail }) => (
                         <CSSTransition
                           key={_id}
                           timeout={500}
                           classNames="fade"
                         >
                           <ListGroupItem className={classes.listGroupEpicItem}>
-                            {userID}
+                            {userEmail}
                             <Button
                               className="float-right"
                               color="danger"
@@ -497,6 +488,7 @@ export default connect(
     updateProject,
     addProjectMembers,
     addEpics,
-    deleteEpic
+    deleteEpic,
+    deleteMember
   }
 )(ProjectPage);

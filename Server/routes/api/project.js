@@ -35,11 +35,13 @@ router
   })
 
   // CREATE a new TracKing Project.
-  // UPDATED 7/17/19: Auto populates project creator's e-mail address 
+  // UPDATED 7/17/19: Auto populates project creator's e-mail address
   // into project member schema
   .post(async function(req, res) {
-
-    let userObj = await User.findOne({ _id: "5d274564d7f93f49ad7f4394" });
+    // let userObj = await User.findOne({ _id: "5d274564d7f93f49ad7f4394" });
+    let userObj = await User.findOne({
+      _id: req.body.projectMembers[0].userID
+    });
 
     let newProject = new Project({
       name: req.body.name,
@@ -47,12 +49,11 @@ router
       effortUnit: req.body.effortUnit,
       dateCreated: Date.now(),
       description: req.body.description,
-      projectMembers: { 
+      projectMembers: {
         userID: req.body.projectMembers[0].userID,
         userEmail: userObj.email
-      } 
+      }
     });
-
 
     await newProject.save(err => {
       if (err) {
@@ -101,11 +102,16 @@ router
       let dupeFound = false;
 
       // Updated 7/17/19 to auto-add e-mail addresses to Project Members
-      let userObj = await User.findOne({ "_id": req.body.projectMembers[0].userID[newUserIDX] });
-      
+      let userObj = await User.findOne({
+        _id: req.body.projectMembers[0].userID[newUserIDX]
+      });
+
       for (let dupeCheck in project.projectMembers) {
         // current users
-        if ( project.projectMembers[dupeCheck].userID === req.body.projectMembers[0].userID[newUserIDX] ) {
+        if (
+          project.projectMembers[dupeCheck].userID ===
+          req.body.projectMembers[0].userID[newUserIDX]
+        ) {
           dupeFound = true;
           break;
         }
@@ -114,7 +120,7 @@ router
       if (dupeFound === false) {
         await project.projectMembers.push({
           userID: req.body.projectMembers[0].userID[newUserIDX],
-          userEmail: userObj.email 
+          userEmail: userObj.email
         });
       }
     }
@@ -128,17 +134,23 @@ router
     });
   })
 
-
   // DELETE USER (one at a time) FROM PROJECT
   .delete(async function(req, res) {
     let project = await Project.findOne({ _id: req.body.projectID });
 
-    for (let userToDelIDX in project.projectMembers) {
-      // find mongoID of projectMembers obj from userID
-      if (project.projectMembers[userToDelIDX].userID === req.body.userID)
-        // NOW DELETE IT
-        project.projectMembers.id(project.projectMembers[userToDelIDX]._id).remove();
-    }
+    /** I updated this route to be exactly like Delete Epic.
+     * I needed to do it this way since I can only bind the object id
+     * At this point, the userID prop has not been retreived and saved
+     * to state, and is undefined.
+     */
+    project.projectMembers.id(req.body.projectMembers).remove();
+
+    // for (let userToDelIDX in project.projectMembers) {
+    //   // find mongoID of projectMembers obj from userID
+    //   if (project.projectMembers[userToDelIDX].userID === req.body.userID)
+    //     // NOW DELETE IT
+    //     project.projectMembers.id(project.projectMembers[userToDelIDX]._id).remove();
+    // }
 
     await project.save(err => {
       if (err) {
@@ -150,7 +162,6 @@ router
       }
     });
   });
-
 
 router
   .route("/epic")
