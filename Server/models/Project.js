@@ -7,7 +7,6 @@
 
     REFERENCE: https://mongoosejs.com/docs/subdocs.html
 
-    WILL NEED TO BE UPDATED TO INCLUDE CHAT MESSAGES WITHIN A PROJECT
 */
 const mongoose = require("mongoose");
 
@@ -22,7 +21,7 @@ var projMemberSchema = new mongoose.Schema({
   startDate: { type: Date, required: true, default: Date.now },
   endDate: { type: Date, required: false, default: null },
   userID: { type: String, required: true },
-  userEmail: { type: String, required: false }
+  userEmail: { type: String, required: false, default: null }
 });
 
 //  The Project model holds all components of a project and its subdocuments.

@@ -7,7 +7,7 @@
 */
 const router = require("express").Router();
 const { Project } = require("./../../models/Project");
-const { User } = require("./../../models/User");
+const User = require("../../models/User");
 // var mongoose = require('mongoose');
 
 //***** Added a GET by ID route to view a Project  *****/
@@ -35,15 +35,24 @@ router
   })
 
   // CREATE a new TracKing Project.
+  // UPDATED 7/17/19: Auto populates project creator's e-mail address 
+  // into project member schema
   .post(async function(req, res) {
+
+    let userObj = await User.findOne({ _id: "5d274564d7f93f49ad7f4394" });
+
     let newProject = new Project({
       name: req.body.name,
       shortCode: req.body.shortCode,
       effortUnit: req.body.effortUnit,
       dateCreated: Date.now(),
       description: req.body.description,
-      projectMembers: req.body.projectMembers
+      projectMembers: { 
+        userID: req.body.projectMembers[0].userID,
+        userEmail: userObj.email
+      } 
     });
+
 
     await newProject.save(err => {
       if (err) {
@@ -83,13 +92,17 @@ router
 router
   .route("/projectuser")
 
+  // ADD ADDITIONAL USERS (updated 7/17/19 to auto-add e-mails)
   .put(async function(req, res) {
     let project = await Project.findOne({ _id: req.body.projectID });
 
     for (let newUserIDX in req.body.projectMembers[0].userID) {
       // new users in payload
       let dupeFound = false;
-      // let userObj = await User.findOne({ _id: req.body.projectMembers[0].userID[newUserIDX] });
+
+      // Updated 7/17/19 to auto-add e-mail addresses to Project Members
+      let userObj = await User.findOne({ "_id": req.body.projectMembers[0].userID[newUserIDX] });
+      
       for (let dupeCheck in project.projectMembers) {
         // current users
         if ( project.projectMembers[dupeCheck].userID === req.body.projectMembers[0].userID[newUserIDX] ) {
@@ -101,7 +114,7 @@ router
       if (dupeFound === false) {
         await project.projectMembers.push({
           userID: req.body.projectMembers[0].userID[newUserIDX],
-          // userEmail: userObj.email
+          userEmail: userObj.email 
         });
       }
     }
@@ -115,6 +128,8 @@ router
     });
   })
 
+
+  // DELETE USER (one at a time) FROM PROJECT
   .delete(async function(req, res) {
     let project = await Project.findOne({ _id: req.body.projectID });
 
@@ -140,6 +155,7 @@ router
 router
   .route("/epic")
 
+  // ADD NEW EPIC TO PROJECT
   .post(async function(req, res) {
     let project = await Project.findOne({ _id: req.body.projectID });
 
