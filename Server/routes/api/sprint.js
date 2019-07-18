@@ -18,26 +18,11 @@ router.get("/sprint/:id", (req, res) => {
       .catch(err => res.status(404).json({ success: false }));
   });
 
-//remove sprint by id
-router.delete("/sprint/:id", (req, res) => {
-    //Sprint.findById(req.params.id)
-    Sprint.findOneAndDelete(req.params.id)
-      .then(sprint => sprint.remove().then(() => res.json({ success: true })))
-      .catch(err => res.status(404).json({ success: false }));
-  });
-
-//remove sprint by id
-// router.delete("/sprint/:id", (req, res) => {
-//     Sprint.findOneAndDelete(req.params.id)
-//       .then(sprint => sprint.remove().then(() => res.json({ success: true })))
-//       .catch(err => res.status(404).json({ success: false }));
-//   });
-
   //edit sprint by id
   router.put("/sprint/:id", async function(req,res){
     let params = {};
     for(let prop in req.body){
-        if(req.body[prop] = "index"){
+        if(prop == "index"){
             res.status(200).send("WARNING: the sprint\'s index cannot be updated.");
         }
         else if(req.body[prop]){
@@ -54,18 +39,56 @@ router.delete("/sprint/:id", (req, res) => {
     }
 });
 
+//Delete a sprint
+router.delete("/sprint/:id", async function (req, res){
+    let deletedSprint = await Sprint.findOneAndDelete({'_id': req.params.id});
+    if(deletedSprint){
+
+        // Decrement the index of remaining sprints in the project.
+        await Sprint.updateMany(
+            {
+                "project": deletedSprint.project,
+                "index": {$gt: deletedSprint.index}
+            },
+            {$inc:{index: -1}}
+        );
+
+        res.status(200).send(`The sprint has been deleted: ${deletedSprint._id}`);
+    } else {
+        res.status(500).send('The sprint was not deleted');
+    }
+});
+
+//Close a sprint
+router.put("/closesprint/:id", async function (req, res){
+    await Sprint.findOneAndUpdate(
+        {"_id": req.params.id},
+        {
+            "$set":{
+                "endDate": Date.now()
+            }
+        },
+        function(err, doc){
+            if(err){
+                res.status(500).send('The sprint was not closed');
+            }
+            else{
+                res.status(200).send(`The sprint was closed: ${doc._id}`);
+            }
+        }
+    );
+
+});
+
+// SPRINT ROUTES
 router.route('/sprint')
 
-//get all sprint cards
+//get all sprint cards for the project
 .get((req, res) => {
-    //Card.find()
-    Card.find({project: req.body.project, 
-            "stage.stageName": { $in: ["TODO","WIP","VERIFICATION","DONE"]},
-            "stage.endDate": null})
-      .sort({ "stage.stageName": 1 })
+    Card.find({project: req.body.project})
+      .sort({ "stage.currentStage": 1 })
       .then(cards => res.json(cards));
-  })
-
+})
 
 // Create a new sprint
 .post(async function(req, res){
@@ -87,41 +110,17 @@ router.route('/sprint')
             if(err){
                 res.status(500).send(`The sprint was not saved: ${err.message}`);
             } else {
-                res.status(200).send(`The sprint has been saved' ${newSprint._id}`);
+                res.status(200).send(`The sprint has been saved: ${newSprint._id}`);
             }
         })
     }) 
 })
 
-
-//TO BE REMOVED
-//Delete a sprint
-.delete(async function(req, res){
-    let deletedSprint = await Sprint.findOneAndDelete({'_id': req.params.index});
-    if(deletedSprint){
-
-        // Decrement the index of remaining sprints in the project.
-        await Sprint.updateMany(
-            {
-                "project": deletedSprint.project,
-                "index": {$gt: deletedSprint.index}
-            },
-            {$inc:{index: -1}}
-        );
-
-        // res.status(200).send(`The sprint has been deleted: ${deletedSprint._id}`);
-        res.status(200).send(`The sprint has been deleted: ${req.params.index}`);
-    } else {
-        res.status(500).send('The sprint was not deleted');
-    }
-})
-//TO DO: reset/decrement indices when deleting
-
 //Change attributes of a sprint
 .put(async function(req,res){
     let params = {};
     for(let prop in req.body){
-        if(req.body[prop] = "index"){
+        if(prop == "index"){
             res.status(200).send("WARNING: the sprint\'s index cannot be updated.");
         }
         else if(req.body[prop]){
