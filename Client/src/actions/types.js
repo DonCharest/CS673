@@ -27,11 +27,12 @@ export const PROJECTS_LOADING = "PROJECTS_LOADING";
 export const ADD_MEMBERS = "ADD_MEMBERS";
 export const ADD_EPICS = "ADD_EPICS";
 export const DELETE_EPIC = "DELETE_EPIC";
+export const DELETE_MEMBER = "DELETE_MEMBER";
 
 export const GET_CARDS = "GET_CARDS";
 export const CARDS_LOADING = "CARDS_LOADING";
 export const NEW_CARD = "NEW_CARD";
 export const DELETE_CARD = "DELETE_CARD";
 
-export const SET_APP_ERRORS = "SET_APP_ERRORS"
-export const CLEAR_APP_ERRORS = "CLEAR_APP_ERRORS"
+export const SET_APP_ERRORS = "SET_APP_ERRORS";
+export const CLEAR_APP_ERRORS = "CLEAR_APP_ERRORS";

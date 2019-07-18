@@ -21,7 +21,8 @@ import {
   viewProject,
   addProjectMembers,
   addEpics,
-  deleteEpic
+  deleteEpic,
+  deleteMember
 } from "../../actions/projectActions";
 import NewProjectModal from "./NewProjectModal";
 import * as classes from "../../app.css";
@@ -94,9 +95,9 @@ class ProjectPage extends Component {
         "This member will be permanently removed from the project!"
       )
     ) {
-      // console.log("epic _id: " + id);
+      // console.log("_id: " + id);
       let projID = this.state._id;
-      // this.props.deleteMember(id, projID);
+      this.props.deleteMember(id, projID);
       this.toggleDetails();
     }
   };
@@ -487,6 +488,7 @@ export default connect(
     updateProject,
     addProjectMembers,
     addEpics,
-    deleteEpic
+    deleteEpic,
+    deleteMember
   }
 )(ProjectPage);
