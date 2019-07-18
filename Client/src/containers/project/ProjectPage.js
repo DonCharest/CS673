@@ -73,7 +73,8 @@ class ProjectPage extends Component {
         projectMembers: project.projectMembers,
         userID: project.userID,
         epics: project.epics,
-        epicName: project.epicName
+        epicName: project.epicName,
+        userEmail: project.userEmail
       });
     });
   }
@@ -342,28 +343,17 @@ class ProjectPage extends Component {
                     onChange={this.onChangeDetails}
                   />
 
-                  {/* <Label for="members">Project Members:</Label>
-                  <Input
-                    readOnly
-                    type="textarea"
-                    name="members"
-                    id="members"
-                    value={JSON.stringify(this.state.projectMembers, [
-                      "userID"
-                    ])}
-                  /> */}
-
                   <ListGroup>
                     <Label>Project Members:</Label>
                     <TransitionGroup className="members-list">
-                      {this.state.projectMembers.map(({ _id, userID }) => (
+                      {this.state.projectMembers.map(({ _id, userEmail }) => (
                         <CSSTransition
                           key={_id}
                           timeout={500}
                           classNames="fade"
                         >
                           <ListGroupItem className={classes.listGroupEpicItem}>
-                            {userID}
+                            {userEmail}
                             <Button
                               className="float-right"
                               color="danger"
