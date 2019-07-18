@@ -9,7 +9,8 @@ import {
   PROJECTS_LOADING,
   ADD_MEMBERS,
   ADD_EPICS,
-  DELETE_EPIC
+  DELETE_EPIC,
+  DELETE_MEMBER
 } from "./types";
 import { tokenConfig } from "./authActions";
 import { returnErrors } from "./authErrorActions";
@@ -87,6 +88,26 @@ export const addProjectMembers = data => dispatch => {
     .then(res =>
       dispatch({
         type: ADD_MEMBERS,
+        payLoad: res.data
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+
+// Delete Member from Project
+export const deleteMember = (id, projID) => dispatch => {
+  axios
+    .delete(`/api/projectuser`, {
+      data: {
+        projectID: projID,
+        projectMembers: id
+      }
+    })
+    .then(res =>
+      dispatch({
+        type: DELETE_MEMBER,
         payLoad: res.data
       })
     )
