@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import userReducer from "./userReducer";
-import errorReducer from "./errorReducer";
+import authErrorReducer from "./authErrorReducer";
+import appErrorReducer from "./appErrorReducer";
 import authReducer from "./authReducer";
 import admin from "./adminReducer";
 import backlog from "./backlogReducer";
@@ -20,9 +21,10 @@ import projectReducer from "./projectReducer";
 
 export default combineReducers({
   user: userReducer,
-  error: errorReducer,
+  authError: authErrorReducer,
   auth: authReducer,
   project: projectReducer,
+  appError: appErrorReducer,
   admin,
   backlog,
   sprint

@@ -22,6 +22,7 @@ import ChatPage from "./chat/ChatPage";
 import LoginPage from "./login/LoginPage";
 import ProjectPage from "./project/ProjectPage";
 import * as classes from "../app.css";
+import ErrorModal from "../components/ErrorModal"
 
 class Main extends Component {
   static propTypes = {
@@ -111,6 +112,7 @@ class Main extends Component {
 
     return (
       <Container>
+        <ErrorModal />
         <div>
           <Navbar color="dark" dark expand="sm" className="mb-0">
             <Link id="navbar-brand" className={classes.navbarBrand} to="/">

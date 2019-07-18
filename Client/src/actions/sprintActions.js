@@ -5,7 +5,7 @@ import {
   CARDS_LOADING,
   DELETE_CARD
 } from "./types";
-import { returnErrors } from "./errorActions";
+import { returnErrors } from "./appErrorActions";
 
 // Get all Cards
 export const getCards = () => dispatch => {
@@ -37,8 +37,13 @@ export const getCards = () => dispatch => {
       }
     )
     .catch(err => {
-      console.error(err)
-      dispatch(returnErrors(err.response.data, err.response.status))
+      const errorObj = {
+        location: "retrieving a story",
+        statusCode: err.response.status || '',
+        msg: err.response.statusText || '',
+        title: "Error on Retrieve"
+      }
+      dispatch(returnErrors(errorObj))
     });
 };
 
@@ -65,8 +70,13 @@ export const addNewCard = (newCard,successCallback) => dispatch => {
       }
     ).then(successCallback())
     .catch(err => {
-      console.error(err)
-      dispatch(returnErrors(err.response.data, err.response.status))
+      const errorObj = {
+        location: "creating a story",
+        statusCode: err.response.status || '',
+        msg: err.response.statusText || '',
+        title: "Error on Create"
+      }
+      dispatch(returnErrors(errorObj))
     });
 }
 
@@ -81,8 +91,13 @@ export const deleteCard = (cardId, successCallback) => dispatch => {
       }
     ).then(successCallback())
     .catch(err => {
-      console.error(err)
-      dispatch(returnErrors(err.response.data, err.response.status))
+      const errorObj = {
+        location: "deleting a story",
+        statusCode: err.response.status || '',
+        msg: err.response.statusText || '',
+        title: "Error on Delete"
+      }
+      dispatch(returnErrors(errorObj))
     });
 }
 
@@ -101,8 +116,13 @@ export const editCard = (newCard,successCallback) => dispatch => {
       }
     ).then(successCallback())
     .catch(err => {
-      console.error(err)
-      dispatch(returnErrors(err.response.data, err.response.status))
+      const errorObj = {
+        location: "editing a story",
+        statusCode: err.response.status || '',
+        msg: err.response.statusText || '',
+        title: "Error on Edit Story"
+      }
+      dispatch(returnErrors(errorObj))
     });
 }
 
@@ -122,7 +142,12 @@ export const updateStage = (id, newStage) => dispatch => {
         }
       )
       .catch(err => {
-        console.error(err)
-        dispatch(returnErrors(err.response.data, err.response.status))
+        const errorObj = {
+        location: "Changing stage",
+        statusCode: err.response.status || '',
+        msg: err.response.statusText || '',
+        title: "Error on Change Stage"
+      }
+      dispatch(returnErrors(errorObj))
       });
   }

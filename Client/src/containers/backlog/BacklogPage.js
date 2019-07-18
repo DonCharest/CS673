@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Container } from "reactstrap";
 import { connect } from "react-redux";
 import {bindActionCreators} from 'redux';
-import {Button, Modal, Form} from 'react-bootstrap';
+import {Container, Button} from 'reactstrap';
 import PropTypes from "prop-types";
 import CardModal from '../../components/CardModal'
 import Card from '../../components/Card'
@@ -40,15 +39,17 @@ class BacklogPage extends Component {
   render() {
     return (
       <Container>
-        <CardModal
-          title="Add New Story"
-          showCardModal={this.state.showCardModal}
-          toggleCardModal={this.toggleCardModal}
-          saveCard={this.props.actions.addNewCard}
-        />
+        <div className={classes.pageHeader}>
+          <CardModal
+            title="Add New Story"
+            showCardModal={this.state.showCardModal}
+            toggleCardModal={this.toggleCardModal}
+            saveCard={this.props.actions.addNewCard}
+          />
 
-        <h1>BackLog</h1>
-        <Button onClick={this.toggleCardModal}>Add Story</Button>
+          <h1>BackLog</h1>
+          <Button onClick={this.toggleCardModal}>Add Story</Button>
+        </div>
         <div className={classes.allSprintColumns}>
           <div className={classes.columnContainer}>
             {this.props.sprint.backlog.map((item, index) => <Card key={index} cardData={item} />)}
