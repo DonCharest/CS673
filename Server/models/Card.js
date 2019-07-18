@@ -22,8 +22,7 @@ var stageSchema = new mongoose.Schema({
     },
     endDate:{
         type: Date, 
-        required: false,
-        default: null
+        required: false
     }
 });
 stageSchema.plugin(immutablePlugin);
@@ -101,8 +100,7 @@ var cardSchema = new mongoose.Schema({
     },
     load:{
         type: Number, 
-        required: true, 
-        default: 1
+        required: true
     },
     currentStage:{
         type: String, 

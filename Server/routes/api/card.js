@@ -301,23 +301,37 @@ router.put('/cardindex', async function (req, res){
 */
 router.put('/stagechange', async function (req, res){
     
-    // We want to find the stage array entry with endDate == NULL.
-    // The position of this entry is passed in $.
-    let today = Date.now();
+    // Find the Card of interest.
     let card = null;
+    await Card.findOne({"_id": req.body.id}, (err,doc) =>{
+        if(err){
+            res.status(500).json({
+                success: false,
+                error: `Card find in stagechange failed: ${err.message}`
+            });
+        }
+        else{
+            card = doc;
+        }
+    });
+
+    // We want to find the LAST stage array entry.
+    // The position of this entry is passed in $.
     await Card.findOneAndUpdate(
-        {"_id": req.body.id, "stage.endDate":null},
+        {"_id": card._id, "stage._id":card.stage[card.stage.length - 1]._id},
         {
             "$set":{
-                "stage.$.endDate": today,
+                "stage.$.endDate": Date.now(),
                 "currentStage":req.body.stageName
             }
         },
+
+        // The updated Card is passed to the callback as 'doc'.
         function(err, doc){
             if(err){
                 res.status(500).json({
                     success: false,
-                    error: `Card stage endDate update failed: ${err.message}`
+                    error: `Card stage endDate AND currentStage update failed: ${err.message}`
                 });
             }
             else{
@@ -325,20 +339,30 @@ router.put('/stagechange', async function (req, res){
             }
         }
     );
-    
-    // Create the next stage
-    await card.stage.push({
-        'stageName':req.body.stageName,
-        'startDate':today,
-        'endDate':null
-    });
+
+    // Create the next stage and push it into the Card.stage array with an endDate of null.
+    // If the next stage is "DONE", set an end date.
+    if(`${req.body.stageName}`.toUpperCase() == "DONE"){
+        await card.stage.push({
+            'stageName':req.body.stageName,
+            'startDate':Date.now(),
+            'endDate':Date.now()
+        });
+    }
+    else{
+        await card.stage.push({
+            'stageName':req.body.stageName,
+            'startDate':Date.now(),
+            'endDate':null
+        });
+    }
     
     // Save the changes
     await card.save((err) => {
         if(err){
             res.status(500).json({
                 success: false,
-                error: `Card stage update failed: ${err.message}`
+                error: `Card new stage save failed: ${err.message}`
             });
         }
         else{
