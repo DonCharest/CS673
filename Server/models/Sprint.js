@@ -10,14 +10,14 @@ const Schema = mongoose.Schema;
 
 const sprintSchema = new Schema({
     index: {type: Number, required: true},
-    project: { type: mongoose.Schema.Types.ObjectId,
+    project: { 
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Project'
-       },
-    //project: { type: String, required: true},
+    },
     startDate: {type: Date, required: true, default: Date.now},
-    endDate: {type: Date, required: false},
-    capacity: {type: Number, required: true, default: 0},
-    capacityUnit: {type: String, required: true, default: 'hours'}
+    endDate: {type: Date, required: false, default: null},
+    capacity: {type: Number, required: true},
+    capacityUnit: {type: String, required: true}
     
 });
 
