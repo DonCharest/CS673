@@ -274,7 +274,7 @@ class ProjectPage extends Component {
                     </Button>
                     <Button
                       className="float-right"
-                      color="secondary"
+                      color="dark"
                       size="sm"
                       style={{ marginRight: "5px" }}
                       onClick={this.onAddEpicsClick.bind(this, _id)}
@@ -283,7 +283,7 @@ class ProjectPage extends Component {
                     </Button>
                     <Button
                       className="float-right"
-                      color="secondary"
+                      color="dark"
                       size="sm"
                       style={{ marginRight: "5px" }}
                       onClick={this.onAddMembersClick.bind(this, _id)}
