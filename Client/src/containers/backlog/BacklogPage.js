@@ -49,7 +49,6 @@ class BacklogPage extends Component {
             toggleCardModal={this.toggleCardModal}
             saveCard={this.props.actions.addNewCard}
           />
-
           <h1>BackLog</h1>
           <hr />
           <Button onClick={this.toggleCardModal} color="dark">

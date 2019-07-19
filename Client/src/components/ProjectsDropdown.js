@@ -29,8 +29,7 @@ class ProjectsDropdown extends Component {
       <div>
         <FormGroup>
           <Label for={this.props.dropdownId || "projectsDropdown"}>
-            <br />
-            <b>&nbsp;&nbsp;&nbsp;Projects:</b>
+            Projects
           </Label>
 
           <Input
