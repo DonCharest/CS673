@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {bindActionCreators} from 'redux';
-import {Container, Button} from 'reactstrap';
+import { bindActionCreators } from "redux";
+import { Container, Button } from "reactstrap";
 import PropTypes from "prop-types";
-import CardModal from '../../components/CardModal'
-import Card from '../../components/Card'
-import * as classes from '../../app.css';
-import * as actions from '../../actions/sprintActions';
-import ProjectsDropdown from '../../components/ProjectsDropdown'
+import CardModal from "../../components/CardModal";
+import Card from "../../components/Card";
+import * as classes from "../../app.css";
+import * as actions from "../../actions/sprintActions";
+import ProjectsDropdown from "../../components/ProjectsDropdown";
 
 class BacklogPage extends Component {
   static propTypes = {
@@ -15,29 +15,28 @@ class BacklogPage extends Component {
   };
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       showCardModal: false,
-      projectId: ''
-    }
+      projectId: ""
+    };
 
-    this.onChangeProject = this.onChangeProject.bind(this)
+    this.onChangeProject = this.onChangeProject.bind(this);
     this.toggleCardModal = this.toggleCardModal.bind(this);
   }
 
   toggleCardModal() {
     if (this.state.showCardModal) {
-      this.setState({showCardModal: false})
+      this.setState({ showCardModal: false });
     } else {
-      this.setState({showCardModal: true})
+      this.setState({ showCardModal: true });
     }
   }
 
   onChangeProject(e) {
-    this.setState({projectId: e.target.value})
-    this.props.actions.getCards(e.target.value)
-    
+    this.setState({ projectId: e.target.value });
+    this.props.actions.getCards(e.target.value);
   }
 
   render() {
@@ -50,40 +49,40 @@ class BacklogPage extends Component {
             toggleCardModal={this.toggleCardModal}
             saveCard={this.props.actions.addNewCard}
           />
-
           <h1>BackLog</h1>
-          <Button onClick={this.toggleCardModal}>Add Story</Button>
+          <hr />
+          <Button onClick={this.toggleCardModal} color="dark">
+            Add Story
+          </Button>
           <ProjectsDropdown
-            value = {this.state.projectId}
+            value={this.state.projectId}
             name="project"
             onChange={this.onChangeProject}
           />
         </div>
         <div className={classes.allSprintColumns}>
           <div className={classes.columnContainer}>
-            {this.props.sprint.backlog.map((item, index) => <Card key={index} cardData={item} />)}
+            {this.props.sprint.backlog.map((item, index) => (
+              <Card key={index} cardData={item} />
+            ))}
           </div>
         </div>
-
-
-   
       </Container>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     sprint: state.sprint,
     auth: state.auth,
     isAuthenticated: state.auth.isAuthenticated
-  }
+  };
 };
 
-
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    actions: bindActionCreators({...actions}, dispatch),  
+    actions: bindActionCreators({ ...actions }, dispatch)
   };
 };
 
