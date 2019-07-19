@@ -85,7 +85,7 @@ router.route('/sprint')
 
 //get all sprint cards for the project
 .get((req, res) => {
-    Card.find({project: req.param.projectid})
+    Card.find({project: req.query.projectid})
       .sort({ "stage.currentStage": 1 })
       .then(cards => res.json(cards));
 })
