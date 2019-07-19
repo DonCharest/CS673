@@ -23,11 +23,6 @@ class SprintPage extends Component {
     this.toggleCardModal = this.toggleCardModal.bind(this);
   }
 
-  componentDidMount() {
-    // request all cards
-    this.props.actions.getCards()
-  }
-
   toggleCardModal() {
     if (this.state.showCardModal) {
       this.setState({showCardModal: false})
