@@ -8,8 +8,21 @@ import * as actions from '../actions/projectActions';
 
 class ProjectsDropdown extends Component {
   componentDidMount() {
-    this.props.actions.getProjects()
+  
+    if (this.props.projects.length > 0) {
+      this.props.onChange({ target: {value:this.props.projects[0]._id}})
+    } else {
+      this.props.actions.getProjects()  
+    }
+    
   }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.projects.length !== prevProps.projects.length && this.props.projects.length > 0) {
+      this.props.onChange({ target: {value: this.props.projects[0]._id}})
+    }
+  }
+
 
 
   render() {

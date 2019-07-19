@@ -16,6 +16,7 @@ class SprintPage extends Component {
 
     this.state = {
       showCardModal: false,
+      projectId: ''
     }
 
     this.onChangeProject = this.onChangeProject.bind(this)
@@ -36,6 +37,7 @@ class SprintPage extends Component {
   }
 
   onChangeProject(e) {
+    console.log(e)
     this.setState({projectId: e.target.value})
     this.props.actions.getCards(e.target.value)
     

@@ -12,7 +12,7 @@ export const getCards = (projectId) => dispatch => {
   dispatch(setCardsLoading());
 
   axios
-    .get(`/api/sprint?projectid=${projectId}`})
+    .get(`/api/sprint?projectid=${projectId}`)
     .then(res => {
         // format data for sprint
         const orderedSprint = {
