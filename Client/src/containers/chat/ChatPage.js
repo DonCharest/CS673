@@ -48,7 +48,11 @@ class chatPage extends Component {
   }
 
   scrollToBottom() {
-    this.el.scrollIntoView({ behavior: "smooth" });
+    this.el.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start"
+    });
   }
 
   onChangeProject(e) {
