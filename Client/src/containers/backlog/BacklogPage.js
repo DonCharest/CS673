@@ -7,6 +7,7 @@ import CardModal from '../../components/CardModal'
 import Card from '../../components/Card'
 import * as classes from '../../app.css';
 import * as actions from '../../actions/sprintActions';
+import ProjectsDropdown from '../../components/ProjectsDropdown'
 
 class BacklogPage extends Component {
   static propTypes = {
@@ -18,8 +19,10 @@ class BacklogPage extends Component {
 
     this.state = {
       showCardModal: false,
+      projectId: ''
     }
 
+    this.onChangeProject = this.onChangeProject.bind(this)
     this.toggleCardModal = this.toggleCardModal.bind(this);
   }
 
@@ -36,6 +39,12 @@ class BacklogPage extends Component {
     }
   }
 
+  onChangeProject(e) {
+    this.setState({projectId: e.target.value})
+    this.props.actions.getCards(e.target.value)
+    
+  }
+
   render() {
     return (
       <Container>
@@ -49,6 +58,11 @@ class BacklogPage extends Component {
 
           <h1>BackLog</h1>
           <Button onClick={this.toggleCardModal}>Add Story</Button>
+          <ProjectsDropdown
+            value = {this.state.projectId}
+            name="project"
+            onChange={this.onChangeProject}
+          />
         </div>
         <div className={classes.allSprintColumns}>
           <div className={classes.columnContainer}>

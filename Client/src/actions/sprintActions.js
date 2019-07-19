@@ -8,10 +8,11 @@ import {
 import { returnErrors } from "./appErrorActions";
 
 // Get all Cards
-export const getCards = () => dispatch => {
+export const getCards = (projectId) => dispatch => {
   dispatch(setCardsLoading());
+
   axios
-    .get("/api/sprint")
+    .get(`/api/sprint?projectid=${projectId}`})
     .then(res => {
         // format data for sprint
         const orderedSprint = {
