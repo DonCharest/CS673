@@ -59,13 +59,13 @@ class SprintPage extends Component {
         </div>
         <div className={classes.allSprintColumns}>
           <div className={classes.columnContainer}>
-            <div className={classes.columnHeader}>To do</div>
+            <div className={classes.columnHeader}>To Do</div>
             {this.props.sprint.todo.map((item, index) => (
               <Card key={index} cardData={item} />
             ))}
           </div>
           <div className={classes.columnContainer}>
-            <div className={classes.columnHeader}>WIP</div>
+            <div className={classes.columnHeader}>Work in Progress</div>
             {this.props.sprint.workinprogress.map((item, index) => (
               <Card key={index} cardData={item} />
             ))}
