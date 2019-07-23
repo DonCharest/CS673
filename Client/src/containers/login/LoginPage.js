@@ -19,7 +19,7 @@ const LoginPage = props => {
       <Container>
         <h1>Agile Project Management Development Tools</h1>
         <hr />
-        <p>Please Login to use the App</p>
+        {/* <p>Please Login to use the App</p> */}
         {/* <p>
           <i style={logininInfo}>&nbsp;&nbsp;&nbsp;email: admin@tracking.com</i>
         </p>
@@ -29,6 +29,9 @@ const LoginPage = props => {
         <div className="crownImage">
           {/* <img src={crown} alt="crown" /> */}
         {/* </div> */}
+        <div className={classes.logo}>
+          &#9812;<span className={classes.logoText}>TracKing</span>
+        </div>
       </Container>
     </div>
   );

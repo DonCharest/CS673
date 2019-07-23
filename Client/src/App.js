@@ -7,8 +7,6 @@ import Main from "./containers/Main";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class App extends Component {
-
-
   render() {
     const store = configureStore();
     return (

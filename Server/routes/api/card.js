@@ -8,6 +8,7 @@
 const router = require('express').Router();
 const {Project} = require('../../models/Project');
 const {Card} = require('../../models/Card');
+const {CardTrack} = require('../../models/CardTrack');
 
 // All routes go to ./api/cards/
 router.route('/cards')
@@ -32,21 +33,40 @@ router.route('/cards')
         shortcode = req.body.shortcode;
     }
 
-    /* Get the count of documents in the Card collection for the PROJECT.
-        - Count + 1 is used as the initial card index AND the displayId Sequence.
-        - The displayId is a human readable string combinging the Project.shortcode,
-            some number of leading zeros and the Card.index value.
+    /*  CardTrack keeps track of the total number of Cards EVER CREATED for a Project.
+        - Add one to this number and combine it with the Project ShortCode to get the 
+            displayId, a human readable abbreviation for the Card.
+        The count of documents in the Card collection for the PROJECT + 1 is used as 
+            the initial card index (it's ).
         REFERENCE: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
     */
-    let cardCount = 0;
+    // Find the CardTrack for the project or create a new one.
+    // So annoying, MongoDB uses {returnNewDocument: true}, Mongoose uses {new: true}
+    let cardTrack = false;
+    cardTrack = await CardTrack.findOneAndUpdate(
+        {projectId: req.body.project},
+        {"$inc":{"totalCount": 1}},
+        {new: true}
+    );
+    if(! cardTrack){
+        console.log("Creating new CardTrack");
+        cardTrack = new CardTrack({
+            projectId: req.body.project,
+            totalCount: 1
+        });
+        cardTrack.save();
+    };
+    console.log("Card Track: ", cardTrack)
+
+    let indexCount = 0;
     await Card.countDocuments({project: req.body.project}, function(err, count){
-        cardCount = count;
+        indexCount = count;
 
         let card = new Card({
             project: req.body.project,
             sprint: req.body.sprint,
-            displayId: String(shortcode).concat("-", String(cardCount + 1).padStart(6,"0")),
-            index: cardCount + 1,
+            displayId: String(shortcode).concat("-", String(cardTrack.totalCount).padStart(6,"0")),
+            index: indexCount + 1,
             title: req.body.title,
             description:req.body.description,
             createdBy:req.body.createdBy,
@@ -112,7 +132,7 @@ router.route('/cards')
 
     // Report what was updated.
     let card = false;
-    card = await Card.findOneAndUpdate({"_id":req.body.id}, params);
+    card = await Card.findOneAndUpdate({"_id":req.body.id}, params, {new: true});
     if(card){
         res.status(200).json({
             success: true,
@@ -275,7 +295,7 @@ router.put('/cardindex', async function (req, res){
 
     // Return the updated card
     card = false;
-    card = await Card.findOneAndUpdate({"_id":req.body.id}, params);
+    card = await Card.findOneAndUpdate({"_id":req.body.id}, params, {new: true});
     if(card){
         res.status(200).json({
             success: true,
@@ -325,6 +345,7 @@ router.put('/stagechange', async function (req, res){
                 "currentStage":req.body.stageName
             }
         },
+        {new: true},
 
         // The updated Card is passed to the callback as 'doc'.
         function(err, doc){
