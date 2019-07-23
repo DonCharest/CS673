@@ -116,7 +116,7 @@ class Main extends Component {
         <div>
           <Navbar color="dark" dark expand="sm" className="mb-0">
             <Link id="navbar-brand" className={classes.navbarBrand} to="/">
-              &#x1F451;TracKing
+              &#9812;TracKing
             </Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
