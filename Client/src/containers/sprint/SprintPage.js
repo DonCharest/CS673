@@ -48,7 +48,11 @@ class SprintPage extends Component {
           />
           <h1>Sprint</h1>
           <hr />
-          <Button onClick={this.toggleCardModal} color="dark">
+          <Button
+            onClick={this.toggleCardModal}
+            className={classes.customButtonDark}
+            color="dark"
+          >
             Add Story
           </Button>
           <ProjectsDropdown

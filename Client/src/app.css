@@ -8,12 +8,20 @@ body {
   padding: 0;
 }
 
-.navbarNavbar {
-  overflow: hidden;
+.navbarCustom {
+  background-color: #223a46 !important;
+}
+
+.customButtonDark {
+  background-color: #5790db !important;
+}
+.customButtonDark:hover {
+  background-color: #286ac0 !important;
 }
 
 .main {
-  background-color: silver;
+  /* background-color: silver; */
+  background-color: #f0f3f7;
   min-width: 100%;
   min-height: 140vh;
   padding-left: 25px;
@@ -31,20 +39,23 @@ hr {
 }
 
 .logo {
-  color: crimson;
+  /* color: crimson; */
+  color: #5790db;
   font-size: 260px;
   margin-top: 50px;
   margin-left: 10px;
 }
 .logoText {
-  color: crimson;
+  /* color: crimson; */
+  color: #5790db;
   font-size: 260px;
   font-weight: lighter;
   letter-spacing: -20px;
 }
 
 .navbarBrand {
-  color: crimson !important;
+  /* color: crimson !important; */
+  color: #5790db !important;
   font-size: 20px !important;
 }
 
