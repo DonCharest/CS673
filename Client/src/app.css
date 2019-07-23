@@ -8,6 +8,10 @@ body {
   padding: 0;
 }
 
+.navbarNavbar {
+  overflow: hidden;
+}
+
 .main {
   background-color: silver;
   min-width: 100%;

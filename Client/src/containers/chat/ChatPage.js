@@ -149,8 +149,9 @@ class chatPage extends Component {
           </div>
           <form onSubmit={this.submitMsg}>
             <input
+              className={classes.chatMessageInput}
               type="text"
-              size="64"
+              // size="64"
               value={this.state.newMsg}
               onChange={this.updateMsg}
             />
