@@ -111,7 +111,7 @@ class Main extends Component {
     );
 
     return (
-      <Container>
+      <Container className={classes.container}>
         <ErrorModal />
         <div>
           <Navbar color="dark" dark expand="sm" className="mb-0">
