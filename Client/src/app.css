@@ -2,15 +2,24 @@ body {
   font-size: 16px;
 }
 
+.container {
+  background-color: white;
+  min-width: 100%;
+  padding: 0;
+}
+
+.navbarNavbar {
+  overflow: hidden;
+}
+
 .main {
   background-color: silver;
+  min-width: 100%;
   min-height: 140vh;
   padding-left: 25px;
   padding-right: 25px;
   padding-top: 15px;
   padding-bottom: 15px;
-  /* width: 3840px; */
-  max-width: 100%;
 }
 
 hr {

@@ -111,9 +111,9 @@ class Main extends Component {
     );
 
     return (
-      <Container>
+      <Container className={classes.container}>
         <ErrorModal />
-        <div>
+        <div className={classes.navbarNavbar}>
           <Navbar color="dark" dark expand="sm" className="mb-0">
             <Link id="navbar-brand" className={classes.navbarBrand} to="/">
               &#9812;TracKing

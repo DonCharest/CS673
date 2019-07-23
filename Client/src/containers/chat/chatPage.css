@@ -26,6 +26,10 @@
   padding: 10px;
 }
 
+.chatMessageInput {
+  width: 100%;
+}
+
 #messages {
   list-style-type: none;
   margin: 0;
@@ -40,7 +44,6 @@
   background: #eee;
 }
 
-
 .singleChat {
   display: flex;
   margin-bottom: 15px;
@@ -50,7 +53,6 @@
   font-weight: bold;
   margin-right: 10px;
 }
-
 
 .chatWindow {
   max-height: 500px;
