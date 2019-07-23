@@ -47,7 +47,7 @@ var commentSchema = new mongoose.Schema({
 })
 commentSchema.plugin(immutablePlugin);
 
-// The Card model holds all components of a story and its subdocuments.
+// The cardSchema holds all components of a story and its subdocuments.
 var cardSchema = new mongoose.Schema({
     project: {
         type: String, 
