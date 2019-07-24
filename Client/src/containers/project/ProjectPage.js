@@ -256,13 +256,15 @@ class ProjectPage extends Component {
         <div>
           <ListGroup>
             <h6>
-              <b>&nbsp;&nbsp;&nbsp;Project Management:</b>
+              Projects
+              {/* <b>&nbsp;&nbsp;&nbsp;Projects Management:</b> */}
             </h6>
             <TransitionGroup className="project-list">
               {projects.map(({ _id, name }) => (
                 <CSSTransition key={_id} timeout={500} classNames="fade">
                   <ListGroupItem className={classes.listGroupItem}>
-                    {<strong>{name}</strong>}
+                    {/* {<strong>{name}</strong>} */}
+                    {name}
                     <Button
                       className="float-right"
                       color="danger"
