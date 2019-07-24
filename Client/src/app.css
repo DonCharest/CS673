@@ -113,6 +113,9 @@ hr {
   border-radius: 5px !important;
   padding: 10px;
   margin-bottom: 5px;
+  /* page controls for mobile browsers */
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 .allSprintColumns {
