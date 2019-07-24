@@ -22,7 +22,7 @@ import ChatPage from "./chat/ChatPage";
 import LoginPage from "./login/LoginPage";
 import ProjectPage from "./project/ProjectPage";
 import * as classes from "../app.css";
-import ErrorModal from "../components/ErrorModal"
+import ErrorModal from "../components/ErrorModal";
 
 class Main extends Component {
   static propTypes = {
@@ -68,7 +68,7 @@ class Main extends Component {
       if (user.role == "project") {
         projectLink = (
           <Link className="nav-link" to="/Project">
-            Project
+            &#128188;Project
           </Link>
         );
       }
@@ -79,18 +79,18 @@ class Main extends Component {
         {adminLink}
         {projectLink}
         <Link className="nav-link" to="/BackLog">
-          Backlog
+          &#128220;Backlog
         </Link>
         <Link className="nav-link" to="/Sprint">
-          Sprint
+          &#127939;Sprint
         </Link>
         <Link className="nav-link" to="/Chat">
-          Chat
+          &#128172;Chat
         </Link>
 
         <NavItem>
           <span className="navbar-text ml-5 mr-3">
-            <strong>{user ? `Welcome ${user.name}` : ""}</strong>
+            <strong>{user ? `\u{1F64B} ${user.name}` : ""}</strong>
           </span>
         </NavItem>
         <NavItem>
@@ -111,12 +111,12 @@ class Main extends Component {
     );
 
     return (
-      <Container>
+      <Container className={classes.container}>
         <ErrorModal />
-        <div>
+        <div className={classes.navbarNavbar}>
           <Navbar color="dark" dark expand="sm" className="mb-0">
             <Link id="navbar-brand" className={classes.navbarBrand} to="/">
-              TracKing
+              &#9812;TracKing
             </Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
