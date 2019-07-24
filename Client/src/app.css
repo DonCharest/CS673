@@ -113,3 +113,8 @@ hr {
 .pageHeader {
   margin-bottom: 20px;
 }
+
+.floatModals {
+  display: flex;
+  flex-direction: row;
+}

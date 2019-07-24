@@ -25,6 +25,7 @@ import {
   deleteMember
 } from "../../actions/projectActions";
 import NewProjectModal from "./NewProjectModal";
+import NewSprintModal from "./NewSprintModal";
 import * as classes from "../../app.css";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -251,7 +252,11 @@ class ProjectPage extends Component {
         <div>
           <h1>Project</h1>
           <hr />
-          <NewProjectModal />
+          <div className={classes.floatModals}>
+            <NewProjectModal />
+            &nbsp;&nbsp;&nbsp;
+            <NewSprintModal />
+          </div>
         </div>
         <div>
           <ListGroup>
