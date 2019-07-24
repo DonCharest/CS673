@@ -79,6 +79,20 @@ hr {
   margin-left: -40px;
 }
 
+.logo1 {
+  color: #0077b5;
+  font-size: 260px;
+  margin-top: 50px;
+  margin-left: 45px;
+}
+.logoText1 {
+  color: #0077b5;
+  font-size: 260px;
+  font-weight: lighter;
+  letter-spacing: -20px;
+  margin-left: -40px;
+}
+
 .navbarBrand {
   /* color: crimson !important; */
   color: white !important;
