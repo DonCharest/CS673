@@ -58,7 +58,8 @@
 }
 
 .chatWindow {
-  max-height: 500px;
+  /* max-height: 500px; */
+  max-height: 50vh;
   overflow-x: scroll;
   background-color: white;
   padding-left: 5px;
