@@ -31,20 +31,16 @@ class NewSprintModal extends Component {
 
     this.state = {
       modal: false,
-      name: "",
-      shortCode: "",
-      description: "",
-      projectMemebers: [],
-      userID: "",
-      projectId: ""
+      startDate: "",
+      endDate: "",
+      capacity: "",
+      projectId: []
     };
 
     this.autoSelectProject = this.autoSelectProject.bind(this);
   }
 
   componentDidMount() {
-    this.props.getUsers();
-
     this.autoSelectProject();
   }
 
@@ -136,8 +132,8 @@ class NewSprintModal extends Component {
                   type="number"
                   name="capacity"
                   id="capacity"
-                  maxLength="3"
                   min="1"
+                  max="100"
                   placeholder="e.g. '1, 3, 5'"
                   onChange={this.onChange}
                 />
