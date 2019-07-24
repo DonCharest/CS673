@@ -19,6 +19,22 @@ router.get("/projects/:id", (req, res) => {
 
 //***** Added a Delete route to remove a Project from the DB  *****/
 router.delete("/projects/:id", (req, res) => {
+
+  let userObj = User.findOne({ _id : "5d274564d7f93f49ad7f4394" });
+
+  console.log("hallo");
+
+  for (let projectIDX in userObj.projects) {
+    if (
+      userObj.projects[projectIDX].projectID === 
+      req.params.id
+    ) {
+      userObj.projects.id(userObj.projects[projectIDX]._id).remove();
+      userObj.save();
+      break;
+    }
+  }
+
   Project.findById(req.params.id)
     .then(project => project.remove().then(() => res.json({ success: true })))
     .catch(err => res.status(404).json({ success: false }));
@@ -38,7 +54,7 @@ router
   // UPDATED 7/17/19: Auto populates project creator's e-mail address
   // into project member schema
   .post(async function(req, res) {
-    // let userObj = await User.findOne({ _id: "5d274564d7f93f49ad7f4394" });
+
     let userObj = await User.findOne({
       _id: req.body.projectMembers[0].userID
     });
@@ -55,13 +71,22 @@ router
       }
     });
 
-    await newProject.save(err => {
+    newProject = await newProject.save((err, result) => {
       if (err) {
         res.status(500).send(`Project save failed: ${err.message}`);
       } else {
         res.status(200).send("Project saved");
       }
+
+      userObj.projects.push({
+        projectID: result._id
+      });
+
+      userObj.save();
     });
+
+    // console.log("Hello world!");
+
   }) // NOTE - NO SEMICOLON!!!
 
   // Update a project to change information included in the request.
@@ -100,12 +125,14 @@ router
     for (let newUserIDX in req.body.projectMembers[0].userID) {
       // new users in payload
       let dupeFound = false;
+      let dupeFoundUser = false;
 
       // Updated 7/17/19 to auto-add e-mail addresses to Project Members
       let userObj = await User.findOne({
         _id: req.body.projectMembers[0].userID[newUserIDX]
       });
 
+      // checking members in project for duplicates
       for (let dupeCheck in project.projectMembers) {
         // current users
         if (
@@ -117,12 +144,31 @@ router
         }
       }
 
+      // checking projects in user for duplicates
+      for (let dupeCheck in userObj.projects) {
+        if (
+          userObj.projects[dupeCheck].projectID === 
+          req.body.projectID
+        ) {
+          dupeFoundUser = true;
+          break;
+        }
+      }
+
       if (dupeFound === false) {
         await project.projectMembers.push({
           userID: req.body.projectMembers[0].userID[newUserIDX],
           userEmail: userObj.email
         });
       }
+
+      if (dupeFoundUser === false) {
+        await userObj.projects.push({
+          projectID: req.body.projectID
+        });
+      }
+
+      await userObj.save();
     }
 
     await project.save(err => {
@@ -132,25 +178,48 @@ router
         res.status(200).send("Project user added");
       }
     });
+
+
   })
 
   // DELETE USER (one at a time) FROM PROJECT
   .delete(async function(req, res) {
     let project = await Project.findOne({ _id: req.body.projectID });
 
+    
     /** I updated this route to be exactly like Delete Epic.
      * I needed to do it this way since I can only bind the object id
      * At this point, the userID prop has not been retreived and saved
      * to state, and is undefined.
      */
+
+    var usertoDelID = "2";
+
+    for (let userToDelIDX in project.projectMembers) {
+      // find mongoID of projectMembers obj from userID
+      if (project.projectMembers[userToDelIDX]._id === req.body.projectMembers) {
+        
+        usertoDelID = project.projectMembers[userToDelIDX].userID;
+        break;
+      }
+    }
+    console.log(usertoDelID);
+
+    let userObj = await User.findOne({ _id: usertoDelID });
+
+
+    for (let userToDelIDX in userObj.projects) {
+      // find mongoID of projectMembers obj from userID
+      if (userObj.projects[userToDelIDX].projectID === req.body.projectID) {
+        
+        userObj.projects.id(userObj.projects[userToDelIDX]._id).remove();
+        break;
+      }
+    }
+
     project.projectMembers.id(req.body.projectMembers).remove();
 
-    // for (let userToDelIDX in project.projectMembers) {
-    //   // find mongoID of projectMembers obj from userID
-    //   if (project.projectMembers[userToDelIDX].userID === req.body.userID)
-    //     // NOW DELETE IT
-    //     project.projectMembers.id(project.projectMembers[userToDelIDX]._id).remove();
-    // }
+    await userObj.save();
 
     await project.save(err => {
       if (err) {
