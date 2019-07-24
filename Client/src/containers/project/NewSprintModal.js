@@ -18,6 +18,7 @@ import PropTypes from "prop-types";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
 class NewSprintModal extends Component {
   static propTypes = {
@@ -119,6 +120,7 @@ class NewSprintModal extends Component {
                   type="dateTime"
                   name="startDate"
                   id="startDate"
+                  style={{ marginBottom: "20px" }}
                   onChange={this.onChange}
                 />
 
@@ -127,6 +129,7 @@ class NewSprintModal extends Component {
                   type="dateTime"
                   name="endDate"
                   id="endDate"
+                  style={{ marginBottom: "20px" }}
                   onChange={this.onChange}
                 />
                 <Label for="capacity">Capacity:</Label>
