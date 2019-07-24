@@ -6,11 +6,11 @@ const router = require('express').Router();
 const {Chat} = require('../../models/Chat');
 
 // All routes go to ./api/chat/
-router.route('/chat')
+router.route('/chat/:project/')
 
 // Retrieve ALL Chat messages for a project.
 .get(async function (req,res){
-    let messages = await Chat.find(req.body.project);
+    let messages = await Chat.find({project:req.params.project});
     res.status(200).send({chat: messages});
 });
 
