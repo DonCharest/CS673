@@ -15,7 +15,9 @@ import { getUsers } from "../../actions/userActions";
 import ProjectsDropdown from "../../components/ProjectsDropdown";
 import * as classes from "../../app.css";
 import PropTypes from "prop-types";
-import DateTimePicker from "react-datetime-picker";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class NewSprintModal extends Component {
   static propTypes = {
@@ -113,7 +115,7 @@ class NewSprintModal extends Component {
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="startDate">Start Date:</Label>
-                <DateTimePicker
+                <DatePicker
                   type="dateTime"
                   name="startDate"
                   id="startDate"
@@ -121,7 +123,7 @@ class NewSprintModal extends Component {
                 />
 
                 <Label for="endDate">End Date:</Label>
-                <DateTimePicker
+                <DatePicker
                   type="dateTime"
                   name="endDate"
                   id="endDate"
