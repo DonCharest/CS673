@@ -30,9 +30,12 @@ class chatPage extends Component {
   }
 
   componentDidMount() {
-    this.socket.on("chat message", data =>
-      this.setState({ response: [...this.state.response, JSON.parse(data)] })
-    );
+    this.socket.on("chat message", data => {
+      const dataParse = JSON.parse(data);
+      if (this.state.projectId == data.project) {
+        this.setState({ response: [...this.state.response, dataParse] })  
+      }
+    });
     this.autoSelectProject();
   }
 
