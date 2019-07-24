@@ -29,18 +29,6 @@ import * as classes from "../../app.css";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-const centerText = {
-  textAlign: "center"
-};
-
-const customButtonDark = {
-  color: "#5790db"
-};
-
-// const customButtonDark:hover = {
-//   background-Color: "#286ac0"
-// }
-
 class ProjectPage extends Component {
   static propTypes = {
     getProjects: PropTypes.func.isRequired,
