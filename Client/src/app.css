@@ -68,7 +68,6 @@ hr {
   color: white;
   font-size: 260px;
   margin-top: 50px;
-  margin-left: 0px;
 }
 .logoText {
   /* color: crimson; */
@@ -77,6 +76,7 @@ hr {
   font-size: 260px;
   font-weight: lighter;
   letter-spacing: -20px;
+  margin-left: -40px;
 }
 
 .navbarBrand {
