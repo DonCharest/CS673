@@ -35,9 +35,11 @@ boxBig {
 .customButtonDark {
   background-color: #0077b5 !important;
   margin-right: 0.5rem;
+  border-color: #f6f4f4;
 }
 .customButtonDark:hover {
   background-color: #036497 !important;
+  border-color: gray;
 }
 
 .main {
