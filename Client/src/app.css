@@ -23,15 +23,6 @@ box {
   border-radius: 3px;
 }
 
-boxBig {
-  display: inline-block;
-  width: 1110px;
-  border: 10px solid #0077b5;
-  background-color: #0077b5;
-  text-align: center;
-  border-radius: 8px;
-}
-
 .customButtonDark {
   background-color: #0077b5 !important;
   margin-right: 0.5rem;
@@ -63,29 +54,12 @@ hr {
 }
 
 .logo {
-  /* color: crimson; */
-  /* color: #0077b5; */
-  color: white;
-  font-size: 260px;
-  margin-top: 50px;
-}
-.logoText {
-  /* color: crimson; */
-  /* color: #0077b5;*/
-  color: white;
-  font-size: 260px;
-  font-weight: lighter;
-  letter-spacing: -20px;
-  margin-left: -40px;
-}
-
-.logo1 {
   color: #0077b5;
   font-size: 260px;
   margin-top: 50px;
   margin-left: 45px;
 }
-.logoText1 {
+.logoText {
   color: #0077b5;
   font-size: 260px;
   font-weight: lighter;

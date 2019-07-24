@@ -17,13 +17,8 @@ const LoginPage = props => {
       <Container>
         <h1 style={centerText}>Agile Project Management Development Tools</h1>
         <hr />
-        {/* <div className={classes.logo}>
-          <boxBig>
-            &#9812;<span className={classes.logoText}>TracKing</span>
-          </boxBig>
-        </div> */}
-        <div className={classes.logo1}>
-          &#9812;<span className={classes.logoText1}>TracKing</span>
+        <div className={classes.logo}>
+          &#9812;<span className={classes.logoText}>TracKing</span>
         </div>
       </Container>
     </div>
