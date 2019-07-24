@@ -29,6 +29,18 @@ import * as classes from "../../app.css";
 import PropTypes from "prop-types";
 import axios from "axios";
 
+const centerText = {
+  textAlign: "center"
+};
+
+const customButtonDark = {
+  color: "#5790db"
+};
+
+// const customButtonDark:hover = {
+//   background-Color: "#286ac0"
+// }
+
 class ProjectPage extends Component {
   static propTypes = {
     getProjects: PropTypes.func.isRequired,
@@ -274,18 +286,24 @@ class ProjectPage extends Component {
                     </Button>
                     <Button
                       className="float-right"
-                      color="dark"
+                      color="secondary"
                       size="sm"
-                      style={{ marginRight: "5px" }}
+                      style={{
+                        marginRight: "5px"
+                        // backgroundColor: "#0077B5"
+                      }}
                       onClick={this.onAddEpicsClick.bind(this, _id)}
                     >
                       Add Epics
                     </Button>
                     <Button
                       className="float-right"
-                      color="dark"
+                      color="secondary"
                       size="sm"
-                      style={{ marginRight: "5px" }}
+                      style={{
+                        marginRight: "5px"
+                        // backgroundColor: "#0077B5"
+                      }}
                       onClick={this.onAddMembersClick.bind(this, _id)}
                     >
                       Add Members
@@ -396,7 +414,12 @@ class ProjectPage extends Component {
                     </TransitionGroup>
                   </ListGroup>
 
-                  <Button color="dark" style={{ marginTop: "2rem" }} block>
+                  <Button
+                    className={classes.customButtonDark}
+                    color="dark"
+                    style={{ marginTop: "2rem" }}
+                    block
+                  >
                     Update Project Details
                   </Button>
                 </FormGroup>
@@ -431,7 +454,12 @@ class ProjectPage extends Component {
                       </option>
                     ))}
                   </Input>
-                  <Button color="dark" style={{ marginTop: "2rem" }} block>
+                  <Button
+                    className={classes.customButtonDark}
+                    color="dark"
+                    style={{ marginTop: "2rem" }}
+                    block
+                  >
                     Add Members
                   </Button>
                 </FormGroup>
@@ -460,7 +488,12 @@ class ProjectPage extends Component {
                     onChange={this.onChangeEpics}
                   />
 
-                  <Button color="dark" style={{ marginTop: "2rem" }} block>
+                  <Button
+                    className={classes.customButtonDark}
+                    color="dark"
+                    style={{ marginTop: "2rem" }}
+                    block
+                  >
                     Add Epic
                   </Button>
                 </FormGroup>
