@@ -30,9 +30,12 @@ class chatPage extends Component {
   }
 
   componentDidMount() {
-    this.socket.on("chat message", data =>
-      this.setState({ response: [...this.state.response, JSON.parse(data)] })
-    );
+    this.socket.on("chat message", data => {
+      const dataParse = JSON.parse(data);
+      if (this.state.projectId == dataParse.project) {
+        this.setState({ response: [...this.state.response, dataParse] })  
+      }
+    });
     this.autoSelectProject();
   }
 
@@ -60,7 +63,7 @@ class chatPage extends Component {
     this.setState({ response: [], projectId: e.target.value });
 
     axios
-      .get(`/api/chat/?project=${this.state.projectId}`)
+      .get(`/api/chat/${e.target.value}`)
       .then(res => {
         this.setState({ response: res.data.chat });
         this.scrollToBottom();
