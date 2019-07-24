@@ -284,7 +284,8 @@ class ProjectPage extends Component {
                       }}
                       onClick={this.onAddEpicsClick.bind(this, _id)}
                     >
-                      Add Epics
+                      {/* Add Epics */}
+                      &#65291; Epics
                     </Button>
                     <Button
                       className="float-right"
@@ -296,7 +297,8 @@ class ProjectPage extends Component {
                       }}
                       onClick={this.onAddMembersClick.bind(this, _id)}
                     >
-                      Add Members
+                      {/* Add Members */}
+                      &#65291; Members
                     </Button>
                     <Button
                       className="float-right"
