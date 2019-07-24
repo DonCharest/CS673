@@ -66,7 +66,11 @@ class Card extends Component {
           </Input>
         </FormGroup>
 
-        <Button onClick={this.toggleCardModal} color="dark">
+        <Button
+          onClick={this.toggleCardModal}
+          className={classes.customButtonDark}
+          color="dark"
+        >
           Edit
         </Button>
       </div>

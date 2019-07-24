@@ -256,13 +256,15 @@ class ProjectPage extends Component {
         <div>
           <ListGroup>
             <h6>
-              <b>&nbsp;&nbsp;&nbsp;Project Management:</b>
+              Projects
+              {/* <b>&nbsp;&nbsp;&nbsp;Projects Management:</b> */}
             </h6>
             <TransitionGroup className="project-list">
               {projects.map(({ _id, name }) => (
                 <CSSTransition key={_id} timeout={500} classNames="fade">
                   <ListGroupItem className={classes.listGroupItem}>
-                    {<strong>{name}</strong>}
+                    {/* {<strong>{name}</strong>} */}
+                    {name}
                     <Button
                       className="float-right"
                       color="danger"
@@ -274,21 +276,29 @@ class ProjectPage extends Component {
                     </Button>
                     <Button
                       className="float-right"
-                      color="dark"
+                      color="secondary"
                       size="sm"
-                      style={{ marginRight: "5px" }}
+                      style={{
+                        marginRight: "5px"
+                        // backgroundColor: "#0077B5"
+                      }}
                       onClick={this.onAddEpicsClick.bind(this, _id)}
                     >
-                      Add Epics
+                      {/* Add Epics */}
+                      &#65291; Epics
                     </Button>
                     <Button
                       className="float-right"
-                      color="dark"
+                      color="secondary"
                       size="sm"
-                      style={{ marginRight: "5px" }}
+                      style={{
+                        marginRight: "5px"
+                        // backgroundColor: "#0077B5"
+                      }}
                       onClick={this.onAddMembersClick.bind(this, _id)}
                     >
-                      Add Members
+                      {/* Add Members */}
+                      &#65291; Members
                     </Button>
                     <Button
                       className="float-right"
@@ -396,7 +406,12 @@ class ProjectPage extends Component {
                     </TransitionGroup>
                   </ListGroup>
 
-                  <Button color="dark" style={{ marginTop: "2rem" }} block>
+                  <Button
+                    className={classes.customButtonDark}
+                    color="dark"
+                    style={{ marginTop: "2rem" }}
+                    block
+                  >
                     Update Project Details
                   </Button>
                 </FormGroup>
@@ -431,7 +446,12 @@ class ProjectPage extends Component {
                       </option>
                     ))}
                   </Input>
-                  <Button color="dark" style={{ marginTop: "2rem" }} block>
+                  <Button
+                    className={classes.customButtonDark}
+                    color="dark"
+                    style={{ marginTop: "2rem" }}
+                    block
+                  >
                     Add Members
                   </Button>
                 </FormGroup>
@@ -460,7 +480,12 @@ class ProjectPage extends Component {
                     onChange={this.onChangeEpics}
                   />
 
-                  <Button color="dark" style={{ marginTop: "2rem" }} block>
+                  <Button
+                    className={classes.customButtonDark}
+                    color="dark"
+                    style={{ marginTop: "2rem" }}
+                    block
+                  >
                     Add Epic
                   </Button>
                 </FormGroup>

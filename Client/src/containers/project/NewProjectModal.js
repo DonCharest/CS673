@@ -12,6 +12,7 @@ import {
 import { connect } from "react-redux";
 import { addProject, getProjects } from "../../actions/projectActions";
 import { getUsers } from "../../actions/userActions";
+import * as classes from "../../app.css";
 import PropTypes from "prop-types";
 
 class NewProjectModal extends Component {
@@ -75,6 +76,7 @@ class NewProjectModal extends Component {
       <div>
         {this.props.isAuthenticated ? (
           <Button
+            className={classes.customButtonDark}
             color="dark"
             style={{ marginBottom: "2rem" }}
             onClick={this.toggle}
@@ -115,7 +117,12 @@ class NewProjectModal extends Component {
                   placeholder="e.g. 'Create an Agile project management software application'"
                   onChange={this.onChange}
                 />
-                <Button color="dark" style={{ marginTop: "2rem" }} block>
+                <Button
+                  className={classes.customButtonDark}
+                  color="dark"
+                  style={{ marginTop: "2rem" }}
+                  block
+                >
                   New Project
                 </Button>
               </FormGroup>

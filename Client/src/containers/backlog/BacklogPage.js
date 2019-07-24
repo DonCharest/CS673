@@ -51,7 +51,11 @@ class BacklogPage extends Component {
           />
           <h1>Backlog</h1>
           <hr />
-          <Button onClick={this.toggleCardModal} color="dark">
+          <Button
+            onClick={this.toggleCardModal}
+            className={classes.customButtonDark}
+            color="dark"
+          >
             Add Story
           </Button>
           <ProjectsDropdown
