@@ -28,6 +28,9 @@
 
 .chatMessageInput {
   width: 100%;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-radius: 5px;
 }
 
 #messages {
@@ -57,4 +60,6 @@
 .chatWindow {
   max-height: 500px;
   overflow-x: scroll;
+  background-color: white;
+  padding-left: 5px;
 }

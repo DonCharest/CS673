@@ -1,3 +1,5 @@
+/* #0077B5 */
+/* #5790db */
 body {
   font-size: 16px;
 }
@@ -8,12 +10,33 @@ body {
   padding: 0;
 }
 
-.navbarNavbar {
-  overflow: hidden;
+.navbarCustom {
+  background-color: #223a46 !important;
+}
+
+box {
+  display: inline-block;
+  width: 105px;
+  border: 1px solid #0077b5;
+  background-color: #0077b5;
+  text-align: center;
+  border-radius: 3px;
+}
+
+.customButtonDark {
+  background-color: #0077b5 !important;
+  margin-right: 0.5rem;
+  border-color: #f6f4f4;
+}
+.customButtonDark:hover {
+  background-color: #036497 !important;
+  border-color: gray;
 }
 
 .main {
-  background-color: silver;
+  /* background-color: silver; */
+  /* f0f3f7 */
+  background-color: #f6f4f4;
   min-width: 100%;
   min-height: 140vh;
   padding-left: 25px;
@@ -31,20 +54,22 @@ hr {
 }
 
 .logo {
-  color: crimson;
+  color: #0077b5;
   font-size: 260px;
   margin-top: 50px;
-  margin-left: 10px;
+  margin-left: 45px;
 }
 .logoText {
-  color: crimson;
+  color: #0077b5;
   font-size: 260px;
   font-weight: lighter;
   letter-spacing: -20px;
+  margin-left: -40px;
 }
 
 .navbarBrand {
-  color: crimson !important;
+  /* color: crimson !important; */
+  color: white !important;
   font-size: 20px !important;
 }
 
@@ -80,10 +105,18 @@ hr {
 }
 
 .listGroupItem {
-  border-width: medium;
+  /* border-width: medium;
   color: black;
   border-radius: 8px !important;
-  border-color: darkgrey;
+  border-color: darkgrey; */
+  background-color: white;
+  border: solid gray 2px;
+  border-radius: 5px !important;
+  padding: 10px;
+  margin-bottom: 5px;
+  /* page controls for mobile browsers */
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 .allSprintColumns {

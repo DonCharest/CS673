@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import Proptypes from "prop-types";
 import { login } from "../../actions/authActions";
 import { clearErrors } from "../../actions/authErrorActions";
+import * as classes from "../../app.css";
 
 class LoginModal extends Component {
   state = {
@@ -110,7 +111,12 @@ class LoginModal extends Component {
                   className="mb-3"
                   onChange={this.onChange}
                 />
-                <Button color="dark" style={{ marginTop: "2rem" }} block>
+                <Button
+                  className={classes.customButtonDark}
+                  color="dark"
+                  style={{ marginTop: "2rem" }}
+                  block
+                >
                   Login
                 </Button>
               </FormGroup>
