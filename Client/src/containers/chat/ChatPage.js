@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import socketIOClient from "socket.io-client";
 import PropTypes from "prop-types";
 import * as classes from "./chatPage.css";
+import * as classes1 from "../../app.css";
 import ProjectsDropdown from "../../components/ProjectsDropdown";
 
 class chatPage extends Component {
@@ -156,8 +157,8 @@ class chatPage extends Component {
               onChange={this.updateMsg}
             />
             <Button
+              className={classes1.customButtonDark}
               type="submit"
-              className="chat-button"
               color="dark"
               onClick={this.submitMsg}
             >

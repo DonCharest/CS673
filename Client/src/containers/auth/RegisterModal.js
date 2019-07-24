@@ -130,7 +130,12 @@ class RegisterModal extends Component {
                   onChange={this.onChange}
                 />
 
-                <Button color="dark" style={{ marginTop: "2rem" }} block>
+                <Button
+                  className={classes.customButtonDark}
+                  color="dark"
+                  style={{ marginTop: "2rem" }}
+                  block
+                >
                   Register
                 </Button>
               </FormGroup>

@@ -98,7 +98,11 @@ class AdminPage extends Component {
                 <ListGroupItem className={classes.listGroupItem} color="light">
                   <h6>
                     <strong>{email + "\u00A0\u00A0\u00A0\u00A0"}</strong>
-                    <Badge pill color="dark">
+                    <Badge
+                      pill
+                      color="dark"
+                      className={classes.customButtonDark}
+                    >
                       {role}{" "}
                     </Badge>
                   </h6>
@@ -124,8 +128,8 @@ class AdminPage extends Component {
                       </Input>
                     </FormGroup>
                     <Button
-                      className={classes.viewBtn}
-                      color="primary"
+                      className={classes.customButtonDark}
+                      // color="primary"
                       size="sm"
                       onClick={this.onUpdateUserClick.bind(this, _id, option)}
                     >
