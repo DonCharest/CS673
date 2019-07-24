@@ -60,7 +60,7 @@ class chatPage extends Component {
     this.setState({ response: [], projectId: e.target.value });
 
     axios
-      .get(`/api/chat/?project=${this.state.projectId}`)
+      .get(`/api/chat/${e.target.value}`)
       .then(res => {
         this.setState({ response: res.data.chat });
         this.scrollToBottom();
