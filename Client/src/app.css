@@ -23,6 +23,15 @@ box {
   border-radius: 3px;
 }
 
+boxBig {
+  display: inline-block;
+  width: 1110px;
+  border: 10px solid #0077b5;
+  background-color: #0077b5;
+  text-align: center;
+  border-radius: 8px;
+}
+
 .customButtonDark {
   background-color: #0077b5 !important;
   margin-right: 0.5rem;
@@ -53,14 +62,16 @@ hr {
 
 .logo {
   /* color: crimson; */
-  color: #0077b5;
+  /* color: #0077b5; */
+  color: white;
   font-size: 260px;
   margin-top: 50px;
-  margin-left: 10px;
+  margin-left: 0px;
 }
 .logoText {
   /* color: crimson; */
-  color: #0077b5;
+  /* color: #0077b5;*/
+  color: white;
   font-size: 260px;
   font-weight: lighter;
   letter-spacing: -20px;
