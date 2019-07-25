@@ -24,7 +24,9 @@ import {
   addEpics,
   deleteEpic,
   deleteMember,
-  startSprint
+  startSprint,
+  stopSprint,
+  updateSprint
 } from "../../actions/projectActions";
 import NewProjectModal from "./NewProjectModal";
 import * as classes from "../../app.css";
@@ -247,7 +249,7 @@ class ProjectPage extends Component {
       epics: this.state.epicName
     };
 
-    // Update Project Details via updateProject action
+    // Add Epic to poject via addEpics action
     this.props.addEpics(epic);
 
     // Close details modal
@@ -314,6 +316,60 @@ class ProjectPage extends Component {
     }, 500);
   };
   // ****** End => Add Sprint to a Project ******
+
+  // ****** Sprint Details ( View & Update ) ******
+  toggleUpdateSprint() {
+    this.setState(prevState => ({
+      modalUpdateSprint: !prevState.modalUpdateSprint
+    }));
+  }
+
+  onDetailsClick = id => {
+    this.getProjectById(id);
+
+    setTimeout(() => {
+      this.toggleUpdateSprint();
+    }, 500);
+  };
+
+  onChangeUpdateSprint = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  handleChangeStartDate(date) {
+    this.setState({
+      startDate: date
+    });
+  }
+
+  handleChangeEndDate(date) {
+    this.setState({
+      endDate: date
+    });
+  }
+
+  onSubmitDetails = e => {
+    e.preventDefault();
+
+    const updatedSprint = {
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+      capacity: this.state.capacity,
+      uom: this.state.uom
+    };
+
+    // Update Project Details via updateProject action
+    this.props.updateSprint(updatedSprint);
+
+    // Close details modal
+    this.toggleUpdateSprint();
+
+    // Refresh project page
+    setTimeout(() => {
+      this.props.getProjects();
+    }, 500);
+  };
+  // ****** End => Sprint Details ( View & Update ) ******
 
   render() {
     const { projects } = this.props.project;
@@ -704,6 +760,8 @@ export default connect(
     addEpics,
     deleteEpic,
     deleteMember,
-    startSprint
+    startSprint,
+    stopSprint,
+    updateSprint
   }
 )(ProjectPage);
