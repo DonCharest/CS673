@@ -69,6 +69,8 @@ class ProjectPage extends Component {
     this.toggleMembers = this.toggleMembers.bind(this);
     this.toggleEpics = this.toggleEpics.bind(this);
     this.toggleSprint = this.toggleSprint.bind(this);
+    this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
+    this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
   }
 
   componentDidMount() {
@@ -89,7 +91,6 @@ class ProjectPage extends Component {
         epics: project.epics,
         epicName: project.epicName,
         userEmail: project.userEmail,
-
         startDate: project.startDate,
         endDate: project.endDate,
         capacity: project.capacity,
@@ -277,6 +278,18 @@ class ProjectPage extends Component {
   onChangeSprint = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
+  handleChangeStartDate(date) {
+    this.setState({
+      startDate: date
+    });
+  }
+
+  handleChangeEndDate(date) {
+    this.setState({
+      endDate: date
+    });
+  }
 
   onSubmitSprint = e => {
     e.preventDefault();
@@ -580,24 +593,22 @@ class ProjectPage extends Component {
                 <DatePicker
                   className="float-right"
                   size="sm"
-                  type="dateTime"
+                  // type="dateTime"
                   name="startDate"
                   id="startDate"
-                  onChange={this.onChangeSprint}
+                  selected={this.state.startDate}
+                  onChange={this.handleChangeStartDate}
                 />
               </FormGroup>
               <FormGroup>
                 <Label for="endDate">End Date:</Label>
                 <br />
                 <DatePicker
-                  selected={this.state.endDate}
-                  onSelect={this.handleSelectEndDate} //when day is clicked
-                  onChange={this.handleChangeEndDate} //only when value has changed
-
                   // type="dateTime"
-                  // name="endDate"
-                  // id="endDate"
-                  // onChange={this.onChangeSprint}
+                  name="endDate"
+                  id="endDate"
+                  selected={this.state.endDate}
+                  onChange={this.handleChangeEndDate} //only when value has changed
                 />
               </FormGroup>
               <FormGroup>
