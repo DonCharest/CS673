@@ -7,7 +7,12 @@ import {
   PROJECT_LOADING,
   PROJECTS_LOADING,
   ADD_MEMBERS,
-  ADD_EPICS
+  ADD_EPICS,
+  START_SPRINT,
+  STOP_SPRINT,
+  GET_SPRINT,
+  UPDATE_SPRINT,
+  SPRINT_LOADING
 } from "../actions/types";
 
 const initialState = {
@@ -73,6 +78,43 @@ export default function(state = initialState, action) {
         loading: true
       };
     case PROJECTS_LOADING:
+      return {
+        ...state,
+        loading: true
+      };
+    case START_SPRINT:
+      return {
+        ...state,
+        projects: state.projects.filter(
+          project => project._id !== action.payLoad
+        ),
+        loading: true
+      };
+    case STOP_SPRINT:
+      return {
+        ...state,
+        projects: state.projects.filter(
+          project => project._id !== action.payLoad
+        ),
+        loading: true
+      };
+    case GET_SPRINT:
+      return {
+        ...state,
+        projects: state.projects.filter(
+          project => project._id !== action.payLoad
+        ),
+        loading: true
+      };
+    case UPDATE_SPRINT:
+      return {
+        ...state,
+        projects: state.projects.filter(
+          project => project._id !== action.payLoad
+        ),
+        loading: true
+      };
+    case SPRINT_LOADING:
       return {
         ...state,
         loading: true

@@ -23,7 +23,8 @@ import {
   addProjectMembers,
   addEpics,
   deleteEpic,
-  deleteMember
+  deleteMember,
+  startSprint
 } from "../../actions/projectActions";
 import NewProjectModal from "./NewProjectModal";
 import * as classes from "../../app.css";
@@ -301,8 +302,8 @@ class ProjectPage extends Component {
       uom: this.state.uom
     };
 
-    // Update Project Details via updateProject action
-    // ******  this.props.addSprint(sprint); //// Need to create this function!!!
+    // Start a Sprint via startSprint action
+    this.props.startSprint(sprint);
 
     // Close details modal
     this.toggleSprint();
@@ -702,6 +703,7 @@ export default connect(
     addProjectMembers,
     addEpics,
     deleteEpic,
-    deleteMember
+    deleteMember,
+    startSprint
   }
 )(ProjectPage);

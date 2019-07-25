@@ -10,7 +10,12 @@ import {
   ADD_MEMBERS,
   ADD_EPICS,
   DELETE_EPIC,
-  DELETE_MEMBER
+  DELETE_MEMBER,
+  START_SPRINT,
+  STOP_SPRINT,
+  GET_SPRINT,
+  UPDATE_SPRINT,
+  SPRINT_LOADING
 } from "./types";
 import { tokenConfig } from "./authActions";
 import { returnErrors } from "./authErrorActions";
@@ -177,5 +182,78 @@ export const setProjectLoading = () => {
 export const setProjectsLoading = () => {
   return {
     type: PROJECTS_LOADING
+  };
+};
+
+//******************* */ New Sprint API Calls: **************************//
+
+// Start Sprint
+export const startSprint = sprint => (dispatch, getState) => {
+  axios
+    .post("api/sprint", sprint, tokenConfig(getState))
+    .then(res =>
+      dispatch({
+        type: START_SPRINT,
+        payLoad: res.data
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+
+// Stop Sprint
+///**  */PUT api/card, body {project: project._id, sprint: null}
+export const stopSprint = data => (dispatch, getState) => {
+  axios
+    .put("api/cards", data, tokenConfig(getState))
+    .then(res =>
+      dispatch({
+        type: STOP_SPRINT,
+        payLoad: res.data
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+
+// Get Sprint => by ID   ******* I may not need this ???
+export const getSprint = id => (dispatch, getState) => {
+  dispatch(setSprintLoading());
+  axios
+    .get(`/api/sprint/${id}`, tokenConfig(getState))
+    .then(res =>
+      dispatch({
+        type: GET_SPRINT,
+        payLoad: res.data
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+
+// Update Sprint
+//export const updateSprint = (id, data) => (dispatch, getState) => {
+export const updateSprint = data => dispatch => {
+  axios
+    // .put(`/api/sprint/${id}`, data, tokenConfig(getState))
+    .put(`api/sprint`, data)
+    .then(res =>
+      dispatch({
+        type: UPDATE_SPRINT,
+        payLoad: res.data
+      })
+    )
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+
+// Load Sprint
+export const setSrintLoading = () => {
+  return {
+    type: SPRINT_LOADING
   };
 };

@@ -36,3 +36,9 @@ export const DELETE_CARD = "DELETE_CARD";
 
 export const SET_APP_ERRORS = "SET_APP_ERRORS";
 export const CLEAR_APP_ERRORS = "CLEAR_APP_ERRORS";
+
+export const START_SPRINT = "START_SPRINT";
+export const STOP_SPRINT = "STOP_SPRINT";
+export const GET_SPRINT = "GET_SPRINT";
+export const UPDATE_SPRINT = "UPDATE_SPRINT";
+export const SPRINT_LOADING = "SPRINT_LOADING";
