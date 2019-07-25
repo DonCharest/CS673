@@ -116,22 +116,27 @@ class NewSprintModal extends Component {
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="startDate">Start Date:</Label>
+                <br />
                 <DatePicker
+                  className="float-right"
+                  size="sm"
                   type="dateTime"
                   name="startDate"
                   id="startDate"
-                  style={{ marginBottom: "20px" }}
                   onChange={this.onChange}
                 />
-
+              </FormGroup>
+              <FormGroup>
                 <Label for="endDate">End Date:</Label>
+                <br />
                 <DatePicker
                   type="dateTime"
                   name="endDate"
                   id="endDate"
-                  style={{ marginBottom: "20px" }}
                   onChange={this.onChange}
                 />
+              </FormGroup>
+              <FormGroup>
                 <Label for="capacity">Capacity:</Label>
                 <Input
                   type="number"
@@ -142,18 +147,18 @@ class NewSprintModal extends Component {
                   placeholder="e.g. '1, 3, 5'"
                   onChange={this.onChange}
                 />
-
+              </FormGroup>
+              <FormGroup>
                 <ProjectsDropdown
                   value={this.state.projectId}
                   name="projectId"
                   onChange={this.onChange}
                   dropdownId="projectsDropdownNewSprint"
                 />
-
-                <Button color="dark" style={{ marginTop: "2rem" }} block>
-                  New Sprint
-                </Button>
               </FormGroup>
+              <Button color="dark" style={{ marginTop: "2rem" }} block>
+                New Sprint
+              </Button>
             </Form>
           </ModalBody>
         </Modal>

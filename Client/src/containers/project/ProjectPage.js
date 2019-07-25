@@ -9,6 +9,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
+  ModalFooter,
   Form,
   FormGroup,
   Label,
@@ -29,6 +30,9 @@ import NewSprintModal from "./NewSprintModal";
 import * as classes from "../../app.css";
 import PropTypes from "prop-types";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker-cssmodules.css";
 
 class ProjectPage extends Component {
   static propTypes = {
@@ -44,6 +48,8 @@ class ProjectPage extends Component {
       modalDetails: false,
       modalMembers: false,
       modalEpics: false,
+      modalSprint: false,
+
       _id: "",
       name: "",
       shortCode: "",
@@ -51,12 +57,18 @@ class ProjectPage extends Component {
       projectMembers: [],
       userID: "",
       epics: [],
-      epicName: ""
+      epicName: "",
+
+      startDate: new Date(),
+      endDate: new Date(),
+      capacity: "",
+      uom: ""
     };
 
     this.toggleDetails = this.toggleDetails.bind(this);
     this.toggleMembers = this.toggleMembers.bind(this);
     this.toggleEpics = this.toggleEpics.bind(this);
+    this.toggleSprint = this.toggleSprint.bind(this);
   }
 
   componentDidMount() {
@@ -76,7 +88,12 @@ class ProjectPage extends Component {
         userID: project.userID,
         epics: project.epics,
         epicName: project.epicName,
-        userEmail: project.userEmail
+        userEmail: project.userEmail,
+
+        startDate: project.startDate,
+        endDate: project.endDate,
+        capacity: project.capacity,
+        uom: project.uom
       });
     });
   }
@@ -242,33 +259,70 @@ class ProjectPage extends Component {
   };
   // ****** End => Add Epics to a Project ******
 
+  // ****** Add Sprint to a Project ******
+  toggleSprint() {
+    this.setState(prevState => ({
+      modalSprint: !prevState.modalSprint
+    }));
+  }
+
+  onAddSprintClick = id => {
+    this.getProjectById(id);
+
+    setTimeout(() => {
+      this.toggleSprint();
+    }, 500);
+  };
+
+  onChangeSprint = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  onSubmitSprint = e => {
+    e.preventDefault();
+
+    const sprint = {
+      projectID: this.state._id,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+      capacity: this.state.capacity,
+      uom: this.state.uom
+    };
+
+    // Update Project Details via updateProject action
+    // ******  this.props.addSprint(sprint); //// Need to create this function!!!
+
+    // Close details modal
+    this.toggleSprint();
+
+    // Refresh project page
+    setTimeout(() => {
+      this.props.getProjects();
+    }, 500);
+  };
+  // ****** End => Add Sprint to a Project ******
+
   render() {
     const { projects } = this.props.project;
     const { users } = this.props.user;
 
     return (
       <Container>
-        {/* Main Project Page */}
+        {/********************** Main Project Page ***********************/}
         <div>
           <h1>Project</h1>
           <hr />
-          <div className={classes.floatModals}>
+          <div className>
             <NewProjectModal />
-            &nbsp;&nbsp;&nbsp;
-            <NewSprintModal />
           </div>
         </div>
         <div>
           <ListGroup>
-            <h6>
-              Projects
-              {/* <b>&nbsp;&nbsp;&nbsp;Projects Management:</b> */}
-            </h6>
+            <h6>Projects</h6>
             <TransitionGroup className="project-list">
               {projects.map(({ _id, name }) => (
                 <CSSTransition key={_id} timeout={500} classNames="fade">
                   <ListGroupItem className={classes.listGroupItem}>
-                    {/* {<strong>{name}</strong>} */}
                     {name}
                     <Button
                       className="float-right"
@@ -279,32 +333,43 @@ class ProjectPage extends Component {
                     >
                       Delete
                     </Button>
+
                     <Button
                       className="float-right"
                       color="secondary"
                       size="sm"
                       style={{
                         marginRight: "5px"
-                        // backgroundColor: "#0077B5"
+                      }}
+                      onClick={this.onAddSprintClick.bind(this, _id)}
+                    >
+                      &#65291; Sprint
+                    </Button>
+
+                    <Button
+                      className="float-right"
+                      color="secondary"
+                      size="sm"
+                      style={{
+                        marginRight: "5px"
                       }}
                       onClick={this.onAddEpicsClick.bind(this, _id)}
                     >
-                      {/* Add Epics */}
-                      &#65291; Epics
+                      &#65291; Epic
                     </Button>
+
                     <Button
                       className="float-right"
                       color="secondary"
                       size="sm"
                       style={{
                         marginRight: "5px"
-                        // backgroundColor: "#0077B5"
                       }}
                       onClick={this.onAddMembersClick.bind(this, _id)}
                     >
-                      {/* Add Members */}
                       &#65291; Members
                     </Button>
+
                     <Button
                       className="float-right"
                       color="info"
@@ -320,7 +385,7 @@ class ProjectPage extends Component {
             </TransitionGroup>
           </ListGroup>
 
-          {/* Details Modal */}
+          {/**************** Details Modal ***************/}
           <Modal
             scrollable={true}
             isOpen={this.state.modalDetails}
@@ -424,7 +489,7 @@ class ProjectPage extends Component {
             </ModalBody>
           </Modal>
 
-          {/* Add Members Modal */}
+          {/*************** Add Members Modal *******************/}
           <Modal
             isOpen={this.state.modalMembers}
             toggle={this.toggleMembers}
@@ -464,7 +529,7 @@ class ProjectPage extends Component {
             </ModalBody>
           </Modal>
 
-          {/* Add Epics Modal */}
+          {/************** Add Epics Modal *************/}
           <Modal
             isOpen={this.state.modalEpics}
             toggle={this.toggleEpics}
@@ -497,6 +562,114 @@ class ProjectPage extends Component {
               </Form>
             </ModalBody>
           </Modal>
+
+          {/************ Add Sprint Modal **************/}
+          <Modal
+            isOpen={this.state.modalSprint}
+            toggle={this.toggleSprint}
+            className={this.props.className}
+          >
+            <ModalHeader toggle={this.toggleSprint}>
+              Sprint Management
+            </ModalHeader>
+            <ModalBody>
+              {/* <Form onSubmit={this.onSubmitSprint}> */}
+              <FormGroup>
+                <Label for="startDate">Start Date:</Label>
+                <br />
+                <DatePicker
+                  className="float-right"
+                  size="sm"
+                  type="dateTime"
+                  name="startDate"
+                  id="startDate"
+                  onChange={this.onChangeSprint}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="endDate">End Date:</Label>
+                <br />
+                <DatePicker
+                  selected={this.state.endDate}
+                  onSelect={this.handleSelectEndDate} //when day is clicked
+                  onChange={this.handleChangeEndDate} //only when value has changed
+
+                  // type="dateTime"
+                  // name="endDate"
+                  // id="endDate"
+                  // onChange={this.onChangeSprint}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="capacity">Capacity:</Label>
+                <Input
+                  type="number"
+                  name="capacity"
+                  id="capacity"
+                  min="1"
+                  max="50"
+                  placeholder="enter a number '1 - 50'"
+                  onChange={this.onChangeSprint}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <Label>Unit of Mesaure:</Label>
+                <Input
+                  type="select"
+                  name="uom"
+                  onChange={this.updateField}
+                  value={this.state.uom}
+                >
+                  <option value="points">points</option>
+                  <option value="hours">hours</option>
+                </Input>
+              </FormGroup>
+
+              {/* </Form> */}
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                // className={classes.customButtonDark}
+                onClick={this.toggleSprint}
+                color="secondary"
+                style={{ marginTop: "2rem" }}
+                block
+              >
+                Close
+              </Button>
+
+              <Button
+                className={classes.customButtonDark}
+                onClick={this.onSubmitSprint}
+                color="dark"
+                style={{ marginTop: "2rem" }}
+                block
+              >
+                Start Sprint
+              </Button>
+
+              <Button
+                className={classes.customButtonDark}
+                color="dark"
+                style={{ marginTop: "2rem" }}
+                block
+              >
+                Edit Spint
+              </Button>
+
+              <Button
+                // className={classes.customButtonDark}
+                color="danger"
+                style={{ marginTop: "2rem" }}
+                block
+              >
+                Stop Sprint
+              </Button>
+            </ModalFooter>
+          </Modal>
+          {/* End Sprint Modal */}
         </div>
       </Container>
     );
