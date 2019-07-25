@@ -8,11 +8,19 @@ import {
 import { returnErrors } from "./appErrorActions";
 
 // Get all Cards
-export const getCards = (projectId) => dispatch => {
+export const getCards = (projectId = null) => (dispatch, getState) => {
   dispatch(setCardsLoading());
 
+
+  let projectIdFilter = projectId;
+
+  if (projectIdFilter === null) {
+    projectIdFilter = getState().activeProject
+  }
+
+
   axios
-    .get(`/api/sprint?projectid=${projectId}`)
+    .get(`/api/cards?projectid=${projectIdFilter}`)
     .then(res => {
         // format data for sprint
         const orderedSprint = {
@@ -22,7 +30,7 @@ export const getCards = (projectId) => dispatch => {
           verification: [],
           done: [],
         } ;
-        res.data.forEach( (item) => {
+        res.data.cards.forEach( (item) => {
           if (item.currentStage) {
             orderedSprint[item.currentStage.toLowerCase()].push(item)  
           } else {
@@ -83,7 +91,7 @@ export const addNewCard = (newCard,successCallback) => dispatch => {
 
 export const deleteCard = (cardId, successCallback) => dispatch => {
   dispatch(setCardsLoading());
-  axios({method: 'delete', url: `/api/cards/${cardId}` })
+  axios({method: 'delete', url: `/api/cards?id=${cardId}` })
     .then(res => {
         dispatch({
           type: DELETE_CARD,

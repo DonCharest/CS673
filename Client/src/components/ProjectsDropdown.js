@@ -20,7 +20,7 @@ class ProjectsDropdown extends Component {
       this.props.projects.length !== prevProps.projects.length &&
       this.props.projects.length > 0
     ) {
-      this.props.onChange({ target: { value: this.props.projects[0]._id } });
+      this.props.onChange({ target: { value: this.props.projects[0]._id } });        
     }
   }
 
@@ -58,7 +58,8 @@ class ProjectsDropdown extends Component {
 
 const mapStateToProps = state => {
   return {
-    projects: state.project.projects
+    projects: state.project.projects,
+    activeProject: state.activeProject
   };
 };
 
