@@ -14,8 +14,9 @@ const {CardTrack} = require('../../models/CardTrack');
 router.route('/cards')
 
 // Retrieve ALL stories matching ALL parameters in the request.
+// The paramaters of the search must be entered as a request query.
 .get(async function (req, res){
-    let card = await Card.find(req.body);
+    let card = await Card.find(req.query);
     res.status(200).json({cards:card});
 }) // NOTE - NO SEMICOLON!!!
 
