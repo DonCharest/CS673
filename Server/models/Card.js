@@ -101,7 +101,8 @@ var cardSchema = new mongoose.Schema({
     load:{
         type: Number, 
         required: true,
-        default: 1
+        min: 1,
+        max: 50
     },
     currentStage:{
         type: String, 
