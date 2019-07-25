@@ -20,7 +20,7 @@ export const getCards = (projectId = null) => (dispatch, getState) => {
 
 
   axios
-    .get(`/api/cards?projectid=${projectIdFilter}`)
+    .get(`/api/cards?project=${projectIdFilter}`)
     .then(res => {
         // format data for sprint
         const orderedSprint = {
