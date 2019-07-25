@@ -147,12 +147,11 @@ router.route('/cards')
             error: `Card update failed: ID ${req.body.id}`
         });
     }
-});
-// END OF router.route('/cards').
+})
 
 // Target URL: */api/cards/card_id DELETE
-router.delete('/cards/:id/', async function(req, res){
-    let card = await Card.findOneAndDelete({'_id': req.params.id});
+.delete(async function(req, res){
+    let card = await Card.findOneAndDelete({'_id': req.query.id});
 
     if(card){
 
@@ -177,6 +176,7 @@ router.delete('/cards/:id/', async function(req, res){
         });
     }
 });
+// END OF router.route('/cards').
 
 // Target URL: */api/addrelated PUT
 // Add a RELATED CARD ID to a card by pushing the text String.
