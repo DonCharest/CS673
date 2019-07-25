@@ -57,8 +57,9 @@ router.route('/cards')
         });
         cardTrack.save();
     };
-    console.log("Card Track: ", cardTrack)
-
+    
+    // Set the initial value of indexCount outside of the countDocuments function in 
+    // case this is the FIRST Card for the Project.
     let indexCount = 0;
     await Card.countDocuments({project: req.body.project}, function(err, count){
         indexCount = count;
