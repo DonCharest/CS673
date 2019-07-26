@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { bindActionCreators } from "redux";
 import { Container, Button } from "reactstrap";
 import { connect } from "react-redux";
 import socketIOClient from "socket.io-client";
@@ -7,6 +8,7 @@ import PropTypes from "prop-types";
 import * as classes from "./chatPage.css";
 import * as classes1 from "../../app.css";
 import ProjectsDropdown from "../../components/ProjectsDropdown";
+import * as activeProjectActions from "../../actions/activeProjectActions";
 
 class chatPage extends Component {
   static propTypes = {
@@ -17,8 +19,7 @@ class chatPage extends Component {
     super(props);
     this.state = {
       response: [],
-      newMsg: "",
-      projectId: ""
+      newMsg: ""
     };
     this.socket = socketIOClient();
 
@@ -32,7 +33,8 @@ class chatPage extends Component {
   componentDidMount() {
     this.socket.on("chat message", data => {
       const dataParse = JSON.parse(data);
-      if (this.state.projectId == dataParse.project) {
+
+      if (this.props.activeProject == dataParse.project) {
         this.setState({ response: [...this.state.response, dataParse] });
       }
     });
@@ -60,7 +62,9 @@ class chatPage extends Component {
   }
 
   onChangeProject(e) {
-    this.setState({ response: [], projectId: e.target.value });
+    this.setState({ response: [] });
+
+    this.props.actions.updateActiveProject(e.target.value);
 
     axios
       .get(`/api/chat/${e.target.value}`)
@@ -82,7 +86,7 @@ class chatPage extends Component {
     this.socket.emit("chat message", {
       message: this.state.newMsg,
       user: this.props.auth.user.name,
-      project: this.state.projectId
+      project: this.props.activeProject
     });
     setTimeout(() => {
       this.scrollToBottom();
@@ -124,7 +128,7 @@ class chatPage extends Component {
           <hr />
 
           <ProjectsDropdown
-            value={this.state.projectId}
+            value={this.props.activeProject}
             name="project"
             onChange={this.onChangeProject}
           />
@@ -176,10 +180,17 @@ class chatPage extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  projects: state.project.projects
+  projects: state.project.projects,
+  activeProject: state.activeProject
 });
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators({ ...activeProjectActions }, dispatch)
+  };
+};
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(chatPage);

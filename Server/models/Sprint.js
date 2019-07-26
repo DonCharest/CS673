@@ -1,11 +1,7 @@
-/*  Sprint.js: Schema for storing Sprint data.
-    - Store sprints in MongoDB.
-    - Sprints include the start and end date for a sprint
-    - Sprints contain start date, end date, and the ObjectID from the Cards collection
+/*  Sprint.js: Schema for storing Sprint data in MongoDB.
+    - Sprints contain start date, end date, and the ObjectID from the Project collection
 */
-
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
 
 const sprintSchema = new Schema({
@@ -14,11 +10,10 @@ const sprintSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project'
     },
-    startDate: {type: Date, required: true, default: Date.now},
-    endDate: {type: Date, required: false, default: null},
+    startDate: {type: Date, required: true},
+    endDate: {type: Date, required: true},
     capacity: {type: Number, required: true},
     capacityUnit: {type: String, required: true}
-    
 });
 
 module.exports.Sprint = mongoose.model("sprint", sprintSchema);
