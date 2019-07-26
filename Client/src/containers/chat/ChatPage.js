@@ -33,7 +33,7 @@ class chatPage extends Component {
     this.socket.on("chat message", data => {
       const dataParse = JSON.parse(data);
       if (this.state.projectId == dataParse.project) {
-        this.setState({ response: [...this.state.response, dataParse] })  
+        this.setState({ response: [...this.state.response, dataParse] });
       }
     });
     this.autoSelectProject();
@@ -54,8 +54,8 @@ class chatPage extends Component {
   scrollToBottom() {
     this.el.scrollIntoView({
       behavior: "smooth",
-      block: "nearest",
-      inline: "start"
+      block: "end" //"nearest" <--- This was the previous setting
+      // inline: "start" <--- This is for horizontal (we don't need it)
     });
   }
 
