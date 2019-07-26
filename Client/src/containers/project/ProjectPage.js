@@ -64,7 +64,7 @@ class ProjectPage extends Component {
       startDate: new Date(),
       endDate: new Date(),
       capacity: "",
-      uom: ""
+      capacityUnit: ""
     };
 
     this.toggleDetails = this.toggleDetails.bind(this);
@@ -96,7 +96,7 @@ class ProjectPage extends Component {
         startDate: project.startDate,
         endDate: project.endDate,
         capacity: project.capacity,
-        uom: project.uom
+        capacityUnit: project.capacityUnit
       });
     });
   }
@@ -301,7 +301,7 @@ class ProjectPage extends Component {
       startDate: this.state.startDate,
       endDate: this.state.endDate,
       capacity: this.state.capacity,
-      uom: this.state.uom
+      capacityUnit: this.state.capacityUnit
     };
 
     // Start a Sprint via startSprint action
@@ -324,7 +324,7 @@ class ProjectPage extends Component {
     }));
   }
 
-  onDetailsClick = id => {
+  onUpdateSprintClick = id => {
     this.getProjectById(id);
 
     setTimeout(() => {
@@ -348,17 +348,17 @@ class ProjectPage extends Component {
     });
   }
 
-  onSubmitDetails = e => {
+  onSubmitUpdateSprint = e => {
     e.preventDefault();
 
     const updatedSprint = {
       startDate: this.state.startDate,
       endDate: this.state.endDate,
       capacity: this.state.capacity,
-      uom: this.state.uom
+      capacityUnit: this.state.capacityUnit
     };
 
-    // Update Project Details via updateProject action
+    // Update Sprint Details via updateSprint action
     this.props.updateSprint(updatedSprint);
 
     // Close details modal
@@ -681,12 +681,12 @@ class ProjectPage extends Component {
               </FormGroup>
 
               <FormGroup>
-                <Label>Unit of Mesaure:</Label>
+                <Label>Capacity Unit:</Label>
                 <Input
                   type="select"
-                  name="uom"
-                  onChange={this.updateField}
-                  value={this.state.uom}
+                  name="capacityUnit"
+                  value={this.state.capacityUnit}
+                  onChange={this.onChangeSprint}
                 >
                   <option value="points">points</option>
                   <option value="hours">hours</option>
