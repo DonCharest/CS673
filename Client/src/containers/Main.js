@@ -114,9 +114,15 @@ class Main extends Component {
       <Container className={classes.container}>
         <ErrorModal />
         <div className={classes.navbarNavbar}>
-          <Navbar color="dark" dark expand="sm" className="mb-0">
+          <Navbar
+            className={classes.navbarCustom}
+            color="dark"
+            dark
+            expand="sm"
+          >
+            {/* <Navbar color="dark" dark expand="sm" className="mb-0"> */}
             <Link id="navbar-brand" className={classes.navbarBrand} to="/">
-              &#9812;TracKing
+              <box>&#9812;TracKing</box>
             </Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>

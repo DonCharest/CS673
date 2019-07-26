@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import socketIOClient from "socket.io-client";
 import PropTypes from "prop-types";
 import * as classes from "./chatPage.css";
+import * as classes1 from "../../app.css";
 import ProjectsDropdown from "../../components/ProjectsDropdown";
 
 class chatPage extends Component {
@@ -29,9 +30,12 @@ class chatPage extends Component {
   }
 
   componentDidMount() {
-    this.socket.on("chat message", data =>
-      this.setState({ response: [...this.state.response, JSON.parse(data)] })
-    );
+    this.socket.on("chat message", data => {
+      const dataParse = JSON.parse(data);
+      if (this.state.projectId == dataParse.project) {
+        this.setState({ response: [...this.state.response, dataParse] })  
+      }
+    });
     this.autoSelectProject();
   }
 
@@ -59,7 +63,7 @@ class chatPage extends Component {
     this.setState({ response: [], projectId: e.target.value });
 
     axios
-      .get(`/api/chat/?project=${this.state.projectId}`)
+      .get(`/api/chat/${e.target.value}`)
       .then(res => {
         this.setState({ response: res.data.chat });
         this.scrollToBottom();
@@ -156,8 +160,8 @@ class chatPage extends Component {
               onChange={this.updateMsg}
             />
             <Button
+              className={classes1.customButtonDark}
               type="submit"
-              className="chat-button"
               color="dark"
               onClick={this.submitMsg}
             >
