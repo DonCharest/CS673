@@ -18,39 +18,46 @@ router.get("/projects/:id", (req, res) => {
 });
 
 //***** Added a Delete route to remove a Project from the DB  *****/
-router.delete("/projects/:id", async (req, res) => {
 
-  let project = await Project.findOne({ _id: req.params.id });
-
-  // console.log(project._id);
-  // console.log(req.params.id);
-  
-    for (let userIDX in project.projectMembers) {
-      let userObj = await User.findOne({
-        _id: project.projectMembers[userIDX].userID
-      });
-
-      // console.log(project.projectMembers[userIDX].userID);
-      
-      for (let idIDX in userObj.projects) {
-        if (userObj.projects[idIDX].projectID === req.params.id) {
-          await userObj.projects.id(userObj.projects[idIDX]._id).remove();
-          await userObj.save();
-          // console.log("laksjdflkasdjflaksdjfl");
-          break;
-        }
-      }
-    }
-
-  let toDeleteProj = await Project.findOneAndDelete(req.params.id);
-    // .then(project => project.remove().then(() => res.json({ success: true })))
-    // .catch(err => res.status(404).json({ success: false }));
-  if (toDeleteProj) {
-    res.json({ success: true });
-  } else {
-    res.status(500).json({ success: false });
-  }
+router.delete("/projects/:id", (req, res) => {
+  Project.findById(req.params.id)
+    .then(project => project.remove().then(() => res.json({ success: true })))
+    .catch(err => res.status(404).json({ success: false }));
 });
+
+// router.delete("/projects/:id", async (req, res) => {
+
+//   let project = await Project.findOne({ _id: req.params.id });
+
+//   // console.log(project._id);
+//   // console.log(req.params.id);
+  
+//     for (let userIDX in project.projectMembers) {
+//       let userObj = await User.findOne({
+//         _id: project.projectMembers[userIDX].userID
+//       });
+
+//       // console.log(project.projectMembers[userIDX].userID);
+      
+//       for (let idIDX in userObj.projects) {
+//         if (userObj.projects[idIDX].projectID === req.params.id) {
+//           await userObj.projects.id(userObj.projects[idIDX]._id).remove();
+//           await userObj.save();
+//           // console.log("laksjdflkasdjflaksdjfl");
+//           break;
+//         }
+//       }
+//     }
+
+//   let toDeleteProj = await Project.findOneAndDelete(req.params.id);
+//     // .then(project => project.remove().then(() => res.json({ success: true })))
+//     // .catch(err => res.status(404).json({ success: false }));
+//   if (toDeleteProj) {
+//     res.json({ success: true });
+//   } else {
+//     res.status(500).json({ success: false });
+//   }
+// });
 
 // All routes go to ./api/projects/
 router
