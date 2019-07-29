@@ -6,16 +6,18 @@
     Use async/await to give functions synchronous behavior.
 */
 const router = require('express').Router();
-const {Project} = require('../../models/Project');
 const {Card} = require('../../models/Card');
 const {CardTrack} = require('../../models/CardTrack');
+const {Project} = require('../../models/Project');
+const {Sprint} = require('../../models/Sprint');
 
 // All routes go to ./api/cards/
 router.route('/cards')
 
 // Retrieve ALL stories matching ALL parameters in the request.
+// The paramaters of the search must be entered as a request query.
 .get(async function (req, res){
-    let card = await Card.find(req.body);
+    let card = await Card.find(req.query);
     res.status(200).json({cards:card});
 }) // NOTE - NO SEMICOLON!!!
 
@@ -56,8 +58,9 @@ router.route('/cards')
         });
         cardTrack.save();
     };
-    console.log("Card Track: ", cardTrack)
-
+    
+    // Set the initial value of indexCount outside of the countDocuments function in 
+    // case this is the FIRST Card for the Project.
     let indexCount = 0;
     await Card.countDocuments({project: req.body.project}, function(err, count){
         indexCount = count;
@@ -145,12 +148,11 @@ router.route('/cards')
             error: `Card update failed: ID ${req.body.id}`
         });
     }
-});
-// END OF router.route('/cards').
+})
 
 // Target URL: */api/cards/card_id DELETE
-router.delete('/cards/:id/', async function(req, res){
-    let card = await Card.findOneAndDelete({'_id': req.params.id});
+.delete(async function(req, res){
+    let card = await Card.findOneAndDelete({'_id': req.query.id});
 
     if(card){
 
@@ -175,6 +177,7 @@ router.delete('/cards/:id/', async function(req, res){
         });
     }
 });
+// END OF router.route('/cards').
 
 // Target URL: */api/addrelated PUT
 // Add a RELATED CARD ID to a card by pushing the text String.
@@ -317,23 +320,41 @@ router.put('/cardindex', async function (req, res){
     - When a card changes stage:
         1. It's current stage is given an end date,
         2. Create the new stage with a start date of now.
+        3. If the Stage is SET to [TODO, WORKINPROGRESS, VALIDATION, DONE] set
+            the Card.sprint to the current Sprint for the Project.
 // REFERENCE: https://stackoverflow.com/questions/26156687/mongoose-find-update-subdocument
 */
 router.put('/stagechange', async function (req, res){
     
     // Find the Card of interest.
-    let card = null;
-    await Card.findOne({"_id": req.body.id}, (err,doc) =>{
-        if(err){
+    let card = await Card.findOne({"_id": req.body.id})
+    .then(cardFind => {return cardFind})
+    .catch(err => 
+        {
             res.status(500).json({
                 success: false,
                 error: `Card find in stagechange failed: ${err.message}`
             });
-        }
-        else{
-            card = doc;
-        }
-    });
+        } 
+    );
+    
+    // Find the current Sprint for the Project of the Card.
+    let cardSprint = null;
+    if(['TODO', 'WORKINPROGRESS', 'VALIDATION', 'DONE'].indexOf(`${req.body.stageName}`.toUpperCase()) >= 0){
+        await Sprint.find(
+        {
+            project: card.project,
+            startDate: {$lte : Date.now()},
+            endDate: {$gte: Date.now()}
+        })
+        .then(sprint => {cardSprint = sprint[0]._id;})
+        .catch(err => {
+            res.status(500).json({
+                success: false,
+                error: `Sprint find in stagechange failed: ${err.message}`
+            });
+        });
+    };
 
     // We want to find the LAST stage array entry.
     // The position of this entry is passed in $.
@@ -342,7 +363,8 @@ router.put('/stagechange', async function (req, res){
         {
             "$set":{
                 "stage.$.endDate": Date.now(),
-                "currentStage":req.body.stageName
+                "currentStage":req.body.stageName,
+                "sprint": cardSprint
             }
         },
         {new: true},
@@ -378,16 +400,13 @@ router.put('/stagechange', async function (req, res){
     }
     
     // Save the changes
-    await card.save((err) => {
-        if(err){
-            res.status(500).json({
-                success: false,
-                error: `Card new stage save failed: ${err.message}`
-            });
-        }
-        else{
-            res.status(200).json({success: true});
-        }
+    await card.save()
+    .then(res.status(200).json({success: true}))
+    .catch(err => {
+        res.status(500).json({
+            success: false,
+            error: `Card new stage save failed: ${err.message}`
+        });
     });
 });
 module.exports = router;
