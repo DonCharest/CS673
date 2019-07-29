@@ -116,8 +116,8 @@ class ProjectPage extends Component {
 
       console.log("The Sprint is ", sprint.sprint._id);
 
-      if (!sprint.sprint) {
-        console.log("undefined");
+      if (sprint.sprintID == "") {
+        console.log("not here");
       } else {
         console.log("here it is");
       }
