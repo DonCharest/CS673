@@ -297,7 +297,8 @@ class ProjectPage extends Component {
     e.preventDefault();
 
     const sprint = {
-      projectID: this.state._id,
+      // projectID: this.state._id,
+      project: this.state._id,
       startDate: this.state.startDate,
       endDate: this.state.endDate,
       capacity: this.state.capacity,
@@ -652,6 +653,7 @@ class ProjectPage extends Component {
                   // type="dateTime"
                   name="startDate"
                   id="startDate"
+                  autocomplete="off"
                   selected={this.state.startDate}
                   onChange={this.handleChangeStartDate}
                 />
@@ -663,6 +665,7 @@ class ProjectPage extends Component {
                   // type="dateTime"
                   name="endDate"
                   id="endDate"
+                  autocomplete="off"
                   selected={this.state.endDate}
                   onChange={this.handleChangeEndDate} //only when value has changed
                 />
@@ -688,6 +691,7 @@ class ProjectPage extends Component {
                   value={this.state.capacityUnit}
                   onChange={this.onChangeSprint}
                 >
+                  <option value="points">select</option>
                   <option value="points">points</option>
                   <option value="hours">hours</option>
                 </Input>
