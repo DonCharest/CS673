@@ -14,8 +14,9 @@ const {CardTrack} = require('../../models/CardTrack');
 router.route('/cards')
 
 // Retrieve ALL stories matching ALL parameters in the request.
+// The paramaters of the search must be entered as a request query.
 .get(async function (req, res){
-    let card = await Card.find(req.body);
+    let card = await Card.find(req.query);
     res.status(200).json({cards:card});
 }) // NOTE - NO SEMICOLON!!!
 
@@ -56,8 +57,9 @@ router.route('/cards')
         });
         cardTrack.save();
     };
-    console.log("Card Track: ", cardTrack)
-
+    
+    // Set the initial value of indexCount outside of the countDocuments function in 
+    // case this is the FIRST Card for the Project.
     let indexCount = 0;
     await Card.countDocuments({project: req.body.project}, function(err, count){
         indexCount = count;
@@ -145,12 +147,11 @@ router.route('/cards')
             error: `Card update failed: ID ${req.body.id}`
         });
     }
-});
-// END OF router.route('/cards').
+})
 
 // Target URL: */api/cards/card_id DELETE
-router.delete('/cards/:id/', async function(req, res){
-    let card = await Card.findOneAndDelete({'_id': req.params.id});
+.delete(async function(req, res){
+    let card = await Card.findOneAndDelete({'_id': req.query.id});
 
     if(card){
 
@@ -175,6 +176,7 @@ router.delete('/cards/:id/', async function(req, res){
         });
     }
 });
+// END OF router.route('/cards').
 
 // Target URL: */api/addrelated PUT
 // Add a RELATED CARD ID to a card by pushing the text String.
