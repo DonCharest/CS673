@@ -28,7 +28,7 @@ class CardModal extends Component {
           ? props.cardData.currentStage.toLowerCase()
           : "backlog",
       assignedId: props.cardData ? props.cardData.assignedTo : props.loggedInId,
-      projectId: "",
+      projectId: this.props.activeProject,
       priority: props.cardData ? props.cardData.priority : "MEDIUM",
       type: props.cardData ? props.cardData.type : "REQUIREMENT",
       load: props.cardData ? props.cardData.load : 1
@@ -239,7 +239,8 @@ class CardModal extends Component {
 const mapStateToProps = state => {
   return {
     loggedInId: state.auth.user._id,
-    projects: state.project.projects
+    projects: state.project.projects,
+    activeProject: state.activeProject
   };
 };
 
