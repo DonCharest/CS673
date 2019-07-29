@@ -35,6 +35,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
+import { setPriority } from "os";
 
 class ProjectPage extends Component {
   static propTypes = {
@@ -64,7 +65,8 @@ class ProjectPage extends Component {
       startDate: new Date(),
       endDate: new Date(),
       capacity: "",
-      capacityUnit: ""
+      capacityUnit: "",
+      sprintID: ""
     };
 
     this.toggleDetails = this.toggleDetails.bind(this);
@@ -98,6 +100,31 @@ class ProjectPage extends Component {
         capacity: project.capacity,
         capacityUnit: project.capacityUnit
       });
+      console.log("The Project is...", project._id);
+      console.log(project);
+    });
+  }
+
+  getSprintByProjectId(id) {
+    axios.get(`/api/sprint/?projectid=${id}`).then(res => {
+      const sprint = res.data;
+      // const obj = JSON.parse(sprint);
+
+      this.setState({
+        sprintID: sprint.sprint._id
+      });
+
+      console.log("The Sprint is ", sprint.sprint._id);
+
+      if (!sprint.sprint) {
+        console.log("undefined");
+      } else {
+        console.log("here it is");
+      }
+
+      // setTimeout(() => {
+      //   console.log("The new Sprint is ", sprint.sprint._id);
+      // }, 1500);
     });
   }
 
@@ -271,6 +298,10 @@ class ProjectPage extends Component {
 
   onAddSprintClick = id => {
     this.getProjectById(id);
+
+    console.log("the id is: ", id);
+
+    this.getSprintByProjectId(id);
 
     setTimeout(() => {
       this.toggleSprint();
