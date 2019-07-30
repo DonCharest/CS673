@@ -31,7 +31,8 @@ class CardModal extends Component {
       projectId: this.props.activeProject,
       priority: props.cardData ? props.cardData.priority : "MEDIUM",
       type: props.cardData ? props.cardData.type : "REQUIREMENT",
-      load: props.cardData ? props.cardData.load : 1
+      load: props.cardData ? props.cardData.load : 1,
+      comments: props.cardData ? props.cardData.comments : ""
     };
 
     this.saveAndClose = this.saveAndClose.bind(this);
@@ -70,7 +71,8 @@ class CardModal extends Component {
       description: this.state.description,
       priority: this.state.priority,
       type: this.state.type,
-      load: this.state.load
+      load: this.state.load,
+      comments: this.state.comments
     };
 
     let updatedCardData = {};
@@ -157,16 +159,31 @@ class CardModal extends Component {
                   <option value="ISSUE">Issue</option>
                 </Input>
               </FormGroup>
+
               <FormGroup>
-                <Label>Story Name</Label>
+                <Label>Load</Label>
                 <Input
                   value={this.state.load}
                   onChange={this.updateField}
                   name="load"
                   type="number"
+                  min="0"
+                  max="50"
                   placeholder="project load"
                 />
               </FormGroup>
+
+              <FormGroup>
+                <Label>Comments</Label>
+                <Input
+                  value={this.state.comments}
+                  onChange={this.updateField}
+                  name="comments"
+                  type="textarea"
+                  placeholder=""
+                />
+              </FormGroup>
+
               {!this.props.cardData ? (
                 <div>
                   <FormGroup>
@@ -177,11 +194,12 @@ class CardModal extends Component {
                       onChange={this.updateField}
                       value={this.state.stage}
                     >
-                      <option value="backlog">BackLog</option>
-                      <option value="todo">ToDo</option>
+                      <option value="backlog">Backlog</option>
+                      <option value="todo">To Do</option>
                       <option value="workinprogress">Work in Progress</option>
                       <option value="verification">Verification</option>
-                      <option value="done">Done</option>
+                      <option value="done">Complete</option>
+                      <option value="accepted">Accepted</option>
                     </Input>
                   </FormGroup>
                   <ProjectsDropdown

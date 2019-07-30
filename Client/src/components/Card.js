@@ -59,10 +59,11 @@ class Card extends Component {
             }
           >
             <option value="backlog">BackLog</option>
-            <option value="todo">ToDo</option>
+            <option value="todo">To Do</option>
             <option value="workinprogress">Work in Progress</option>
             <option value="verification">Verification</option>
-            <option value="done">Done</option>
+            <option value="done">Complete</option>
+            <option value="accepted">Accepted</option>
           </Input>
         </FormGroup>
 

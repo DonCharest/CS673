@@ -34,7 +34,7 @@ class chatPage extends Component {
     this.socket.on("chat message", data => {
       const dataParse = JSON.parse(data);
       if (this.props.activeProject == dataParse.project) {
-        this.setState({ response: [...this.state.response, dataParse] })  
+        this.setState({ response: [...this.state.response, dataParse] });
       }
     });
     this.autoSelectProject();
@@ -55,15 +55,16 @@ class chatPage extends Component {
   scrollToBottom() {
     this.el.scrollIntoView({
       behavior: "smooth",
-      block: "nearest",
-      inline: "start"
+      block: "end"
+      // block: "nearest",
+      // inline: "start"
     });
   }
 
   onChangeProject(e) {
     this.setState({ response: [] });
 
-    this.props.actions.updateActiveProject(e.target.value)
+    this.props.actions.updateActiveProject(e.target.value);
 
     axios
       .get(`/api/chat/${e.target.value}`)
@@ -188,7 +189,6 @@ const mapDispatchToProps = dispatch => {
     actions: bindActionCreators({ ...activeProjectActions }, dispatch)
   };
 };
-
 
 export default connect(
   mapStateToProps,
