@@ -65,7 +65,6 @@ io.on("connection", function(socket) {
   console.log("A user has connected.");
 
   socket.on("chat message", function(msg) {
-  //console.log("message: " + msg.message);
 
     // Push the message object to the database to be loaded when the next user connects.
     let newMessage = new Chat({

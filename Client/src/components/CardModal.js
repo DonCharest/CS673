@@ -28,10 +28,11 @@ class CardModal extends Component {
           ? props.cardData.currentStage.toLowerCase()
           : "backlog",
       assignedId: props.cardData ? props.cardData.assignedTo : props.loggedInId,
-      projectId: "",
+      projectId: this.props.activeProject,
       priority: props.cardData ? props.cardData.priority : "MEDIUM",
       type: props.cardData ? props.cardData.type : "REQUIREMENT",
-      load: props.cardData ? props.cardData.load : 1
+      load: props.cardData ? props.cardData.load : 1,
+      comment: props.cardData ? props.cardData.comment : ""
     };
 
     this.saveAndClose = this.saveAndClose.bind(this);
@@ -70,7 +71,8 @@ class CardModal extends Component {
       description: this.state.description,
       priority: this.state.priority,
       type: this.state.type,
-      load: this.state.load
+      load: this.state.load,
+      comment: this.state.comment
     };
 
     let updatedCardData = {};
@@ -157,16 +159,31 @@ class CardModal extends Component {
                   <option value="ISSUE">Issue</option>
                 </Input>
               </FormGroup>
+
               <FormGroup>
-                <Label>Story Name</Label>
+                <Label>Load</Label>
                 <Input
                   value={this.state.load}
                   onChange={this.updateField}
                   name="load"
                   type="number"
+                  min="0"
+                  max="50"
                   placeholder="project load"
                 />
               </FormGroup>
+
+              <FormGroup>
+                <Label>Comments</Label>
+                <Input
+                  value={this.state.comment}
+                  onChange={this.updateField}
+                  name="comment"
+                  type="textarea"
+                  placeholder=""
+                />
+              </FormGroup>
+
               {!this.props.cardData ? (
                 <div>
                   <FormGroup>
@@ -177,11 +194,12 @@ class CardModal extends Component {
                       onChange={this.updateField}
                       value={this.state.stage}
                     >
-                      <option value="backlog">BackLog</option>
-                      <option value="todo">ToDo</option>
+                      <option value="backlog">Backlog</option>
+                      <option value="todo">To Do</option>
                       <option value="workinprogress">Work in Progress</option>
                       <option value="verification">Verification</option>
-                      <option value="done">Done</option>
+                      <option value="done">Complete</option>
+                      {/* <option value="accepted">Accepted</option> */}
                     </Input>
                   </FormGroup>
                   <ProjectsDropdown
@@ -239,7 +257,8 @@ class CardModal extends Component {
 const mapStateToProps = state => {
   return {
     loggedInId: state.auth.user._id,
-    projects: state.project.projects
+    projects: state.project.projects,
+    activeProject: state.activeProject
   };
 };
 

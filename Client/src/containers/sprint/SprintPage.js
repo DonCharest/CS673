@@ -6,6 +6,7 @@ import { Container, Button } from "reactstrap";
 import CardModal from "../../components/CardModal";
 import Card from "../../components/Card";
 import * as actions from "../../actions/sprintActions";
+import * as activeProjectActions from "../../actions/activeProjectActions";
 import * as classes from "../../app.css";
 import ProjectsDropdown from "../../components/ProjectsDropdown";
 
@@ -14,8 +15,7 @@ class SprintPage extends Component {
     super(props);
 
     this.state = {
-      showCardModal: false,
-      projectId: ""
+      showCardModal: false
     };
 
     this.onChangeProject = this.onChangeProject.bind(this);
@@ -32,7 +32,7 @@ class SprintPage extends Component {
 
   onChangeProject(e) {
     console.log(e);
-    this.setState({ projectId: e.target.value });
+    this.props.actions.updateActiveProject(e.target.value);
     this.props.actions.getCards(e.target.value);
   }
 
@@ -56,7 +56,7 @@ class SprintPage extends Component {
             Add Story
           </Button>
           <ProjectsDropdown
-            value={this.state.projectId}
+            value={this.props.activeProject}
             name="project"
             onChange={this.onChangeProject}
           />
@@ -95,13 +95,17 @@ class SprintPage extends Component {
 const mapStateToProps = state => {
   return {
     sprint: state.sprint,
-    auth: state.auth
+    auth: state.auth,
+    activeProject: state.activeProject
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch)
+    actions: bindActionCreators(
+      { ...actions, ...activeProjectActions },
+      dispatch
+    )
   };
 };
 

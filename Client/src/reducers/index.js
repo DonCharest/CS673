@@ -7,6 +7,7 @@ import admin from "./adminReducer";
 import backlog from "./backlogReducer";
 import sprint from "./sprintReducer";
 import projectReducer from "./projectReducer";
+import activeProject from "./activeProject";
 
 // const rootReducer = combineReducers({
 //   user: userReducer,
@@ -20,6 +21,7 @@ import projectReducer from "./projectReducer";
 // export default rootReducer;
 
 export default combineReducers({
+  activeProject: activeProject,
   user: userReducer,
   authError: authErrorReducer,
   auth: authReducer,

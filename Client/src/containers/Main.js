@@ -21,6 +21,7 @@ import AdminPage from "./admin/AdminPage";
 import ChatPage from "./chat/ChatPage";
 import LoginPage from "./login/LoginPage";
 import ProjectPage from "./project/ProjectPage";
+import ReportsPage from "./reports/ReportsPage";
 import * as classes from "../app.css";
 import ErrorModal from "../components/ErrorModal";
 
@@ -84,6 +85,12 @@ class Main extends Component {
         <Link className="nav-link" to="/Sprint">
           &#127939;Sprint
         </Link>
+
+        <Link className="nav-link" to="/Reports">
+          &#128200;Reports
+          {/* &#128202; */}
+        </Link>
+
         <Link className="nav-link" to="/Chat">
           &#128172;Chat
         </Link>
@@ -122,7 +129,7 @@ class Main extends Component {
           >
             {/* <Navbar color="dark" dark expand="sm" className="mb-0"> */}
             <Link id="navbar-brand" className={classes.navbarBrand} to="/">
-              <box>&#9812;TracKing</box>
+              <logo-box>&#9812;TracKing</logo-box>
             </Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
@@ -163,6 +170,12 @@ class Main extends Component {
               exact
               component={isAuthenticated ? ProjectPage : LoginPage}
             />
+            <Route
+              path="/reports"
+              exact
+              component={isAuthenticated ? ReportsPage : LoginPage}
+            />
+
             <Route path="/" exact component={LoginPage} />
             <Redirect to="/sprint" />
           </div>
