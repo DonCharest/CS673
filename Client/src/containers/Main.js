@@ -57,7 +57,7 @@ class Main extends Component {
       }
       if (user.role == "admin") {
         adminLink = (
-          <Link className="nav-link" to="/Admin">
+          <Link className="nav-link" to="/Admin" style={{ color: "white" }}>
             Admin
           </Link>
         );
@@ -68,7 +68,7 @@ class Main extends Component {
     if (user) {
       if (user.role == "project") {
         projectLink = (
-          <Link className="nav-link" to="/Project">
+          <Link className="nav-link" to="/Project" style={{ color: "white" }}>
             &#128188;Project
           </Link>
         );
@@ -79,25 +79,27 @@ class Main extends Component {
       <Fragment>
         {adminLink}
         {projectLink}
-        <Link className="nav-link" to="/BackLog">
+        <Link className="nav-link" to="/BackLog" style={{ color: "white" }}>
           &#128220;Backlog
         </Link>
-        <Link className="nav-link" to="/Sprint">
+        <Link className="nav-link" to="/Sprint" style={{ color: "white" }}>
           &#127939;Sprint
         </Link>
 
-        <Link className="nav-link" to="/Reports">
+        <Link className="nav-link" to="/Reports" style={{ color: "white" }}>
           &#128200;Reports
           {/* &#128202; */}
         </Link>
 
-        <Link className="nav-link" to="/Chat">
+        <Link className="nav-link" to="/Chat" style={{ color: "white" }}>
           &#128172;Chat
         </Link>
 
         <NavItem>
           <span className="navbar-text ml-5 mr-3">
-            <strong>{user ? `\u{1F64B} ${user.name}` : ""}</strong>
+            <p style={{ color: "white" }}>
+              {user ? `\u{1F64B} ${user.name}` : ""}
+            </p>
           </span>
         </NavItem>
         <NavItem>
