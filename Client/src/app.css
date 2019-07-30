@@ -152,3 +152,22 @@ hr {
 .pageHeader {
   margin-bottom: 20px;
 }
+
+.divInline {
+  display: flex;
+}
+.cardSelectDropdown {
+  width: 170px;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+.customButtonDark2 {
+  background-color: #0077b5 !important;
+  border-color: #f6f4f4;
+  height: 39px;
+  margin-top: 5px;
+}
+.customButtonDark2:hover {
+  background-color: #036497 !important;
+  border-color: gray;
+}

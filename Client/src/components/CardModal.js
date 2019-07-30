@@ -199,7 +199,7 @@ class CardModal extends Component {
                       <option value="workinprogress">Work in Progress</option>
                       <option value="verification">Verification</option>
                       <option value="done">Complete</option>
-                      <option value="accepted">Accepted</option>
+                      {/* <option value="accepted">Accepted</option> */}
                     </Input>
                   </FormGroup>
                   <ProjectsDropdown
