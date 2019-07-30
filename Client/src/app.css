@@ -146,6 +146,22 @@ hr {
   margin-bottom: 10px;
 }
 
+.cardIssue {
+  background-color: white;
+  border: solid red 2px;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.cardTask {
+  background-color: white;
+  border: solid blue 2px;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
 .cardDescription {
 }
 

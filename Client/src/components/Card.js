@@ -33,7 +33,15 @@ class Card extends Component {
 
   render() {
     return (
-      <div className={classes.card}>
+      <div
+        className={
+          this.props.cardData.type === "ISSUE"
+            ? classes.cardIssue
+            : this.props.cardData.type === "TASK"
+            ? classes.cardTask
+            : classes.card
+        }
+      >
         <CardModal
           title="Edit Story"
           showCardModal={this.state.showCardModal}
