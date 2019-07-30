@@ -2,6 +2,8 @@
 /* #5790db */
 body {
   font-size: 16px;
+  /* overflow: hidden;
+  -webkit-overflow-scrolling: touch; */
 }
 
 .container {
@@ -14,7 +16,7 @@ body {
   background-color: #223a46 !important;
 }
 
-box {
+logo-box {
   display: inline-block;
   width: 105px;
   border: 1px solid #0077b5;
@@ -38,7 +40,9 @@ box {
   /* f0f3f7 */
   background-color: #f6f4f4;
   min-width: 100%;
-  min-height: 140vh;
+  min-height: 100vh;
+  /* max-height: 100vh; */
+  /* min-height: 140vh; */
   padding-left: 25px;
   padding-right: 25px;
   padding-top: 15px;
@@ -125,6 +129,8 @@ hr {
 
 .columnContainer {
   flex: 1;
+  overflow-y: scroll;
+  max-height: 100vh;
 }
 
 .columnHeader {
@@ -145,4 +151,22 @@ hr {
 
 .pageHeader {
   margin-bottom: 20px;
+}
+
+.divInline {
+  display: flex;
+}
+.cardSelectDropdown {
+  margin-top: 6px;
+}
+.customButtonDark2 {
+  background-color: #0077b5 !important;
+  border-color: #f6f4f4;
+  height: 38px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+.customButtonDark2:hover {
+  background-color: #036497 !important;
+  border-color: gray;
 }

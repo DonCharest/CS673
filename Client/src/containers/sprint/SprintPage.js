@@ -15,7 +15,7 @@ class SprintPage extends Component {
     super(props);
 
     this.state = {
-      showCardModal: false,
+      showCardModal: false
     };
 
     this.onChangeProject = this.onChangeProject.bind(this);
@@ -32,7 +32,7 @@ class SprintPage extends Component {
 
   onChangeProject(e) {
     console.log(e);
-    this.props.actions.updateActiveProject(e.target.value)
+    this.props.actions.updateActiveProject(e.target.value);
     this.props.actions.getCards(e.target.value);
   }
 
@@ -102,7 +102,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    actions: bindActionCreators({ ...actions, ...activeProjectActions }, dispatch)
+    actions: bindActionCreators(
+      { ...actions, ...activeProjectActions },
+      dispatch
+    )
   };
 };
 
