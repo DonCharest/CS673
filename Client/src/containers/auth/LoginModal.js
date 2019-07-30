@@ -80,7 +80,7 @@ class LoginModal extends Component {
   render() {
     return (
       <div>
-        <NavLink onClick={this.toggle} href="#">
+        <NavLink onClick={this.toggle} href="#" style={{ color: "white" }}>
           Login
         </NavLink>
 
