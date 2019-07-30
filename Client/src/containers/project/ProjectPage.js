@@ -100,31 +100,20 @@ class ProjectPage extends Component {
         capacity: project.capacity,
         capacityUnit: project.capacityUnit
       });
-      console.log("The Project is...", project._id);
-      console.log(project);
     });
   }
 
   getSprintByProjectId(id) {
     axios.get(`/api/sprint/?projectid=${id}`).then(res => {
       const sprint = res.data;
-      // const obj = JSON.parse(sprint);
 
       this.setState({
         sprintID: sprint.sprint._id
       });
 
       console.log("The Sprint is ", sprint.sprint._id);
-
-      if (sprint.sprintID == "") {
-        console.log("not here");
-      } else {
-        console.log("here it is");
-      }
-
-      // setTimeout(() => {
-      //   console.log("The new Sprint is ", sprint.sprint._id);
-      // }, 1500);
+      console.log("The Project is ", sprint.sprint.project);
+      console.log("The id is ", id);
     });
   }
 
@@ -299,8 +288,7 @@ class ProjectPage extends Component {
   onAddSprintClick = id => {
     this.getProjectById(id);
 
-    console.log("the id is: ", id);
-
+    // console.log("the id is: ", id);
     this.getSprintByProjectId(id);
 
     setTimeout(() => {
