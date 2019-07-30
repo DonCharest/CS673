@@ -97,9 +97,9 @@ class Main extends Component {
 
         <NavItem>
           <span className="navbar-text ml-5 mr-3">
-            <p style={{ color: "white" }}>
+            <strong style={{ color: "white", fontWeight: "normal" }}>
               {user ? `\u{1F64B} ${user.name}` : ""}
-            </p>
+            </strong>
           </span>
         </NavItem>
         <NavItem>
