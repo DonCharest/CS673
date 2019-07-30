@@ -56,8 +56,9 @@ class chatPage extends Component {
   scrollToBottom() {
     this.el.scrollIntoView({
       behavior: "smooth",
-      block: "end" //"nearest" <--- This was the previous setting
-      // inline: "start" <--- This is for horizontal (we don't need it)
+      block: "end"
+      // block: "nearest",
+      // inline: "start"
     });
   }
 

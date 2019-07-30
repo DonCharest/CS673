@@ -33,7 +33,15 @@ class Card extends Component {
 
   render() {
     return (
-      <div className={classes.card}>
+      <div
+        className={
+          this.props.cardData.type === "ISSUE"
+            ? classes.cardIssue
+            : this.props.cardData.type === "TASK"
+            ? classes.cardTask
+            : classes.card
+        }
+      >
         <CardModal
           title="Edit Story"
           showCardModal={this.state.showCardModal}
@@ -46,33 +54,39 @@ class Card extends Component {
         <div className={classes.cardDescription}>
           {this.props.cardData.title}
         </div>
-        <FormGroup>
-          <Label>Stage</Label>
-          <Input
-            type="select"
-            name="stage"
-            onChange={this.updateStage}
-            value={
-              this.props.cardData.currentStage
-                ? this.props.cardData.currentStage.toLowerCase()
-                : this.props.cardData.stage[0].stageName.toLowerCase()
-            }
-          >
-            <option value="backlog">BackLog</option>
-            <option value="todo">ToDo</option>
-            <option value="workinprogress">Work in Progress</option>
-            <option value="verification">Verification</option>
-            <option value="done">Done</option>
-          </Input>
-        </FormGroup>
 
-        <Button
-          onClick={this.toggleCardModal}
-          className={classes.customButtonDark}
-          color="dark"
-        >
-          Edit
-        </Button>
+        <div className={classes.divInline}>
+          <FormGroup>
+            {/* <Label>Stage</Label> */}
+            <Input
+              className={classes.cardSelectDropdown}
+              type="select"
+              name="stage"
+              onChange={this.updateStage}
+              value={
+                this.props.cardData.currentStage
+                  ? this.props.cardData.currentStage.toLowerCase()
+                  : this.props.cardData.stage[0].stageName.toLowerCase()
+              }
+            >
+              <option value="backlog">BackLog</option>
+              <option value="todo">To Do</option>
+              <option value="workinprogress">Work in Progress</option>
+              <option value="verification">Verification</option>
+              <option value="done">Complete</option>
+              <option value="accepted">Accepted</option>
+            </Input>
+          </FormGroup>
+
+          <Button
+            className={classes.cardEditButton}
+            onClick={this.toggleCardModal}
+            className={classes.customButtonDark2}
+            color="dark"
+          >
+            Edit
+          </Button>
+        </div>
       </div>
     );
   }
