@@ -32,7 +32,7 @@ class CardModal extends Component {
       priority: props.cardData ? props.cardData.priority : "MEDIUM",
       type: props.cardData ? props.cardData.type : "REQUIREMENT",
       load: props.cardData ? props.cardData.load : 1,
-      comments: props.cardData ? props.cardData.comments : ""
+      comment: props.cardData ? props.cardData.comment : ""
     };
 
     this.saveAndClose = this.saveAndClose.bind(this);
@@ -72,7 +72,7 @@ class CardModal extends Component {
       priority: this.state.priority,
       type: this.state.type,
       load: this.state.load,
-      comments: this.state.comments
+      comment: this.state.comment
     };
 
     let updatedCardData = {};
@@ -176,9 +176,9 @@ class CardModal extends Component {
               <FormGroup>
                 <Label>Comments</Label>
                 <Input
-                  value={this.state.comments}
+                  value={this.state.comment}
                   onChange={this.updateField}
-                  name="comments"
+                  name="comment"
                   type="textarea"
                   placeholder=""
                 />

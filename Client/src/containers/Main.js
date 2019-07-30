@@ -129,7 +129,7 @@ class Main extends Component {
           >
             {/* <Navbar color="dark" dark expand="sm" className="mb-0"> */}
             <Link id="navbar-brand" className={classes.navbarBrand} to="/">
-              <box>&#9812;TracKing</box>
+              <logo-box>&#9812;TracKing</logo-box>
             </Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
