@@ -157,15 +157,14 @@ hr {
   display: flex;
 }
 .cardSelectDropdown {
-  width: 170px;
-  margin-top: 5px;
-  margin-right: 10px;
+  margin-top: 6px;
 }
 .customButtonDark2 {
   background-color: #0077b5 !important;
   border-color: #f6f4f4;
-  height: 39px;
+  height: 38px;
   margin-top: 5px;
+  margin-left: 5px;
 }
 .customButtonDark2:hover {
   background-color: #036497 !important;
