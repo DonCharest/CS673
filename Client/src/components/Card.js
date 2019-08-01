@@ -51,6 +51,8 @@ class Card extends Component {
           cardData={this.props.cardData}
         />
 
+        <div className={classes.displayID}>{this.props.cardData.displayId}</div>
+
         <div className={classes.cardDescription}>
           {this.props.cardData.title}
         </div>
@@ -86,10 +88,15 @@ class Card extends Component {
           >
             Edit
           </Button>
-          
         </div>
         <div className={classes.assignedUser}>
-          {this.props.users.length && this.props.cardData.assignedTo ? `assigned to: ${[this.props.users.find(item => item._id === this.props.cardData.assignedTo).name ]}` : null}
+          {this.props.users.length && this.props.cardData.assignedTo
+            ? `assigned to: ${[
+                this.props.users.find(
+                  item => item._id === this.props.cardData.assignedTo
+                ).name
+              ]}`
+            : null}
         </div>
       </div>
     );
@@ -101,7 +108,7 @@ const mapStateToProps = state => {
     sprint: state.sprint,
     auth: state.auth,
     isAuthenticated: state.auth.isAuthenticated,
-    users: state.user.users,
+    users: state.user.users
   };
 };
 

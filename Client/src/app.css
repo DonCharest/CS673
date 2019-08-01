@@ -190,6 +190,11 @@ hr {
 .assignedUser {
   font-size: 12px;
 }
+.displayID {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
 
 .userList {
   overflow-y: scroll;
