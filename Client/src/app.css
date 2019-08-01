@@ -16,6 +16,10 @@ body {
   background-color: #223a46 !important;
 }
 
+.pillCustom {
+  background-color: #223a46;
+}
+
 logo-box {
   display: inline-block;
   width: 105px;
@@ -182,4 +186,14 @@ hr {
 .customButtonDark2:hover {
   background-color: #036497 !important;
   border-color: gray;
+}
+
+.userList {
+  overflow-y: scroll;
+  max-height: 80vh;
+}
+
+.projectList {
+  overflow-y: scroll;
+  max-height: 80vh;
 }
