@@ -21,24 +21,30 @@ class CardModal extends Component {
     super(props);
 
     this.state = {
+      showDeleteWarning: false,
       title: props.cardData ? props.cardData.title : "",
       description: props.cardData ? props.cardData.description : "",
       stage:
         props.cardData && props.cardData.currentStage
           ? props.cardData.currentStage.toLowerCase()
+          : /sprint/.test(window.location.hash) ? "todo"
           : "backlog",
       assignedId: props.cardData ? props.cardData.assignedTo : props.loggedInId,
       projectId: this.props.activeProject,
       priority: props.cardData ? props.cardData.priority : "MEDIUM",
       type: props.cardData ? props.cardData.type : "REQUIREMENT",
       load: props.cardData ? props.cardData.load : 1,
-      comment: props.cardData ? props.cardData.comment : ""
+      comment: props.cardData ? props.cardData.comment : "",
+      errors: [],
+      showValidationModal: false
     };
 
     this.saveAndClose = this.saveAndClose.bind(this);
     this.updateField = this.updateField.bind(this);
-
+    this.toggleDeleteModal = this.toggleDeleteModal.bind(this)
     this.autoSelectProject = this.autoSelectProject.bind(this);
+    this.validateForm = this.validateForm.bind(this)
+    this.toggleValidationModal = this.toggleValidationModal.bind(this)
   }
 
   componentDidMount() {
@@ -48,6 +54,26 @@ class CardModal extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.projects.length !== this.props.projects.length) {
       this.autoSelectProject();
+    } else if (!this.props.cardData && prevProps.showCardModal !== this.props.showCardModal && this.props.showCardModal === false) {
+      // reset modal on close
+      this.setState({
+        showDeleteWarning: false,
+        title: this.props.cardData ? this.props.cardData.title : "",
+        description: this.props.cardData ? this.props.cardData.description : "",
+        stage:
+          this.props.cardData && this.props.cardData.currentStage
+            ? this.props.cardData.currentStage.toLowerCase()
+            : /sprint/.test(window.location.hash) ? "todo"
+            : "backlog",
+        assignedId: this.props.cardData ? this.props.cardData.assignedTo : this.props.loggedInId,
+        projectId: this.props.activeProject,
+        priority: this.props.cardData ? this.props.cardData.priority : "MEDIUM",
+        type: this.props.cardData ? this.props.cardData.type : "REQUIREMENT",
+        load: this.props.cardData ? this.props.cardData.load : 1,
+        comment: this.props.cardData ? this.props.cardData.comment : "",
+        errors: [],
+        showValidationModal: false
+      });
     }
   }
 
@@ -63,8 +89,46 @@ class CardModal extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  toggleDeleteModal() {
+    if (this.state.showDeleteWarning) {
+      this.setState({showDeleteWarning: false})
+    } else {
+      this.setState({showDeleteWarning: true})  
+    }
+    
+  }
+
+  toggleValidationModal() {
+    if (this.state.showValidationModal) {
+      this.setState({showValidationModal: false, errors: []})
+    } else {
+      this.setState({showValidationModal: true})  
+    }
+    
+  }
+
+  validateForm (cardData, isNew) {
+    const requiredFields = [
+      'title',
+      'description',
+      'priority',
+      'type',
+    ]
+    const errors = []
+    requiredFields.forEach((field) => {
+      if (!cardData[field]) {
+        errors.push({name: field, message: 'Field is required'})
+      }
+    })
+
+    return errors
+
+  }
+
   saveAndClose(e) {
     e.preventDefault();
+
+    let isNewCard = true
 
     const baseCardData = {
       title: this.state.title,
@@ -79,6 +143,7 @@ class CardModal extends Component {
 
     // if edit
     if (this.props.cardData) {
+      let isNewCard = false
       updatedCardData = {
         ...baseCardData,
         id: this.props.cardData._id,
@@ -96,12 +161,83 @@ class CardModal extends Component {
       };
     }
 
-    this.props.saveCard(updatedCardData, this.props.toggleCardModal);
+    const errors = this.validateForm(updatedCardData, isNewCard)
+
+    if (errors.length === 0 ) {
+      this.props.saveCard(updatedCardData, this.props.toggleCardModal);
+    } else {
+      this.setState({errors, showValidationModal: true})
+    }
+
+    
   }
 
   render() {
     return (
       <div>
+        
+
+        <Modal
+          isOpen={this.state.showValidationModal}
+          toggle={this.toggleValidationModal}
+        >
+          <ModalHeader toggle={this.toggleValidationModal}>
+            Error with Story
+          </ModalHeader>
+          <ModalBody>
+            The following field(s) are invalid:
+            <ol>
+            {
+              this.state.errors.map((error, i) => {
+                return (
+                  <li key={i}>
+                    <span>{error.name}:</span> <span>{error.message}</span>
+                  </li>
+                )
+              })
+
+            }
+            </ol>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleValidationModal}>
+              Close
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+
+
+        <Modal
+          isOpen={this.state.showDeleteWarning}
+          toggle={this.toggleDeleteModal}
+        >
+          <ModalHeader toggle={this.toggleCardModal}>
+            Warning
+          </ModalHeader>
+          <ModalBody>
+            {`Are you sure you want to delete the story "${this.state.title}"?`}
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleDeleteModal}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className={classes.customButtonDark}
+              color="danger"
+              onClick={() => this.props.deleteCard(
+                  this.props.cardData._id,
+                  this.props.toggleCardModal
+                )}
+            >
+              Yes, Delete
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+
+
         <Modal
           isOpen={this.props.showCardModal}
           toggle={this.props.toggleCardModal}
@@ -173,17 +309,6 @@ class CardModal extends Component {
                 />
               </FormGroup>
 
-              <FormGroup>
-                <Label>Comments</Label>
-                <Input
-                  value={this.state.comment}
-                  onChange={this.updateField}
-                  name="comment"
-                  type="textarea"
-                  placeholder=""
-                />
-              </FormGroup>
-
               {!this.props.cardData ? (
                 <div>
                   <FormGroup>
@@ -213,10 +338,20 @@ class CardModal extends Component {
               {this.props.cardData ? (
                 <div>
                   <UsersDropdown
-                    value={this.state.userId}
+                    value={this.state.assignedId}
                     name="assignedId"
                     onChange={this.updateField}
                   />
+                  <FormGroup>
+                  <Label>Comments</Label>
+                  <Input
+                    value={this.state.comment}
+                    onChange={this.updateField}
+                    name="comment"
+                    type="textarea"
+                    placeholder=""
+                  />
+                </FormGroup>
                 </div>
               ) : null}
             </ModalBody>
@@ -228,12 +363,7 @@ class CardModal extends Component {
               {this.props.cardData ? (
                 <Button
                   color="danger"
-                  onClick={() =>
-                    this.props.deleteCard(
-                      this.props.cardData._id,
-                      this.props.toggleCardModal
-                    )
-                  }
+                  onClick={this.toggleDeleteModal}
                 >
                   Delete
                 </Button>
@@ -249,6 +379,7 @@ class CardModal extends Component {
             </ModalFooter>
           </Form>
         </Modal>
+        
       </div>
     );
   }
