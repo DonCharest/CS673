@@ -90,7 +90,8 @@ class AdminPage extends Component {
         </div>
         <ListGroup>
           <h6>
-            <b>&nbsp;&nbsp;&nbsp;User Management:</b>
+            {/* <b>&nbsp;&nbsp;&nbsp;User Management:</b> */}
+            User Management
           </h6>
           <TransitionGroup className={classes.userList}>
             {users.map(({ _id, email, role, option }) => (
