@@ -19,7 +19,6 @@ import UsersDropdown from "./UsersDropdown";
 class CardModal extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       showDeleteWarning: false,
       title: props.cardData ? props.cardData.title : "",
@@ -30,7 +29,7 @@ class CardModal extends Component {
           : /sprint/.test(window.location.hash) ? "todo"
           : "backlog",
       assignedId: props.cardData ? props.cardData.assignedTo : props.loggedInId,
-      projectId: this.props.activeProject,
+      projectId: props.activeProject,
       priority: props.cardData ? props.cardData.priority : "MEDIUM",
       type: props.cardData ? props.cardData.type : "REQUIREMENT",
       load: props.cardData ? props.cardData.load : 1,
@@ -74,6 +73,9 @@ class CardModal extends Component {
         errors: [],
         showValidationModal: false
       });
+    } else if (!this.props.cardData && this.props.activeProject !== prevProps.activeProject) {
+      // reset project id on new modal if active project changed
+      this.setState({projectId: this.props.activeProject})
     }
   }
 
@@ -173,6 +175,7 @@ class CardModal extends Component {
   }
 
   render() {
+
     return (
       <div>
         
