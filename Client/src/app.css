@@ -189,7 +189,11 @@ hr {
 }
 
 .userList {
-  /*add scroll to user management page  */
+  overflow-y: scroll;
+  max-height: 80vh;
+}
+
+.projectList {
   overflow-y: scroll;
   max-height: 80vh;
 }
