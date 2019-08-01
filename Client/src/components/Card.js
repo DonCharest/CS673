@@ -86,6 +86,10 @@ class Card extends Component {
           >
             Edit
           </Button>
+          
+        </div>
+        <div className={classes.assignedUser}>
+          {this.props.users.length && this.props.cardData.assignedTo ? `assigned to: ${[this.props.users.find(item => item._id === this.props.cardData.assignedTo).name ]}` : null}
         </div>
       </div>
     );
@@ -96,7 +100,8 @@ const mapStateToProps = state => {
   return {
     sprint: state.sprint,
     auth: state.auth,
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    users: state.user.users,
   };
 };
 

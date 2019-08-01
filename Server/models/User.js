@@ -1,16 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-
 // The Card.comment schema tracks user defined comments on a Card.
 var projectList = new mongoose.Schema({
-  projectID:{
-      type: String, 
-      required: true
+  projectID: {
+    type: String,
+    required: true
   }
-})
-
-
+});
 
 // Create Schema
 const UserSchema = new Schema({
@@ -34,8 +31,9 @@ const UserSchema = new Schema({
   role: {
     type: String,
     default: "user"
-  },
-  projects:[projectList]
+  }
+  // ,
+  // projects:[projectList]
 });
 
 module.exports = User = mongoose.model("user", UserSchema);

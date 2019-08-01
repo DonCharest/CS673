@@ -90,7 +90,7 @@ class chatPage extends Component {
     });
     setTimeout(() => {
       this.scrollToBottom();
-    }, 1000);
+    }, 500);
 
     this.setState({ newMsg: "" });
   }
@@ -137,7 +137,7 @@ class chatPage extends Component {
             {this.state.response.map((item, index) => {
               return (
                 <div key={index}>
-                  <div>{this.getDate(item.datestamp)}</div>
+                  <div className={classes.singleChatContainer}>{this.getDate(item.datestamp)}</div>
                   <div className={classes.singleChat}>
                     <div className={classes.singleChatUser}>{item.user}:</div>
                     <div className={classes.singleChatMessage}>
