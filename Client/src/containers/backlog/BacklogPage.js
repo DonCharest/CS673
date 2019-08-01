@@ -9,11 +9,20 @@ import * as classes from "../../app.css";
 import * as actions from "../../actions/sprintActions";
 import ProjectsDropdown from "../../components/ProjectsDropdown";
 import * as activeProjectActions from "../../actions/activeProjectActions";
+import * as userActions from '../../actions/userActions';
 
 class BacklogPage extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool
   };
+
+  componentDidMount() {
+    if (this.props.users.length === 0) {
+      this.props.actions.getUsers()  
+    }
+    
+  }
+
 
   constructor(props) {
     super(props);
@@ -81,13 +90,14 @@ const mapStateToProps = state => {
     sprint: state.sprint,
     auth: state.auth,
     isAuthenticated: state.auth.isAuthenticated,
-    activeProject: state.activeProject
+    activeProject: state.activeProject,
+    users: state.user.users,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    actions: bindActionCreators({ ...actions, ...activeProjectActions }, dispatch)
+    actions: bindActionCreators({ ...actions, ...activeProjectActions, ...userActions }, dispatch)
   };
 };
 

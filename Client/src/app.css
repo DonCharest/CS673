@@ -187,6 +187,9 @@ hr {
   background-color: #036497 !important;
   border-color: gray;
 }
+.assignedUser {
+  font-size: 12px;
+}
 
 .userList {
   overflow-y: scroll;

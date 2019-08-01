@@ -9,6 +9,7 @@ import * as actions from "../../actions/sprintActions";
 import * as activeProjectActions from "../../actions/activeProjectActions";
 import * as classes from "../../app.css";
 import ProjectsDropdown from "../../components/ProjectsDropdown";
+import * as userActions from '../../actions/userActions';
 
 class SprintPage extends Component {
   constructor(props) {
@@ -22,6 +23,13 @@ class SprintPage extends Component {
     this.toggleCardModal = this.toggleCardModal.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.users.length === 0) {
+      this.props.actions.getUsers()  
+    }
+  }
+
+
   toggleCardModal() {
     if (this.state.showCardModal) {
       this.setState({ showCardModal: false });
@@ -31,7 +39,6 @@ class SprintPage extends Component {
   }
 
   onChangeProject(e) {
-    console.log(e);
     this.props.actions.updateActiveProject(e.target.value);
     this.props.actions.getCards(e.target.value);
   }
@@ -96,14 +103,15 @@ const mapStateToProps = state => {
   return {
     sprint: state.sprint,
     auth: state.auth,
-    activeProject: state.activeProject
+    activeProject: state.activeProject,
+    users: state.user.users,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(
-      { ...actions, ...activeProjectActions },
+      { ...actions, ...activeProjectActions, ...userActions },
       dispatch
     )
   };
