@@ -58,7 +58,7 @@ class Main extends Component {
       if (user.role == "admin") {
         adminLink = (
           <Link className="nav-link" to="/Admin" style={{ color: "white" }}>
-            Admin
+            &#128110;Admin
           </Link>
         );
       }

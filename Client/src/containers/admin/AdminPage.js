@@ -90,7 +90,8 @@ class AdminPage extends Component {
         </div>
         <ListGroup>
           <h6>
-            <b>&nbsp;&nbsp;&nbsp;User Management:</b>
+            {/* <b>&nbsp;&nbsp;&nbsp;User Management:</b> */}
+            User Management
           </h6>
           <TransitionGroup className={classes.userList}>
             {users.map(({ _id, email, role, option }) => (
@@ -100,8 +101,9 @@ class AdminPage extends Component {
                     <strong>{email + "\u00A0\u00A0\u00A0\u00A0"}</strong>
                     <Badge
                       pill
-                      color="dark"
-                      className={classes.customButtonDark}
+                      // color="dark"
+                      // className={classes.customButtonDark}
+                      className={classes.pillCustom}
                     >
                       {role}{" "}
                     </Badge>

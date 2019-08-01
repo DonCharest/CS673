@@ -16,6 +16,10 @@ body {
   background-color: #223a46 !important;
 }
 
+.pillCustom {
+  background-color: #223a46;
+}
+
 logo-box {
   display: inline-block;
   width: 105px;
@@ -185,4 +189,14 @@ hr {
 }
 .assignedUser {
   font-size: 12px;
+}
+
+.userList {
+  overflow-y: scroll;
+  max-height: 80vh;
+}
+
+.projectList {
+  overflow-y: scroll;
+  max-height: 80vh;
 }
