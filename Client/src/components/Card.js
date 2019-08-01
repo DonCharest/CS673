@@ -91,7 +91,7 @@ class Card extends Component {
         </div>
         <div className={classes.assignedUser}>
           {this.props.users.length && this.props.cardData.assignedTo
-            ? `assigned to: ${[
+            ? `${[
                 this.props.users.find(
                   item => item._id === this.props.cardData.assignedTo
                 ).name
