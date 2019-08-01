@@ -16,6 +16,10 @@ body {
   background-color: #223a46 !important;
 }
 
+.pillCustom {
+  background-color: #223a46;
+}
+
 logo-box {
   display: inline-block;
   width: 105px;

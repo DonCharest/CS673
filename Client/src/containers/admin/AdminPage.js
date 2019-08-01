@@ -101,8 +101,9 @@ class AdminPage extends Component {
                     <strong>{email + "\u00A0\u00A0\u00A0\u00A0"}</strong>
                     <Badge
                       pill
-                      color="dark"
-                      className={classes.customButtonDark}
+                      // color="dark"
+                      // className={classes.customButtonDark}
+                      className={classes.pillCustom}
                     >
                       {role}{" "}
                     </Badge>
