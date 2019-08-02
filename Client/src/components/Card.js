@@ -32,6 +32,7 @@ class Card extends Component {
   }
 
   render() {
+
     return (
       <div
         className={
@@ -89,7 +90,7 @@ class Card extends Component {
           
         </div>
         <div className={classes.assignedUser}>
-          {this.props.users.length && this.props.cardData.assignedTo ? `assigned to: ${[this.props.users.find(item => item._id === this.props.cardData.assignedTo).name ]}` : null}
+          {this.props.users.length && this.props.cardData.assignedTo && this.props.users.find(item => item._id === this.props.cardData.assignedTo) ? `assigned to: ${[this.props.users.find(item => item._id === this.props.cardData.assignedTo).name ]}` : null}
         </div>
       </div>
     );
