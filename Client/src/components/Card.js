@@ -32,6 +32,7 @@ class Card extends Component {
   }
 
   render() {
+
     return (
       <div
         className={
@@ -90,7 +91,7 @@ class Card extends Component {
           </Button>
         </div>
         <div className={classes.assignedUser}>
-          {this.props.users.length && this.props.cardData.assignedTo
+          {this.props.users.length && this.props.cardData.assignedTo && this.props.users.find(item => item._id === this.props.cardData.assignedTo)
             ? `${[
                 this.props.users.find(
                   item => item._id === this.props.cardData.assignedTo
